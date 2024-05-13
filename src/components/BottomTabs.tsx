@@ -24,7 +24,7 @@ export default function BottomTabs() {
                 <HeartIcon className='w-5 h-5' />
                 <p className='text-xs'>Iklan Saya</p>
             </button>
-            <button type='button' className='flex flex-col items-center justify-center w-[160px]'>
+            <button onClick={()=>{router.push('/account')}} type='button' className='flex flex-col items-center justify-center w-[160px]'>
                 <UserIcon className='w-5 h-5' />
                 <p className='text-xs'>Akun Saya</p>
             </button>
