@@ -22,33 +22,20 @@ export default function Home() {
             <Image src={'/icons/motor.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             Motor
           </button>
+          <button className='flex flex-col items-center justify-center w-[100px] text-sm uppercase text-blue-700 font-semibold'>
+            Lihat Semua Kategori
+          </button>
           <button className='flex flex-col items-center justify-center w-[100px]'>
-          <Image src={'/icons/properti.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
+            <Image src={'/icons/properti.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             Properti
           </button>
           <button className='flex flex-col items-center justify-center w-[100px]'>
-          <Image src={'/icons/elektronik.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
+            <Image src={'/icons/elektronik.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             Elektronik
           </button>
           <button className='flex flex-col items-center justify-center w-[100px]'>
-          <Image src={'/icons/hp.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
+            <Image src={'/icons/hp.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             HP
-          </button>
-          <button className='flex flex-col items-center justify-center w-[100px] text-xs'>
-          <Image src={'/icons/rumah-tangga.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
-            Rumah Tangga
-          </button>
-          <button className='flex flex-col items-center justify-center text-xs w-[100px]'>
-            <Image src={'/icons/bayi.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
-            Barang Pribadi Bayi & Anak
-          </button>
-          <button className='flex flex-col items-center justify-center text-xs w-[100px]'>
-          <Image src={'/icons/jasa-lowongan.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
-            Jasa Lowongan Kantor Industri
-          </button>
-          <button className='flex flex-col items-center justify-center w-[100px] text-xs'>
-          <Image src={'/icons/bahan-bangunan.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
-            Bahan Bangunan
           </button>
         </div>
       </div>
