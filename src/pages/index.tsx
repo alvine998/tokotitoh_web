@@ -15,39 +15,39 @@ export default function Home() {
       <div className='p-2 mt-28'>
         <div className='flex flex-wrap gap-3 items-center justify-center'>
           <button className='flex flex-col items-center justify-center w-[100px]'>
-            <CarFrontIcon className='w-20 h-20' />
+            <Image src={'/icons/mobil.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             Mobil
           </button>
           <button className='flex flex-col items-center justify-center w-[100px]'>
-            <CarFrontIcon className='w-20 h-20' />
+            <Image src={'/icons/motor.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             Motor
           </button>
           <button className='flex flex-col items-center justify-center w-[100px]'>
-            <LucideHome className='w-20 h-20' />
+          <Image src={'/icons/properti.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             Properti
           </button>
           <button className='flex flex-col items-center justify-center w-[100px]'>
-            <CarFrontIcon className='w-20 h-20' />
+          <Image src={'/icons/elektronik.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             Elektronik
           </button>
           <button className='flex flex-col items-center justify-center w-[100px]'>
-            <CarFrontIcon className='w-20 h-20' />
+          <Image src={'/icons/hp.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             HP
           </button>
           <button className='flex flex-col items-center justify-center w-[100px] text-xs'>
-            <CarFrontIcon className='w-20 h-20' />
+          <Image src={'/icons/rumah-tangga.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             Rumah Tangga
           </button>
           <button className='flex flex-col items-center justify-center text-xs w-[100px]'>
-            <CarFrontIcon className='w-20 h-20' />
+            <Image src={'/icons/bayi.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             Barang Pribadi Bayi & Anak
           </button>
           <button className='flex flex-col items-center justify-center text-xs w-[100px]'>
-            <CarFrontIcon className='w-20 h-20' />
+          <Image src={'/icons/jasa-lowongan.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             Jasa Lowongan Kantor Industri
           </button>
           <button className='flex flex-col items-center justify-center w-[100px] text-xs'>
-            <CarFrontIcon className='w-20 h-20' />
+          <Image src={'/icons/bahan-bangunan.webp'} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
             Bahan Bangunan
           </button>
         </div>
