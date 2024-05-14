@@ -1,5 +1,5 @@
 import BottomTabs from '@/components/BottomTabs'
-import HeaderHome from '@/components/HeaderHome'
+import HeaderHome from '@/components/headers/HeaderHome'
 import Modal, { useModal } from '@/components/Modal'
 import { CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PlusCircleIcon, XCircleIcon } from 'lucide-react'
 import Image from 'next/image'
@@ -99,7 +99,7 @@ export default function Home() {
               <h1>Mobil</h1>
             </div>
             <div className='mt-5'>
-              <button className='border border-gray-500 p-2 w-full'>
+              <button onClick={()=>{router.push('/category/car?subcategory=mobil-dijual')}} className='border border-gray-500 p-2 w-full'>
                 Mobil Dijual
               </button>
               <button className='border border-gray-500 p-2 w-full'>

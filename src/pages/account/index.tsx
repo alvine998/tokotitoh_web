@@ -1,5 +1,5 @@
 import BottomTabs from '@/components/BottomTabs'
-import HeaderHome from '@/components/HeaderHome'
+import HeaderHome from '@/components/headers/HeaderHome'
 import Modal, { useModal } from '@/components/Modal'
 import { CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PlusCircleIcon, UserCircleIcon, UserIcon, XCircleIcon } from 'lucide-react'
 import Image from 'next/image'
