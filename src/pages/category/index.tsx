@@ -73,7 +73,7 @@ export default function Category({ categories }: any) {
                 <div className='flex flex-wrap gap-5 items-center justify-center mt-5'>
                     {
                         categories?.map((v: any, i: number) => (
-                            <button onClick={() => { getSubCat(v?.id); setModal({ ...modal, open: true, key: "subcat", data: v }) }} key={i} className='flex flex-col items-center justify-center w-[100px]'>
+                            <button onClick={() => { getSubCat(v?.id); setModal({ ...modal, open: true, key: "subcat", data: v }) }} key={i} className='flex flex-col items-center justify-center w-[100px] text-xs pt-2 font-bold'>
                                 <Image src={v?.icon} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
                                 {v?.name}
                             </button>

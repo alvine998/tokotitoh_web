@@ -14,7 +14,6 @@ export default function Ads() {
   return (
     <div className='pb-20'>
       <div className=''>
-        <HeaderAds />
       </div>
 
 

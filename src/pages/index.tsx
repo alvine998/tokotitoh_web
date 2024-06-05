@@ -69,18 +69,30 @@ export default function Home({ categories }: any) {
       <div className='p-2 mt-28'>
         <div className='flex flex-wrap gap-5 items-center justify-center'>
           {
-            categories?.map((v: any, i: number) => (
-              i == 2
-                ?
-                <button onClick={() => { router.push('/category') }} className='flex flex-col items-center justify-center w-[100px] text-sm uppercase text-blue-700 font-semibold'>
-                  Lihat Semua Kategori
-                </button> :
-                <button key={i} onClick={() => {
-                  setModal({ ...modal, open: true, data: v, key: 'subcat' })
-                }} className='flex flex-col items-center justify-center w-[100px]'>
-                  <Image src={v?.icon} layout='relative' width={100} height={100} alt='icon' className='w-20 h-20' />
-                  {v?.name}
-                </button>
+            categories?.slice(0, 2)?.map((v: any, i: number) => (
+              <button key={i} onClick={() => {
+                getSubCat(v?.id)
+                setModal({ ...modal, open: true, data: v, key: 'subcat' })
+              }} className='flex flex-col items-center justify-center w-[100px]'>
+                <Image src={v?.icon} layout='relative' width={100} height={100} alt='icon' className='w-16 h-16' />
+                {v?.name}
+              </button>
+            ))
+          }
+          <button onClick={() => { router.push('/category') }} className='flex flex-col items-center justify-center w-[100px] text-sm uppercase text-blue-700 font-semibold'>
+            Lihat Semua Kategori
+          </button>
+        </div>
+        <div className='flex flex-wrap gap-5 items-center justify-center mt-4'>
+          {
+            categories?.slice(2, 5)?.map((v: any, i: number) => (
+              <button key={i} onClick={() => {
+                getSubCat(v?.id)
+                setModal({ ...modal, open: true, data: v, key: 'subcat' })
+              }} className='flex flex-col items-center justify-center w-[100px]'>
+                <Image src={v?.icon} layout='relative' width={100} height={100} alt='icon' className='w-16 h-16' />
+                {v?.name}
+              </button>
             ))
           }
         </div>
@@ -135,36 +147,16 @@ export default function Home({ categories }: any) {
               <button onClick={() => { setModal({ ...modal, open: false }) }}>
                 <ChevronLeftIcon />
               </button>
-              <h1>Mobil</h1>
+              <h1>{modal?.data?.name}</h1>
             </div>
             <div className='mt-5'>
-              <button onClick={() => { router.push('/category/car?subcategory=mobil-dijual') }} className='border border-gray-500 p-2 w-full'>
-                Mobil Dijual
-              </button>
-              <button className='border border-gray-500 p-2 w-full'>
-                Mobil Kredit / TT
-              </button>
-              <button className='border border-gray-500 p-2 w-full'>
-                Mobil Disewakan
-              </button>
-              <button className='border border-gray-500 p-2 w-full'>
-                Mobil Baru / Promosi
-              </button>
-              <button className='border border-gray-500 p-2 w-full'>
-                Sparepart
-              </button>
-              <button className='border border-gray-500 p-2 w-full'>
-                Aksesoris & Audio
-              </button>
-              <button className='border border-gray-500 p-2 w-full'>
-                Velg & Ban
-              </button>
-              <button className='border border-gray-500 p-2 w-full'>
-                Bengkel / Montir
-              </button>
-              <button className='border border-gray-500 p-2 w-full'>
-                Karoseri
-              </button>
+              {
+                subcat?.map((v: any, i: number) => (
+                  <button key={i} onClick={() => router.push(`/category/${v?.id}`)} className='border border-gray-500 p-2 w-full'>
+                    {v?.name}
+                  </button>
+                ))
+              }
             </div>
           </Modal> : ""
       }
