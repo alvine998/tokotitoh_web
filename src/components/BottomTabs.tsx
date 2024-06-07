@@ -14,7 +14,7 @@ export default function BottomTabs() {
                 <MenuIcon className='w-5 h-5' />
                 <p>Menu</p>
             </button>
-            <button type='button' className='flex flex-col items-center justify-center w-[150px]'>
+            <button type='button' onClick={()=>{router.push('/sell')}} className='flex flex-col items-center justify-center w-[150px]'>
                 <div className='p-2 border-2 border-black rounded -mt-5 bg-white'>
                     <PlusIcon className='w-5 h-5' />
                 </div>

@@ -1,54 +1,28 @@
+import { toMoney } from '@/utils';
+import Image from 'next/image';
 import { useRouter } from 'next/router'
 import React from 'react'
 
 interface Props {
-
+    path: string;
+    title: string;
+    price: any;
+    thumbnail: string;
 }
 
-export default function AdsProduct() {
+export default function AdsProduct(props: Props) {
+    const {path, price, thumbnail, title} = props
     const router = useRouter();
     return (
         <div>
             <button
                 type='button'
                 className='shadow border p-2 rounded lg:h-auto w-full'
-                onClick={() => { router.push('') }}
+                onClick={() => { router.push(path) }}
             >
-                <div className='h-32 w-full bg-blue-500 rounded'></div>
-                <h5 className='text-left'>Iklan 1</h5>
-                <p className='text-left font-bold text-lg'>Rp 100.000</p>
-            </button>
-            <button
-                type='button'
-                className='shadow border p-2 rounded lg:h-auto w-full'
-            >
-                <div className='h-32 w-full bg-blue-500 rounded'></div>
-                <h5 className='text-left'>Iklan 2</h5>
-                <p className='text-left font-bold text-lg'>Rp 100.000</p>
-            </button>
-            <button
-                type='button'
-                className='shadow border p-2 rounded lg:h-auto w-full'
-            >
-                <div className='h-32 w-full bg-blue-500 rounded'></div>
-                <h5 className='text-left'>Iklan 3</h5>
-                <p className='text-left font-bold text-lg'>Rp 100.000</p>
-            </button>
-            <button
-                type='button'
-                className='shadow border p-2 rounded lg:h-auto w-full'
-            >
-                <div className='h-32 w-full bg-blue-500 rounded'></div>
-                <h5 className='text-left'>Iklan 4</h5>
-                <p className='text-left font-bold text-lg'>Rp 100.000</p>
-            </button>
-            <button
-                type='button'
-                className='shadow border p-2 rounded lg:h-auto w-full'
-            >
-                <div className='h-32 w-full bg-blue-500 rounded'></div>
-                <h5 className='text-left'>Iklan 5</h5>
-                <p className='text-left font-bold text-lg'>Rp 100.000</p>
+                <Image alt='thumbnail' src={thumbnail} layout='relative' width={300} height={300} className='h-[200px] w-full rounded' />
+                <h5 className='text-left'>{title}</h5>
+                <p className='text-left font-bold text-lg'>Rp {toMoney(price)}</p>
             </button>
         </div>
     )
