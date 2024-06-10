@@ -107,7 +107,7 @@ export default function Home({ categories }: any) {
             <InfoIcon className='text-blue-700' />
             Tips Hindari Penipuan
           </button>
-          <button className='w-full border border-blue-500 p-2 rounded flex items-center gap-3 text-sm'>
+          <button type='button' onClick={()=>{router.push('/sell')}} className='w-full border border-blue-500 p-2 rounded flex items-center gap-3 text-sm'>
             <PlusCircleIcon className='text-green-700' />
             Pasang Iklan Baru
           </button>

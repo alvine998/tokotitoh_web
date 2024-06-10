@@ -20,7 +20,7 @@ export default function BottomTabs() {
                 </div>
                 <p>Jual</p>
             </button>
-            <button type='button' className='flex flex-col items-center justify-center w-[150px]'>
+            <button type='button' onClick={()=>{router.push('/myads')}} className='flex flex-col items-center justify-center w-[150px]'>
                 <HeartIcon className='w-5 h-5' />
                 <p className='text-xs'>Iklan Saya</p>
             </button>

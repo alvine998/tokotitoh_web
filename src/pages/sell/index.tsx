@@ -217,6 +217,32 @@ export default function Sell({ categories, subcategories, brands, types, provinc
             setFilled(filled?.filter((v: any) => v !== (isMoved + 1)))
         }
     };
+
+    const onSubmit = async () => {
+        try {
+            const payload = {
+                ...selected,
+                images: images,
+                user_id: 1,
+                user_name: 'alvin',
+                price: +selected?.price?.replaceAll(",", ""),
+                km: +selected?.km?.replaceAll(",", ""),
+            }
+            const result = await axios.post(CONFIG.base_url_api + '/ads', payload, {
+                headers: {
+                    "bearer-token": "tokotitohapi",
+                    "x-partner-code": "id.marketplace.tokotitoh"
+                }
+            });
+            Swal.fire({
+                icon: "success",
+                text: "Berhasil membuat iklan!"
+            })
+            router.push('/myads')
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <div className='pb-20'>
             <div className="relative w-full h-screen">
@@ -280,13 +306,13 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                     </button>
                     <p className='m-2'>{selected?.category_name} {">"} {selected?.subcategory_name}</p>
                     <div className='mt-4'>
-                        <Input label='Judul' placeholder='Masukkan Judul Iklan' maxLength={30} />
+                        <Input label='Judul' placeholder='Masukkan Judul Iklan' maxLength={30} onChange={(e: any) => { setSelected({ ...selected, title: e.target.value }) }} />
                         <div>
                             <label className='text-gray-500' htmlFor="brand">Brand</label>
                             <ReactSelect
                                 options={brands?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))}
                                 placeholder="Pilih Brand"
-                                onChange={(e: any) => { setFilter({ ...filter, brand_id: e?.value }) }}
+                                onChange={(e: any) => { setFilter({ ...filter, brand_id: e?.value }), setSelected({ ...selected, brand_id: e?.value, brand_name: e?.label }) }}
                                 maxMenuHeight={200}
                                 id='brand'
                             />
@@ -297,23 +323,24 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                 isDisabled={types?.length < 1}
                                 options={types?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))}
                                 placeholder="Pilih Tipe"
+                                onChange={(e: any) => { setSelected({ ...selected, type_id: e?.value, type_name: e?.label }) }}
                                 maxMenuHeight={200}
                                 id='type'
                             />
                         </div>
-                        <Input label='Harga' placeholder='Masukkan Harga' numericformat />
-                        <TextArea label='Deksripsi' placeholder='Masukkan Deskripsi' maxLength={250} />
+                        <Input label='Harga' placeholder='Masukkan Harga' numericformat onChange={(e: any) => { setSelected({ ...selected, price: e.target.value }) }} />
+                        <TextArea label='Deksripsi' placeholder='Masukkan Deskripsi' maxLength={250} onChange={(e) => { setSelected({ ...selected, description: e.target.value }) }} />
                         {
                             selected?.category_name?.toLowerCase()?.includes('properti') ?
                                 <div>
-                                    <Input label='Luas (m2)' placeholder='Masukkan Luas (m2)' numericformat />
-                                    <Input label='Sertifikat' placeholder='Masukkan Sertifikat' />
+                                    <Input label='Luas (m2)' placeholder='Masukkan Luas (m2)' numericformat onChange={(e: any) => { setSelected({ ...selected, area: e.target.value }) }} />
+                                    <Input label='Sertifikat' placeholder='Masukkan Sertifikat' onChange={(e: any) => { setSelected({ ...selected, certificates: e.target.value }) }} />
                                 </div> : ""
                         }
                         {
                             selected?.category_name?.toLowerCase()?.includes('mobil') || selected?.category_name?.toLowerCase()?.includes('motor') ?
                                 <div>
-                                    <Input label='Trip KM' placeholder='Masukkan Trip KM' numericformat />
+                                    <Input label='Trip KM' placeholder='Masukkan Trip KM' numericformat onChange={(e: any) => { setSelected({ ...selected, km: e.target.value }) }} />
                                     <div className='mt-2'>
                                         <label className='text-gray-500' htmlFor="fuel_type">Jenis Bahan Bakar</label>
                                         <ReactSelect
@@ -324,6 +351,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                                 { value: "ev", label: "Listrik" }
                                             ]}
                                             placeholder="Pilih Jenis Bahan Bakar"
+                                            onChange={(e: any) => { setSelected({ ...selected, fuel_type: e.value }) }}
                                             maxMenuHeight={200}
                                             id='fuel_type'
                                         />
@@ -336,14 +364,28 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                                 { value: "AT", label: "Automatic" },
                                                 { value: "CVT", label: "CVT" }
                                             ]}
+                                            onChange={(e: any) => { setSelected({ ...selected, transmission: e.value }) }}
                                             placeholder="Pilih Jenis Transmisi"
                                             maxMenuHeight={200}
                                             id='transmission'
                                         />
                                     </div>
-                                    <Input label='Tahun' placeholder='Masukkan Tahun' type='number' />
-                                    <Input label='Warna' placeholder='Masukkan Warna' />
-                                    <Input label='Plat Nomor' placeholder='Masukkan Plat Nomor' />
+                                    <div className='mt-2'>
+                                        <label className='text-gray-500' htmlFor="ownership">Kepemilikan</label>
+                                        <ReactSelect
+                                            options={[
+                                                { value: "individual", label: "Pribadi" },
+                                                { value: "company", label: "Dealer" },
+                                            ]}
+                                            onChange={(e: any) => { setSelected({ ...selected, ownership: e.value }) }}
+                                            placeholder="Pilih Kepemilikan"
+                                            maxMenuHeight={200}
+                                            id='ownership'
+                                        />
+                                    </div>
+                                    <Input label='Tahun' placeholder='Masukkan Tahun' type='number' onChange={(e: any) => { setSelected({ ...selected, year: e.target.value }) }} />
+                                    <Input label='Warna' placeholder='Masukkan Warna' onChange={(e: any) => { setSelected({ ...selected, color: e.target.value }) }} />
+                                    <Input label='Plat Nomor' placeholder='Masukkan Plat Nomor' onChange={(e: any) => { setSelected({ ...selected, plat_no: e.target.value }) }} />
                                     <Button color='info' type='button' onClick={handleFormData} >Selanjutnya</Button>
                                 </div> : ""
                         }
@@ -397,6 +439,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                 isDisabled={list?.villages?.length < 1}
                                 options={list?.villages?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))}
                                 placeholder="Pilih Kelurahan/Desa"
+                                onChange={(e: any) => setSelected({ ...selected, village_id: e.value, village_name: e.label })}
                                 maxMenuHeight={200}
                                 id='village'
                             />
@@ -429,7 +472,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                 ))
                             }
                         </div>
-                        <Button color='info' className={'mt-4'}>Selesai</Button>
+                        <Button color='info' className={'mt-4'} onClick={onSubmit}>Selesai</Button>
                     </div>
                 </div>
             </div>
