@@ -56,7 +56,7 @@ export async function getServerSideProps(context: any) {
 }
 
 
-export default function Ads({ ads, user }: any) {
+export default function Ads({ ads, user, subcat_id }: any) {
   const router = useRouter();
   const [modal, setModal] = useState<useModal>()
   const [show, setShow] = useState<boolean>(false);
@@ -71,7 +71,7 @@ export default function Ads({ ads, user }: any) {
         show ?
           <>
             <div className='p-3'>
-              <button className='flex gap-2 font-bold'>
+              <button type='button' onClick={()=>{router.push(`/category/${subcat_id}`)}} className='flex gap-2 font-bold'>
                 <ArrowLeft className='w-5' />
                 Kembali
               </button>

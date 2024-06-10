@@ -260,7 +260,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
 
                 {/* Select Category */}
                 <div
-                    className={`absolute z-0 top-10 ${isMoved == 0 ? 'left-0' : 'left-full'} bg-white w-full h-auto mt-2 transition-all duration-500`}
+                    className={`absolute z-0 top-10 ${isMoved == 0 ? 'left-0' : 'left-full hidden'} bg-white w-full h-auto mt-2 transition-all duration-500`}
                 >
                     <button className='text-blue-700 m-2 flex items-center gap-2' type='button' onClick={() => { router.push('/') }}>
                         <ArrowLeft />
@@ -280,7 +280,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
 
                 {/* Select Subcategory */}
                 <div
-                    className={`absolute z-10 top-10 ${isMoved == 1 ? 'left-0' : 'left-full'} bg-white p-2 w-full h-auto transition-all duration-500`}
+                    className={`absolute z-10 top-10 ${isMoved == 1 ? 'left-0' : 'left-full hidden'} bg-white p-2 w-full h-auto transition-all duration-500`}
                 >
                     <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
                         <ArrowLeft />
@@ -299,7 +299,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
 
                 {/* Form Data */}
                 <div
-                    className={`absolute z-20 top-10 ${isMoved == 2 ? 'left-0' : 'left-full'} bg-white p-2 w-full h-auto transition-all duration-500`}
+                    className={`absolute z-20 top-10 ${isMoved == 2 ? 'left-0' : 'left-full hidden'} bg-white p-2 w-full h-auto transition-all duration-500`}
                 >
                     <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
                         <ArrowLeft />
@@ -394,7 +394,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
 
                 {/* Select Location */}
                 <div
-                    className={`absolute z-40 top-10 ${isMoved == 3 ? 'left-0' : 'left-full'} bg-white p-2 w-full h-auto transition-all duration-500`}
+                    className={`absolute z-40 top-10 ${isMoved == 3 ? 'left-0' : 'left-full hidden'} bg-white p-2 w-full h-auto transition-all duration-500`}
                 >
                     <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
                         <ArrowLeft />
@@ -450,7 +450,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
 
                 {/* Image */}
                 <div
-                    className={`absolute z-50 top-10 ${isMoved == 4 ? 'left-0' : 'left-full'} bg-white p-2 w-full h-auto transition-all duration-500`}
+                    className={`absolute z-50 top-10 ${isMoved == 4 ? 'left-0' : 'left-full hidden'} bg-white p-2 w-full h-auto transition-all duration-500`}
                 >
                     <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
                         <ArrowLeft />
