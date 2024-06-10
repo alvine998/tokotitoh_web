@@ -56,7 +56,7 @@ export default function MyAds({ ads, subcat_id }: any) {
       <div className='p-2 mt-28'>
         {
           ads?.map((v: any, i: number) => (
-            <div>
+            <div key={i}>
               <AdsProduct status={v?.status} price={v?.price} thumbnail={v?.images[0]} title={v?.title} path={`/category/${v?.subcategory_id}/${v?.id}`} />
             </div>
           ))
