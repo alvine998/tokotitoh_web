@@ -1,40 +1,57 @@
 import BottomTabs from '@/components/BottomTabs'
 import HeaderHome from '@/components/headers/HeaderHome'
+import LoginForm from '@/components/LoginForm'
 import Modal, { useModal } from '@/components/Modal'
+import { CONFIG } from '@/config'
+import axios from 'axios'
 import { CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PlusCircleIcon, UserCircleIcon, UserIcon, XCircleIcon } from 'lucide-react'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function Account() {
     const router = useRouter();
     const [modal, setModal] = useState<useModal>()
+    const [user, setUser] = useState<any>(null)
+
+    const logout = async () => {
+        localStorage.setItem('usertokotitoh', "")
+        router.push("")
+    }
+
+    useEffect(() => {
+        const user: any = localStorage.getItem('usertokotitoh')
+        if (user) {
+            setUser(JSON.parse(user))
+        }
+    }, [])
     return (
         <div className='pb-20'>
-            <div className='p-2 pt-10'>
-                <div className='flex gap-3 items-center'>
-                    <UserCircleIcon className='w-20 h-20' />
-                    <div>
-                        <h5 className='font-bold text-lg'>Arman</h5>
-                        <h5 className='text-lg'>armanmaulana@gmail.com</h5>
+            {
+                user == null ?
+                    <LoginForm /> :
+                    <div className='p-2 pt-10'>
+                        <div className='flex gap-3 items-center'>
+                            <UserCircleIcon className='w-20 h-20' />
+                            <div>
+                                <h5 className='font-bold text-lg'>{user?.name}</h5>
+                                <h5 className='text-lg'>{user?.email || user?.phone}</h5>
+                            </div>
+                        </div>
+                        <button onClick={() => {
+                            setModal({ ...modal, open: true, key: "edit", data: null })
+                        }} className='w-full bg-blue-500 p-2 rounded text-white mt-4'>
+                            Edit Akun
+                        </button>
+                        <div className='py-2'>
+                            <button type='button' className='border p-2 w-full' >Tentang Kami</button>
+                            <button type='button' className='border p-2 w-full' >Bantuan</button>
+                            <button type='button' className='border p-2 w-full' >Download Aplikasi Tokotitoh</button>
+                        </div>
+                        <button onClick={logout} className='w-full bg-red-500 p-2 rounded text-white mt-2'>
+                            Logout
+                        </button>
                     </div>
-                </div>
-                <button onClick={() => {
-                    setModal({ ...modal, open: true, key: "edit", data: null })
-                }} className='w-full bg-blue-500 p-2 rounded text-white mt-4'>
-                    Edit Akun
-                </button>
-                <div className='py-2'>
-                    <button type='button' className='border p-2 w-full' >Tentang Kami</button>
-                    <button type='button' className='border p-2 w-full' >Bantuan</button>
-                    <button type='button' className='border p-2 w-full' >Download Aplikasi Tokotitoh</button>
-                </div>
-                <button onClick={() => {
-                    setModal({ ...modal, open: true, key: "edit", data: null })
-                }} className='w-full bg-red-500 p-2 rounded text-white mt-2'>
-                    Logout
-                </button>
-            </div>
+            }
             <BottomTabs />
         </div>
     )

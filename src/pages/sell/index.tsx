@@ -385,7 +385,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                     </div>
                                     <Input label='Tahun' placeholder='Masukkan Tahun' type='number' onChange={(e: any) => { setSelected({ ...selected, year: e.target.value }) }} />
                                     <Input label='Warna' placeholder='Masukkan Warna' onChange={(e: any) => { setSelected({ ...selected, color: e.target.value }) }} />
-                                    <Input label='Plat Nomor' placeholder='Masukkan Plat Nomor' onChange={(e: any) => { setSelected({ ...selected, plat_no: e.target.value }) }} />
+                                    <Input label='Plat Nomor' placeholder='X1234YYY' onChange={(e: any) => { setSelected({ ...selected, plat_no: e.target.value }) }} />
                                     <Button color='info' type='button' onClick={handleFormData} >Selanjutnya</Button>
                                 </div> : ""
                         }

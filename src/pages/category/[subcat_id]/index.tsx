@@ -47,6 +47,21 @@ export async function getServerSideProps(context: any) {
 export default function Ads({ ads, subcat_id }: any) {
   const router = useRouter();
   const [modal, setModal] = useState<useModal>()
+
+  const addViews = async (id: any) => {
+    try {
+      const result = await axios.post(CONFIG.base_url_api + `/ads/views`, { id: ads?.id }, {
+        headers: {
+          "bearer-token": "tokotitohapi",
+          "x-partner-code": "id.marketplace.tokotitoh"
+        }
+      })
+      router.push(`/category/${subcat_id}/${id}`)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className='pb-20'>
       <div className=''>
@@ -59,7 +74,7 @@ export default function Ads({ ads, subcat_id }: any) {
         {
           ads?.map((v: any, i: number) => (
             <div key={i}>
-              <AdsProduct price={v?.price} thumbnail={v?.images[0]} title={v?.title} path={`/category/${subcat_id}/${v?.id}`} />
+              <AdsProduct price={v?.price} thumbnail={v?.images[0]} title={v?.title} onClick={() => { addViews(v?.id) }} />
             </div>
           ))
         }

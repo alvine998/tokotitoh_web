@@ -13,6 +13,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
+import "owl.carousel/dist/assets/owl.carousel.css";
+import "owl.carousel/dist/assets/owl.theme.default.css";
+import dynamic from 'next/dynamic'
+
+const OwlCarousel = dynamic(() => import("react-owl-carousel"), { ssr: false })
+
 export async function getServerSideProps(context: any) {
   try {
     const { page, size } = context.query;
@@ -60,24 +66,65 @@ export default function Ads({ ads, user, subcat_id }: any) {
   const router = useRouter();
   const [modal, setModal] = useState<useModal>()
   const [show, setShow] = useState<boolean>(false);
+  const [from, setFrom] = useState<string>('');
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setShow(true)
     }
   }, [])
+
+  useEffect(() => {
+    const from: any = localStorage.getItem('from')
+    setFrom(from);
+  }, [])
+
+  const addCalls = async () => {
+    try {
+      const result = await axios.post(CONFIG.base_url_api + `/ads/calls`, { id: ads?.id }, {
+        headers: {
+          "bearer-token": "tokotitohapi",
+          "x-partner-code": "id.marketplace.tokotitoh"
+        }
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const responsive: any = {
+    0: {
+      items: 1,
+      margin: 5
+    },
+    768: {
+      items: 2.5,
+      margin: 10
+    },
+    1024: {
+      items: 1,
+      margin: 20
+    },
+  }
   return (
     <div className='pb-20'>
       {
         show ?
           <>
             <div className='p-3'>
-              <button type='button' onClick={()=>{router.push(`/category/${subcat_id}`)}} className='flex gap-2 font-bold'>
+              <button type='button' onClick={() => { from == "myads" ? router.push(`/myads`) : router.push(`/category/${subcat_id}`) }} className='flex gap-2 font-bold'>
                 <ArrowLeft className='w-5' />
                 Kembali
               </button>
               <p className='mt-4'>{ads?.district_name} {">"} {ads?.city_name} {">"} {ads?.province_name}</p>
-              <Image alt='thumbnail' src={ads?.images[0]} layout='relative' width={300} height={300} className='h-[300px] w-full rounded mt-5' />
-
+              <OwlCarousel center responsive={responsive} dots className='owl-theme'>
+                {
+                  ads?.images?.map((v: any, i: number) => (
+                    <button type='button' className='w-full' key={i} onClick={() => { setModal({ ...modal, open: true, data: v, key: "view" }) }}>
+                      <Image alt='thumbnail' src={v} layout='relative' width={800} height={500} className='h-[300px] w-full rounded mt-5' />
+                    </button>
+                  ))
+                }
+              </OwlCarousel>
               <div className='mt-3'>
                 <h2 className='text-xl'>{ads?.title}</h2>
                 <h2 className='text-xl font-semibold'>Rp {toMoney(ads?.price)}</h2>
@@ -102,17 +149,38 @@ export default function Ads({ ads, user, subcat_id }: any) {
               </div>
             </div>
 
+            {
+              modal?.key == "view" ?
+                <Modal
+                  open={modal.open}
+                  setOpen={() => { setModal({ ...modal, open: false }) }}
+                >
+                  <div className='flex justify-end'>
+                    <button type='button' onClick={() => { setModal({ ...modal, open: false }) }}>
+                      <XCircleIcon className='w-7' />
+                    </button>
+                  </div>
+                  <Image alt='image' src={modal.data} layout='relative' width={800} height={500} className='h-[400px] w-full rounded mt-5' />
+                </Modal> : ""
+            }
 
-            {/* Button WA */}
-            <div className='fixed bottom-4 right-4'>
-              <Link href={`https://wa.me/${user?.phone}`}>
-                <Button type='button' className={'rounded-full p-2 flex items-center gap-2'}>
-                  <PhoneCallIcon className='w-8' />
-                  Whatsapp Now
-                </Button>
-              </Link>
 
-            </div>
+            {
+              from == "myads" ?
+                "" :
+                <>
+                  {/* Button WA */}
+                  <div className='fixed bottom-4 right-4'>
+                    <Link href={`https://wa.me/${user?.phone}`} target='_blank'>
+                      <Button type='button' onClick={addCalls} className={'rounded-full p-2 flex items-center gap-2'}>
+                        <PhoneCallIcon className='w-8' />
+                        Whatsapp Now
+                      </Button>
+                    </Link>
+
+                  </div>
+                </>
+            }
           </> : ""
       }
     </div>

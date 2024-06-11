@@ -11,59 +11,72 @@ import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 export async function getServerSideProps(context: any) {
-  try {
-    const { page, size } = context.query;
-    const result = await axios.get(CONFIG.base_url_api + `/ads?user_id=1&pagination=true&page=${page || 0}&size=${size || 10}`, {
-      headers: {
-        "bearer-token": "tokotitohapi",
-        "x-partner-code": "id.marketplace.tokotitoh"
-      }
-    })
-    return {
-      props: {
-        ads: result?.data?.items?.rows || []
-      }
-    }
-  } catch (error: any) {
-    console.log(error);
-    if (error?.response?.status == 401) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
+    try {
+        const { page, size } = context.query;
+        const result = await axios.get(CONFIG.base_url_api + `/ads?user_id=1&pagination=true&page=${page || 0}&size=${size || 10}`, {
+            headers: {
+                "bearer-token": "tokotitohapi",
+                "x-partner-code": "id.marketplace.tokotitoh"
+            }
+        })
+        return {
+            props: {
+                ads: result?.data?.items?.rows || []
+            }
         }
-      }
+    } catch (error: any) {
+        console.log(error);
+        if (error?.response?.status == 401) {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false,
+                }
+            }
+        }
+        return {
+            props: {
+                error: error?.response?.data?.message,
+            }
+        }
     }
-    return {
-      props: {
-        error: error?.response?.data?.message,
-      }
-    }
-  }
 }
 
 export default function MyAds({ ads, subcat_id }: any) {
-  const router = useRouter();
-  const [modal, setModal] = useState<useModal>()
-  return (
-    <div className='pb-20'>
-      <div className=''>
-        <HeaderAds />
-      </div>
+    const router = useRouter();
+    const [modal, setModal] = useState<useModal>()
 
-
-      {/* Kategori */}
-      <div className='p-2 mt-28'>
-        {
-          ads?.map((v: any, i: number) => (
-            <div key={i}>
-              <AdsProduct status={v?.status} price={v?.price} thumbnail={v?.images[0]} title={v?.title} path={`/category/${v?.subcategory_id}/${v?.id}`} />
+    const onRoute = async (v: any) => {
+        await localStorage.setItem('from', 'myads')
+        router.push(`/category/${v?.subcategory_id}/${v?.id}`)
+    }
+    return (
+        <div className='pb-20'>
+            <div className=''>
+                <HeaderAds />
             </div>
-          ))
-        }
-      </div>
 
-      <BottomTabs />
-    </div>
-  )
+
+            {/* Kategori */}
+            <div className='p-2 mt-28'>
+                {
+                    ads?.map((v: any, i: number) => (
+                        <div key={i}>
+                            <AdsProduct
+                                status={v?.status}
+                                price={v?.price}
+                                thumbnail={v?.images[0]}
+                                title={v?.title}
+                                onClick={() => onRoute(v)}
+                                views={v?.views}
+                                calls={v?.calls}
+                            />
+                        </div>
+                    ))
+                }
+            </div>
+
+            <BottomTabs />
+        </div>
+    )
 }
