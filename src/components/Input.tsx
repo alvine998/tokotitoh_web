@@ -5,11 +5,12 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
     label: string,
     numericformat?: boolean,
     placeholder?: string,
-    onChange?: any
+    onChange?: any,
+    defaultValue?: any;
 }
 
 export default function Input(props: Props) {
-    const { label, numericformat, placeholder, onChange } = props
+    const { label, numericformat, placeholder, onChange, defaultValue } = props
     return (
         <div className='my-2 flex flex-col w-full'>
             {
@@ -24,6 +25,7 @@ export default function Input(props: Props) {
                         thousandSeparator
                         placeholder={placeholder}
                         onChange={onChange}
+                        defaultValue={defaultValue}
                     /> :
                     <input
                         id={label}

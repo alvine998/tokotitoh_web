@@ -10,7 +10,7 @@ export default function BottomTabs() {
                 <HomeIcon className='w-5 h-5' />
                 <p>Home</p>
             </button>
-            <button type='button' className='flex flex-col items-center justify-center w-[150px]'>
+            <button type='button' onClick={()=>{router.push('/category')}} className='flex flex-col items-center justify-center w-[150px]'>
                 <MenuIcon className='w-5 h-5' />
                 <p>Menu</p>
             </button>

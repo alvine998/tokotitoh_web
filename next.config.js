@@ -14,7 +14,7 @@ const nextConfig = {
     domains: ['firebasestorage.googleapis.com', 'localhost']
   },
   env: {
-    BASE_URL_API_TOKOTITOH: 'http://103.245.39.242:8080'
+    BASE_URL_API_TOKOTITOH: 'https://api.tokotitoh.co.id'
   }
 }
 

@@ -13,3 +13,14 @@ export const toMoney = (number: number) => {
     // Add the currency symbol
     return `${price}`;
 }
+
+// Create a function to convert the object to a query string
+export const createQueryString = (filters: any) => {
+    const params = new URLSearchParams();
+    for (const key in filters) {
+        if (filters.hasOwnProperty(key)) {
+            params.append(key, filters[key]);
+        }
+    }
+    return params.toString();
+};

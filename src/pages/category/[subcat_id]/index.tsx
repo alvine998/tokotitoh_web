@@ -11,32 +11,77 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useRouter as router2 } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { createQueryString } from '@/utils'
 
 export async function getServerSideProps(context: any) {
   try {
-    const { page, size, search, brand_id, type_id } = context.query;
+    const {
+      page,
+      size,
+      search,
+      brand_id,
+      type_id,
+      province_id,
+      city_id,
+      district_id,
+      transmission,
+      max,
+      min,
+      sort,
+      year,
+      fuel_type
+    } = context.query;
     const { subcat_id } = context.params;
+
+    const filters = {
+      subcategory_id: subcat_id,
+      status: '1',
+      pagination: true,
+      page: +page || 0,
+      size: +size || 5,
+      search: search || "",
+      brand_id: brand_id || "",
+      type_id: type_id || "",
+      province_id: province_id || "",
+      city_id: city_id || "",
+      district_id: district_id || "",
+      transmission: transmission || "",
+      min: min || "",
+      max: max || "",
+      sort: sort || "",
+      year: year || "",
+      fuel_type: fuel_type || "",
+
+    }
     const result = await axios.get(CONFIG.base_url_api +
-      `/ads?subcategory_id=${subcat_id}&status=1&pagination=true&page=${+page || 0}&size=${+size || 5}&search=${search || ""}&brand_id=${brand_id || ""}&type_id=${type_id || ""}`, {
+      `/ads?${createQueryString(filters)}`, {
       headers: {
         "bearer-token": "tokotitohapi",
         "x-partner-code": "id.marketplace.tokotitoh"
       }
     })
     const result2 = await axios.get(CONFIG.base_url_api +
-      `/ads?subcategory_id=${subcat_id}&status=1`, {
+      `/subcategories?id=${subcat_id}`, {
       headers: {
         "bearer-token": "tokotitohapi",
         "x-partner-code": "id.marketplace.tokotitoh"
       }
     })
-    const ads1 = result2?.data?.items?.rows[0];
-    const brands = await axios.get(CONFIG.base_url_api + `/brands?category_id=${ads1?.category_id}`, {
-      headers: {
-        "bearer-token": "tokotitohapi",
-        "x-partner-code": "id.marketplace.tokotitoh"
-      }
-    })
+    const ads1 = result2?.data?.items?.rows?.[0] || {};
+    const [brands, provinces] = await Promise.all([
+      axios.get(CONFIG.base_url_api + `/brands?category_id=${ads1?.category_id}`, {
+        headers: {
+          "bearer-token": "tokotitohapi",
+          "x-partner-code": "id.marketplace.tokotitoh"
+        }
+      }),
+      axios.get(CONFIG.base_url_api + `/provinces`, {
+        headers: {
+          "bearer-token": "tokotitohapi",
+          "x-partner-code": "id.marketplace.tokotitoh"
+        }
+      })
+    ])
     let types: any = []
     if (brand_id) {
       types = await axios.get(CONFIG.base_url_api + `/types?brand_id=${brand_id}`, {
@@ -51,6 +96,7 @@ export async function getServerSideProps(context: any) {
         ads: result?.data?.items?.rows,
         brands: brands?.data?.items?.rows || [],
         types: types?.data?.items?.rows || [],
+        provinces: provinces?.data?.items?.rows || [],
         subcat_id,
         ads1
       }
@@ -73,11 +119,12 @@ export async function getServerSideProps(context: any) {
   }
 }
 
-export default function Ads({ ads, subcat_id, brands, types, ads1 }: any) {
+export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: any) {
   const router = useRouter();
   const routers = router2()
   const [modal, setModal] = useState<useModal>()
   const [filter, setFilter] = useState<any>(router.query);
+  const [loading, setLoading] = useState<any>(false);
 
   const addViews = async (id: any) => {
     try {
@@ -95,19 +142,23 @@ export default function Ads({ ads, subcat_id, brands, types, ads1 }: any) {
   }
 
   useEffect(() => {
+    setLoading(true)
     const queryFilter = new URLSearchParams(filter).toString();
     routers.push(`?${queryFilter}`, { scroll: false })
+    setLoading(false)
   }, [filter])
 
   return (
     <div className='pb-20'>
       <div className=''>
         <HeaderAds
+        loading={loading}
           filter={filter}
           setFilter={setFilter}
           ads={ads1}
           brands={brands}
           types={types}
+          provinces={provinces}
         />
       </div>
 

@@ -5,6 +5,7 @@ interface Props {
     open: any;
     setOpen: any;
     children: any;
+    type?: 'filters' | 'default';
 }
 
 export interface useModal {
@@ -17,7 +18,8 @@ export default function Modal(props: Props) {
     const {
         open,
         setOpen,
-        children
+        children,
+        type = 'default'
     } = props
     const cancelButtonRef = useRef<any>(null)
 
@@ -38,7 +40,7 @@ export default function Modal(props: Props) {
                     </Transition.Child>
 
                     <div className="fixed inset-0 z-10 overflow-y-auto">
-                        <div className="flex min-h-full md:items-center items-center justify-center p-0 pt-2 text-center sm:items-center sm:p-0">
+                        <div className={`flex min-h-full md:items-center items-center justify-center p-0 ${type == 'default' ? 'pt-2' : 'pt-36'} text-center sm:items-center sm:p-0`}>
                             <Transition.Child
                                 as={Fragment}
                                 enter="ease-out duration-300"

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { BellIcon, MapPinIcon, MenuIcon, SearchIcon, Settings2Icon, XCircleIcon } from 'lucide-react'
+import { BellIcon, CheckIcon, MapPinIcon, MenuIcon, SearchIcon, Settings2Icon, XCircleIcon } from 'lucide-react'
 import Image from 'next/image'
 import axios from 'axios';
 import Modal, { useModal } from '../Modal';
 import ReactSelect from 'react-select';
 import Button from '../Button';
+import Input from '../Input';
+import { CONFIG } from '@/config';
 
 interface Props {
     ads: any;
@@ -12,19 +14,17 @@ interface Props {
     setFilter: any;
     brands?: any;
     types?: any;
+    provinces?: any;
+    loading: any;
 }
 
 export default function HeaderAds(props: Props) {
-    const { ads, filter, setFilter, brands, types } = props;
+    const { ads, filter, setFilter, brands, types, provinces, loading } = props;
 
     const [location, setLocation] = useState<any>({ latitude: null, longitude: null });
     const [adress, setAddress] = useState<any>();
     const [modal, setModal] = useState<useModal>();
     const [filterName, setFilterName] = useState<any>("MEREK/MODEL");
-    const [show, setShow] = useState<any>({
-        brand: false,
-        type: false
-    })
 
     const geolocation = async () => {
         try {
@@ -47,11 +47,81 @@ export default function HeaderAds(props: Props) {
         }
     }
 
+    const [selected, setSelected] = useState<any>();
+    const [list, setList] = useState<any>({
+        cities: [],
+        districts: [],
+        villages: []
+    })
+
+    const getCity = async (data: any) => {
+        try {
+
+            if (data?.value !== "") {
+                const result = await axios.get(CONFIG.base_url_api + `/cities?province_id=${data?.value}`, {
+                    headers: {
+                        "bearer-token": "tokotitohapi",
+                        "x-partner-code": "id.marketplace.tokotitoh"
+                    }
+                })
+                setList({
+                    cities: result?.data?.items?.rows,
+                    districts: [],
+                    villages: []
+                })
+                setFilter({ ...filter, province_id: data?.value, city_id: "" })
+                setAddress(data?.label)
+            } else {
+                setList({
+                    cities: [],
+                    districts: [],
+                    villages: []
+                })
+                setFilter({ ...filter, province_id: "", city_id: "" })
+                setAddress('Indonesia')
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const getDistrict = async (data: any) => {
+        try {
+            if (data?.value !== "") {
+                const result = await axios.get(CONFIG.base_url_api + `/districts?city_id=${data?.value}`, {
+                    headers: {
+                        "bearer-token": "tokotitohapi",
+                        "x-partner-code": "id.marketplace.tokotitoh"
+                    }
+                })
+                setList({
+                    ...list,
+                    districts: result?.data?.items?.rows,
+                    villages: []
+                })
+                setFilter({ ...filter, city_id: data?.value, district_id: "" })
+                setAddress(`${data?.label}, ${adress}`)
+            } else {
+                setList({
+                    ...list,
+                    districts: [],
+                    villages: []
+                })
+                setFilter({ ...filter, city_id: "", district_id: "" })
+                setAddress(adress.split(",")[1])
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         geolocation();
     }, [])
 
-    let navs = [
+    let navsCar = [
         {
             name: "MEREK/MODEL"
         },
@@ -75,6 +145,57 @@ export default function HeaderAds(props: Props) {
         },
     ]
 
+    let navsProperty = [
+        {
+            name: "LOKASI"
+        },
+        {
+            name: "HARGA"
+        },
+        {
+            name: "LUAS TANAH"
+        },
+        {
+            name: "LUAS BANGUNAN"
+        },
+        {
+            name: "URUTKAN"
+        },
+    ]
+
+    let navsElectronic = [
+        {
+            name: "MEREK/MODEL"
+        },
+        {
+            name: "LOKASI"
+        },
+        {
+            name: "HARGA"
+        },
+        {
+            name: "KONDISI"
+        },
+        {
+            name: "URUTKAN"
+        },
+    ]
+
+    let navs = [
+        {
+            name: "LOKASI"
+        },
+        {
+            name: "HARGA"
+        },
+        {
+            name: "KONDISI"
+        },
+        {
+            name: "URUTKAN"
+        },
+    ]
+
     return (
         <div className='w-full fixed top-0 bg-white p-2'>
             <div className='flex justify-between'>
@@ -87,7 +208,7 @@ export default function HeaderAds(props: Props) {
                     </button>
                     <button type='button' className='flex gap-2 items-center'>
                         <MapPinIcon className='w-4 h-4' />
-                        <h5>{adress}</h5>
+                        <h5 className='text-xs'>{adress}</h5>
                     </button>
                 </div>
 
@@ -109,7 +230,7 @@ export default function HeaderAds(props: Props) {
             </div>
 
             <div className='mt-2'>
-                <p>{ads?.category_name} {">"} {ads?.subcategory_name}</p>
+                <p>{ads?.category_name} {">"} {ads?.name}</p>
             </div>
 
             {
@@ -117,11 +238,12 @@ export default function HeaderAds(props: Props) {
                     <Modal
                         open={modal.open}
                         setOpen={() => { }}
+                        type='filters'
                     >
                         <div className='h-screen'>
                             <div className='p-2'>
                                 <div className='flex justify-between items-center'>
-                                    <p>Filter: {ads[0]?.category_name} {">"} {ads[0]?.subcategory_name}</p>
+                                    <p>Filter: {ads?.category_name} {">"} {ads?.name}</p>
                                     <button type='button' onClick={() => setModal({ ...modal, open: false })}>
                                         <XCircleIcon className='w-7' />
                                     </button>
@@ -129,80 +251,285 @@ export default function HeaderAds(props: Props) {
                                 <div className='flex mt-8'>
                                     <div className='w-auto flex flex-col gap-2'>
                                         {
-                                            navs?.map((v: any, i: number) => (
-                                                <button key={i} onClick={() => { setFilterName(v?.name) }} className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all`}>
-                                                    {v?.name}
-                                                </button>
-                                            ))
+                                            ads?.category_name?.toLowerCase()?.includes("mobil") || ads?.category_name?.toLowerCase()?.includes("motor") ?
+                                                <>
+                                                    {
+                                                        navsCar?.map((v: any, i: number) => (
+                                                            <button key={i} onClick={() => { setFilterName(v?.name) }} className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all`}>
+                                                                {v?.name}
+                                                            </button>
+                                                        ))
+                                                    }
+                                                </> :
+                                                ads?.category_name?.toLowerCase()?.includes("properti") ?
+                                                    <>
+                                                        {
+                                                            navsProperty?.map((v: any, i: number) => (
+                                                                <button key={i} onClick={() => { setFilterName(v?.name) }} className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all`}>
+                                                                    {v?.name}
+                                                                </button>
+                                                            ))
+                                                        }
+                                                    </> :
+                                                    ads?.category_name?.toLowerCase()?.includes("elektronik") || ads?.category_name?.toLowerCase()?.includes("hp") ?
+                                                        <>
+                                                            {
+                                                                navsElectronic?.map((v: any, i: number) => (
+                                                                    <button key={i} onClick={() => { setFilterName(v?.name) }} className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all`}>
+                                                                        {v?.name}
+                                                                    </button>
+                                                                ))
+                                                            }
+                                                        </> :
+                                                        <>
+                                                            {
+                                                                navs?.map((v: any, i: number) => (
+                                                                    <button key={i} onClick={() => { setFilterName(v?.name) }} className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all`}>
+                                                                        {v?.name}
+                                                                    </button>
+                                                                ))
+                                                            }
+                                                        </>
                                         }
                                     </div>
                                     <div className='w-full'>
                                         {
                                             filterName == "MEREK/MODEL" ?
                                                 <div>
-                                                    {
-                                                        !show?.brand && !show?.type ?
-                                                            <div className='duration-200 transition-all'>
-                                                                <div className='flex items-center justify-evenly gap-2'>
-                                                                    {
-                                                                        brands?.slice(0, 3)?.map((v: any, i: number) => (
-                                                                            <button key={i} type='button' onClick={() => { setFilter({ ...filter, brand_id: v?.id }) }}>
-                                                                                <Image alt='logo-brand' layout='relative' src={v?.image} width={100} height={100} className='w-auto h-[50px]' />
-                                                                            </button>
-                                                                        ))
-                                                                    }
-                                                                </div>
-                                                                <div className='flex items-center justify-evenly gap-2 mt-4'>
-                                                                    {
-                                                                        brands?.slice(3, 6)?.map((v: any, i: number) => (
-                                                                            <button key={i} type='button' onClick={() => { setFilter({ ...filter, brand_id: v?.id }) }}>
-                                                                                <Image alt='logo-brand' layout='relative' src={v?.image} width={100} height={100} className='w-auto h-[50px]' />
-                                                                            </button>
-                                                                        ))
-                                                                    }
-                                                                </div>
-                                                                <div className='flex items-center justify-evenly gap-2 mt-4'>
-                                                                    {
-                                                                        brands?.slice(6, 9)?.map((v: any, i: number) => (
-                                                                            <button key={i} type='button' onClick={() => { setFilter({ ...filter, brand_id: v?.id }) }}>
-                                                                                <Image alt='logo-brand' layout='relative' src={v?.image} width={100} height={100} className='w-auto h-[50px]' />
-                                                                            </button>
-                                                                        ))
-                                                                    }
-                                                                </div>
-                                                                <div className='flex items-center justify-evenly gap-2 mt-4'>
-                                                                    {
-                                                                        brands?.slice(9, 12)?.map((v: any, i: number) => (
-                                                                            <button key={i} type='button' onClick={() => { setFilter({ ...filter, brand_id: v?.id }) }}>
-                                                                                <Image alt='logo-brand' layout='relative' src={v?.image} width={100} height={100} className='w-auto h-[50px]' />
-                                                                            </button>
-                                                                        ))
-                                                                    }
-                                                                </div>
-                                                            </div> : ""
-                                                    }
-                                                    <div className='flex flex-col gap-2 items-center justify-center pl-2'>
+                                                    <div className='flex flex-col gap-2 items-center justify-center pl-2 mt-4'>
                                                         <ReactSelect
-                                                            options={[{value:"", label: "Semua Merek"}, ...brands?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))]}
+                                                            options={[{ value: "", label: "Semua Merek" }, ...brands?.map((v: any) => ({ ...v, value: v?.id, label: v?.name?.toUpperCase() }))]}
                                                             onChange={(e: any) => { setFilter({ ...filter, brand_id: e.value, type_id: '' }) }}
                                                             maxMenuHeight={150}
-                                                            placeholder="Pilih Merek"
+                                                            placeholder="Semua Merek"
                                                             className='w-full'
                                                             defaultValue={{ value: filter?.brand_id, label: brands?.find((v: any) => v?.id == filter?.brand_id)?.name || "Semua Merek" }}
                                                         />
                                                         <ReactSelect
                                                             isDisabled={types?.length < 1}
-                                                            options={[{value:"", label: "Semua Model"}, ...types?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))]}
+                                                            options={[{ value: "", label: "Semua Model" }, ...types?.map((v: any) => ({ ...v, value: v?.id, label: v?.name?.toUpperCase() }))]}
                                                             onChange={(e: any) => { setFilter({ ...filter, type_id: e.value }) }}
                                                             maxMenuHeight={150}
-                                                            placeholder="Pilih Model"
+                                                            placeholder="Semua Model"
                                                             className='w-full'
                                                             defaultValue={{ value: filter?.type_id, label: types?.find((v: any) => v?.id == filter?.type_id)?.name || "Semua Model" }}
                                                         />
-                                                        <Button color='info' onClick={() => { setModal({ ...modal, open: false }) }}>Terapkan</Button>
                                                     </div>
                                                 </div> : ""
                                         }
+                                        {
+                                            filterName == "LOKASI" ?
+                                                <div>
+                                                    <div className='flex flex-col gap-2 items-center justify-center pl-2 mt-4'>
+                                                        <ReactSelect
+                                                            options={[{ value: "", label: "Semua Provinsi" }, ...provinces?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))]}
+                                                            onChange={(e: any) => { getCity(e) }}
+                                                            maxMenuHeight={150}
+                                                            placeholder="Semua Provinsi"
+                                                            className='w-full'
+                                                            defaultValue={{ value: filter?.province_id, label: provinces?.find((v: any) => v?.id == filter?.province_id)?.name || "Semua Provinsi" }}
+                                                        />
+                                                        <ReactSelect
+                                                            isDisabled={list?.cities?.length < 1}
+                                                            options={[{ value: "", label: "Semua Kota/Kabupaten" }, ...list?.cities?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))]}
+                                                            onChange={(e: any) => { getDistrict(e) }}
+                                                            maxMenuHeight={150}
+                                                            placeholder="Semua Kota/Kabupaten"
+                                                            className='w-full'
+                                                            defaultValue={{ value: filter?.city_id, label: list?.cities?.find((v: any) => v?.id == filter?.city_id)?.name || "Semua Kota/Kabupaten" }}
+                                                        />
+                                                        <ReactSelect
+                                                            isDisabled={list?.districts?.length < 1}
+                                                            options={[{ value: "", label: "Semua Kecamatan" }, ...list?.districts?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))]}
+                                                            onChange={(e: any) => { setFilter({ ...filter, district_id: e.value }) }}
+                                                            maxMenuHeight={150}
+                                                            placeholder="Semua Kecamatan"
+                                                            className='w-full'
+                                                            defaultValue={{ value: filter?.district_id, label: list?.districts?.find((v: any) => v?.id == filter?.district_id)?.name || "Semua Kecamatan" }}
+                                                        />
+                                                    </div>
+                                                </div> : ""
+                                        }
+                                        {
+                                            filterName == "HARGA" ?
+                                                <div>
+                                                    <div className='flex flex-col items-center justify-center pl-2 mt-4'>
+                                                        <Input numericformat label='' placeholder='Dari Harga' defaultValue={filter?.min} onChange={(e: any) => { setFilter({ ...filter, min: e.target.value.replaceAll(",", "") }) }} />
+                                                        <Input numericformat label='' placeholder='Sampai Harga' defaultValue={filter?.max} onChange={(e: any) => { setFilter({ ...filter, max: e.target.value.replaceAll(",", "") }) }} />
+                                                    </div>
+                                                </div> : ""
+                                        }
+                                        {
+                                            filterName == "LUAS TANAH" ?
+                                                <div>
+                                                    <div className='flex flex-col items-center justify-center pl-2 mt-4'>
+                                                        <Input numericformat label='' placeholder='Mulai Dari' defaultValue={filter?.minArea} onChange={(e: any) => { setFilter({ ...filter, minArea: e.target.value.replaceAll(",", "") }) }} />
+                                                        <Input numericformat label='' placeholder='Sampai' defaultValue={filter?.maxArea} onChange={(e: any) => { setFilter({ ...filter, maxArea: e.target.value.replaceAll(",", "") }) }} />
+                                                    </div>
+                                                </div> : ""
+                                        }
+                                        {
+                                            filterName == "LUAS BANGUNAN" ?
+                                                <div>
+                                                    <div className='flex flex-col items-center justify-center pl-2 mt-4'>
+                                                        <Input numericformat label='' placeholder='Mulai Dari' defaultValue={filter?.minBuilding} onChange={(e: any) => { setFilter({ ...filter, minBuilding: e.target.value.replaceAll(",", "") }) }} />
+                                                        <Input numericformat label='' placeholder='Sampai' defaultValue={filter?.maxBuilding} onChange={(e: any) => { setFilter({ ...filter, maxBuilding: e.target.value.replaceAll(",", "") }) }} />
+                                                    </div>
+                                                </div> : ""
+                                        }
+                                        {
+                                            filterName == "TAHUN" ?
+                                                <div>
+                                                    <div className='flex flex-col items-center justify-center pl-2 mt-2'>
+                                                        <Input defaultValue={filter?.year} label='' placeholder='Masukkan Tahun' maxLength={4} type='tel' onChange={(e: any) => { setFilter({ ...filter, year: e.target.value }) }} />
+                                                    </div>
+                                                </div> : ""
+                                        }
+                                        {
+                                            filterName == "TRANSMISI" ?
+                                                <div>
+                                                    <div className='flex flex-col gap-2 items-start pl-2 mt-4'>
+                                                        <div>
+                                                            <input
+                                                                type="radio"
+                                                                name="transmission" value={''}
+                                                                defaultChecked={filter?.transmission == "" || !filter?.transmission}
+                                                                onChange={(e) => { setFilter({ ...filter, transmission: e.target.value }) }}
+                                                            />
+                                                            <span className='ml-2'>Semua Transmisi</span>
+                                                        </div>
+                                                        <div>
+                                                            <input
+                                                                type="radio"
+                                                                name="transmission" value={'MT'}
+                                                                defaultChecked={filter?.transmission == "MT"}
+                                                                onChange={(e) => { setFilter({ ...filter, transmission: e.target.value }) }}
+                                                            />
+                                                            <span className='ml-2'>Manual</span>
+                                                        </div>
+                                                        <div>
+                                                            <input
+                                                                type="radio"
+                                                                name="transmission"
+                                                                value={'AT'}
+                                                                defaultChecked={filter?.transmission == "AT"}
+                                                                onChange={(e) => { setFilter({ ...filter, transmission: e.target.value }) }}
+                                                            />
+                                                            <span className='ml-2'>Automatic</span>
+                                                        </div>
+                                                    </div>
+                                                </div> : ""
+                                        }
+                                        {
+                                            filterName == "KONDISI" ?
+                                                <div>
+                                                    <div className='flex flex-col gap-2 items-start pl-2 mt-4'>
+                                                        <div>
+                                                            <input
+                                                                type="radio"
+                                                                name="condition" value={''}
+                                                                defaultChecked={filter?.condition == "" || !filter?.condition}
+                                                                onChange={(e) => { setFilter({ ...filter, condition: e.target.value }) }}
+                                                            />
+                                                            <span className='ml-2'>Semua Kondisi</span>
+                                                        </div>
+                                                        <div>
+                                                            <input
+                                                                type="radio"
+                                                                name="condition" value={'new'}
+                                                                defaultChecked={filter?.condition == "new"}
+                                                                onChange={(e) => { setFilter({ ...filter, condition: e.target.value }) }}
+                                                            />
+                                                            <span className='ml-2'>Baru</span>
+                                                        </div>
+                                                        <div>
+                                                            <input
+                                                                type="radio"
+                                                                name="condition"
+                                                                value={'second'}
+                                                                defaultChecked={filter?.condition == "second"}
+                                                                onChange={(e) => { setFilter({ ...filter, condition: e.target.value }) }}
+                                                            />
+                                                            <span className='ml-2'>Bekas</span>
+                                                        </div>
+                                                    </div>
+                                                </div> : ""
+                                        }
+                                        {
+                                            filterName == "BAHAN BAKAR" ?
+                                                <div>
+                                                    <div className='flex flex-col gap-2 items-start pl-2 mt-4'>
+                                                        <div>
+                                                            <input
+                                                                type="radio"
+                                                                name="fuel_type" value={''}
+                                                                defaultChecked={filter?.fuel_type == "" || !filter?.fuel_type}
+                                                                onChange={(e) => { setFilter({ ...filter, fuel_type: e.target.value }) }}
+                                                            />
+                                                            <span className='ml-2'>Semua Bahan Bakar</span>
+                                                        </div>
+                                                        <div>
+                                                            <input
+                                                                type="radio"
+                                                                name="fuel_type" value={'bensin'}
+                                                                defaultChecked={filter?.fuel_type == "bensin"}
+                                                                onChange={(e) => { setFilter({ ...filter, fuel_type: e.target.value }) }}
+                                                            />
+                                                            <span className='ml-2'>Bensin</span>
+                                                        </div>
+                                                        <div>
+                                                            <input
+                                                                type="radio"
+                                                                name="fuel_type"
+                                                                value={'diesel'}
+                                                                defaultChecked={filter?.fuel_type == "diesel"}
+                                                                onChange={(e) => { setFilter({ ...filter, fuel_type: e.target.value }) }}
+                                                            />
+                                                            <span className='ml-2'>Solar</span>
+                                                        </div>
+                                                        <div>
+                                                            <input
+                                                                type="radio"
+                                                                name="fuel_type"
+                                                                value={'hybrid'}
+                                                                defaultChecked={filter?.fuel_type == "hybrid"}
+                                                                onChange={(e) => { setFilter({ ...filter, fuel_type: e.target.value }) }}
+                                                            />
+                                                            <span className='ml-2'>Hybrid</span>
+                                                        </div>
+                                                        <div>
+                                                            <input
+                                                                type="radio"
+                                                                name="fuel_type"
+                                                                value={'ev'}
+                                                                defaultChecked={filter?.fuel_type == "ev"}
+                                                                onChange={(e) => { setFilter({ ...filter, fuel_type: e.target.value }) }}
+                                                            />
+                                                            <span className='ml-2'>Listrik</span>
+                                                        </div>
+                                                    </div>
+                                                </div> : ""
+                                        }
+                                        {
+                                            filterName == "URUTKAN" ?
+                                                <div className='pl-2 mt-4 flex flex-col gap-2'>
+                                                    <button onClick={() => { setFilter({ ...filter, sort: "newest" }) }} className={`border-2 w-full p-2 rounded text-xs ${filter?.sort == "newest" || !filter?.sort ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}>
+                                                        {(filter?.sort == "newest" || !filter?.sort) && <CheckIcon className='w-4 text-green-700' />}
+                                                        IKLAN TERBARU
+                                                    </button>
+                                                    <button onClick={() => { setFilter({ ...filter, sort: "minprice" }) }} className={`border-2 w-full p-2 rounded text-xs ${filter?.sort == "minprice" ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}>
+                                                        {filter?.sort == "minprice" && <CheckIcon className='w-4 text-green-700' />}
+                                                        IKLAN PALING MURAH
+                                                    </button>
+                                                    <button onClick={() => { setFilter({ ...filter, sort: "maxprice" }) }} className={`border-2 w-full p-2 rounded text-xs ${filter?.sort == "maxprice" ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}>
+                                                        {filter?.sort == "maxprice" && <CheckIcon className='w-4 text-green-700' />}
+                                                        IKLAN PALING MAHAL
+                                                    </button>
+                                                </div> : ""
+                                        }
+                                        <div className='flex flex-col gap-2 items-center justify-center pl-2'>
+                                            <Button color='info' onClick={() => { setModal({ ...modal, open: false }) }} disabled={loading}>Terapkan</Button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
