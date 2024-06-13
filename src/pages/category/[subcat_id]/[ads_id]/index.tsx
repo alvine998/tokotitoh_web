@@ -7,7 +7,7 @@ import Modal, { useModal } from '@/components/Modal'
 import { CONFIG } from '@/config'
 import { toMoney } from '@/utils'
 import axios from 'axios'
-import { ArrowLeft, CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PhoneCallIcon, PlusCircleIcon, XCircleIcon } from 'lucide-react'
+import { ArrowLeft, CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PhoneCallIcon, PlusCircleIcon, UserCircleIcon, XCircleIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -23,7 +23,7 @@ export async function getServerSideProps(context: any) {
   try {
     const { page, size } = context.query;
     const { subcat_id, ads_id } = context.params;
-    const result = await axios.get(CONFIG.base_url_api + `/ads?id=${ads_id}&pagination=true&page=${page || 0}&size=${size || 10}`, {
+    const result = await axios.get(CONFIG.base_url_api + `/ads?id=${ads_id}&pagination=true&page=${+page || 0}&size=${+size || 10}`, {
       headers: {
         "bearer-token": "tokotitohapi",
         "x-partner-code": "id.marketplace.tokotitoh"
@@ -128,7 +128,7 @@ export default function Ads({ ads, user, subcat_id }: any) {
               <div className='mt-3'>
                 <h2 className='text-xl'>{ads?.title}</h2>
                 <h2 className='text-xl font-semibold'>Rp {toMoney(ads?.price)}</h2>
-                <p className='mt-3'>
+                <p className='border rounded p-3 mt-2'>
                   Deskripsi: <br />
                   {ads?.description}
                 </p>
@@ -181,6 +181,14 @@ export default function Ads({ ads, user, subcat_id }: any) {
                   </div>
                 </>
             }
+
+            <div className='flex gap-3 items-center pl-5 pt-3'>
+              <UserCircleIcon className='w-20 h-20' />
+              <div>
+                <p>Pengiklan</p>
+                <h5 className='font-bold text-lg'>{user?.name?.toUpperCase()}</h5>
+              </div>
+            </div>
           </> : ""
       }
     </div>

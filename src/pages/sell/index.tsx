@@ -33,7 +33,7 @@ export async function getServerSideProps(context: any) {
         const result = await axios.get(CONFIG.base_url_api + `/categories?`, {
             headers: {
                 "bearer-token": "tokotitohapi",
-                "x-partner-code": "id.marketplace.tokotitoh"
+                "x-partner-code": user?.partner_code
             }
         })
         let [subcategories, brands, provinces]: any = [];
@@ -42,19 +42,19 @@ export async function getServerSideProps(context: any) {
                 axios.get(CONFIG.base_url_api + `/subcategories?category_id=${category_id}`, {
                     headers: {
                         "bearer-token": "tokotitohapi",
-                        "x-partner-code": "id.marketplace.tokotitoh"
+                        "x-partner-code": user?.partner_code
                     }
                 }),
                 axios.get(CONFIG.base_url_api + `/brands?category_id=${category_id}`, {
                     headers: {
                         "bearer-token": "tokotitohapi",
-                        "x-partner-code": "id.marketplace.tokotitoh"
+                        "x-partner-code": user?.partner_code
                     }
                 }),
                 axios.get(CONFIG.base_url_api + `/provinces`, {
                     headers: {
                         "bearer-token": "tokotitohapi",
-                        "x-partner-code": "id.marketplace.tokotitoh"
+                        "x-partner-code": user?.partner_code
                     }
                 })
             ])
@@ -64,7 +64,7 @@ export async function getServerSideProps(context: any) {
             types = await axios.get(CONFIG.base_url_api + `/types?brand_id=${brand_id}`, {
                 headers: {
                     "bearer-token": "tokotitohapi",
-                    "x-partner-code": "id.marketplace.tokotitoh"
+                    "x-partner-code": user?.partner_code
                 }
             })
         }
