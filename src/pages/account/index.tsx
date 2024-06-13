@@ -4,8 +4,9 @@ import LoginForm from '@/components/LoginForm'
 import Modal, { useModal } from '@/components/Modal'
 import { CONFIG } from '@/config'
 import axios from 'axios'
+import { deleteCookie, getCookie } from 'cookies-next'
 import { CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PlusCircleIcon, UserCircleIcon, UserIcon, XCircleIcon } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 export default function Account() {
@@ -14,14 +15,16 @@ export default function Account() {
     const [user, setUser] = useState<any>(null)
 
     const logout = async () => {
-        localStorage.setItem('usertokotitoh', "")
-        router.push("")
+        localStorage.removeItem('usertokotitoh')
+        deleteCookie('account')
+        router.reload()
     }
 
     useEffect(() => {
-        const user: any = localStorage.getItem('usertokotitoh')
+        let user: any = getCookie('account')
         if (user) {
-            setUser(JSON.parse(user))
+            user = JSON.parse(user)
+            setUser(user)
         }
     }, [])
     return (

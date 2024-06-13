@@ -7,9 +7,11 @@ import HeaderHome from '@/components/headers/HeaderHome'
 import { CONFIG } from '@/config'
 import { storage } from '@/config/firebase'
 import axios from 'axios'
+import { getCookie } from 'cookies-next'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { ArrowLeft, CarFrontIcon, CarIcon, ChevronLeftCircleIcon, ChevronLeftIcon, InfoIcon, LucideHome, PlusCircleIcon, PlusIcon } from 'lucide-react'
 import Image from 'next/image'
+import { redirect } from 'next/navigation'
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactSelect from 'react-select'
@@ -18,6 +20,16 @@ import Swal from 'sweetalert2'
 export async function getServerSideProps(context: any) {
     try {
         const { page, size, category_id, brand_id } = context.query;
+        const { req, res } = context;
+        let user: any = getCookie('account', { req, res });
+        if (!user) {
+            return {
+                redirect: {
+                    destination: '/account',
+                    permanent: false,
+                }
+            }
+        }
         const result = await axios.get(CONFIG.base_url_api + `/categories?`, {
             headers: {
                 "bearer-token": "tokotitohapi",
@@ -63,6 +75,7 @@ export async function getServerSideProps(context: any) {
                 brands: brands?.data?.items?.rows || [],
                 types: types?.data?.items?.rows || [],
                 provinces: provinces?.data?.items?.rows || [],
+                user
             }
         }
     } catch (error: any) {
@@ -83,7 +96,7 @@ export async function getServerSideProps(context: any) {
     }
 }
 
-export default function Sell({ categories, subcategories, brands, types, provinces }: any) {
+export default function Sell({ categories, subcategories, brands, types, provinces, user }: any) {
     const router = useRouter();
     const [modal, setModal] = useState<useModal>()
     const [subcat, setSubcat] = useState<any>([]);
@@ -223,15 +236,15 @@ export default function Sell({ categories, subcategories, brands, types, provinc
             const payload = {
                 ...selected,
                 images: images,
-                user_id: 1,
-                user_name: 'alvin',
+                user_id: user?.id,
+                user_name: user?.name,
                 price: +selected?.price?.replaceAll(",", ""),
                 km: +selected?.km?.replaceAll(",", ""),
             }
             const result = await axios.post(CONFIG.base_url_api + '/ads', payload, {
                 headers: {
                     "bearer-token": "tokotitohapi",
-                    "x-partner-code": "id.marketplace.tokotitoh"
+                    "x-partner-code": user?.partner_code
                 }
             });
             Swal.fire({

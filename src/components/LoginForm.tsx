@@ -6,6 +6,7 @@ import axios from 'axios';
 import { CONFIG } from '@/config';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
+import { setCookie } from 'cookies-next';
 
 export default function LoginForm() {
     const router = useRouter();
@@ -34,8 +35,10 @@ export default function LoginForm() {
                     icon: "success",
                     text: "Selamat Datang " + result?.data?.user?.name
                 })
+                setPayload({})
                 localStorage.setItem('usertokotitoh', JSON.stringify(result?.data?.user))
-                router.push("")
+                setCookie('account', JSON.stringify(result?.data?.user), { secure: true })
+                router.reload()
             }
             if (type == "register") {
                 const result = await axios.post(CONFIG.base_url_api + `/user`, { ...payload, role: "customer" }, {
@@ -66,8 +69,8 @@ export default function LoginForm() {
                         <Image alt='logo' src={'/images/tokotitoh.png'} layout='relative' width={250} height={250} className='w-[150px] h-[150px]' />
                         <div className='mt-2 w-full px-8'>
                             <h2 className='text-center text-xl font-semibold'>Login Tokotitoh</h2>
-                            <Input label='' placeholder='Email / No Telepon' name='identity' onChange={handleChange} />
-                            <Input label='' placeholder='Password' name='password' type={show ? "text" : "password"} onChange={handleChange} />
+                            <Input label='' placeholder='Email / No Telepon' name='identity' onChange={handleChange} defaultValue={''} />
+                            <Input label='' placeholder='Password' name='password' type={show ? "text" : "password"} defaultValue={''} onChange={handleChange} />
                             <div className='flex items-center gap-2 pb-2'>
                                 <input type="checkbox" onChange={(e) => setShow(e.target.checked)} defaultChecked={show} />
                                 <span className='text-xs'>Tampilkan password</span>
