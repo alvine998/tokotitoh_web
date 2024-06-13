@@ -27,6 +27,10 @@ export async function getServerSideProps(context: any) {
       transmission,
       max,
       min,
+      maxArea,
+      minArea,
+      maxBuilding,
+      minBuilding,
       sort,
       year,
       fuel_type
@@ -48,6 +52,10 @@ export async function getServerSideProps(context: any) {
       transmission: transmission || "",
       min: min || "",
       max: max || "",
+      minArea: minArea || "",
+      maxArea: maxArea || "",
+      minBuilding: minBuilding || "",
+      maxBuilding: maxBuilding || "",
       sort: sort || "",
       year: year || "",
       fuel_type: fuel_type || "",
@@ -152,7 +160,7 @@ export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: 
     <div className='pb-20'>
       <div className=''>
         <HeaderAds
-        loading={loading}
+          loading={loading}
           filter={filter}
           setFilter={setFilter}
           ads={ads1}
