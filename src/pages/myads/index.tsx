@@ -69,10 +69,10 @@ export default function MyAds({ ads, user }: any) {
     }
     return (
         <div className='pb-2 flex flex-col justify-center items-center'>
-            <HeaderMyAds items={ads} filter={filter} setFilter={setFilter} />
             {
                 user ?
                     <div className=''>
+                        <HeaderMyAds items={ads} filter={filter} setFilter={setFilter} />
                         <div className='p-2 mt-20 w-full'>
                             {
                                 ads?.length > 0 ?
