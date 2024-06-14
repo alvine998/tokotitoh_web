@@ -19,17 +19,23 @@ export async function getServerSideProps(context: any) {
       }
     })
     const { req, res } = context;
-    let user: any = getCookie('account', { req, res });
-    let ads: any = []
-    if (user) {
-      user = JSON.parse(user)
-      ads = await axios.get(CONFIG.base_url_api + `/ads?status=1&pagination=true&page=${+page || 0}&size=${+size || 10}&search=${search || ""}`, {
-        headers: {
-          "bearer-token": "tokotitohapi",
-          "x-partner-code": user?.partner_code
-        }
-      })
-    }
+    // let user: any = getCookie('account', { req, res });
+    // let ads: any = []
+    // if (user) {
+    //   user = JSON.parse(user)
+    //   ads = await axios.get(CONFIG.base_url_api + `/ads?status=1&pagination=true&page=${+page || 0}&size=${+size || 10}&search=${search || ""}`, {
+    //     headers: {
+    //       "bearer-token": "tokotitohapi",
+    //       "x-partner-code": "id.marketplace.tokotitoh"
+    //     }
+    //   })
+    // }
+    const ads = await axios.get(CONFIG.base_url_api + `/ads?status=1&pagination=true&page=${+page || 0}&size=${+size || 10}&search=${search || ""}`, {
+      headers: {
+        "bearer-token": "tokotitohapi",
+        "x-partner-code": "id.marketplace.tokotitoh"
+      }
+    })
     return {
       props: {
         categories: result?.data?.items?.rows,
