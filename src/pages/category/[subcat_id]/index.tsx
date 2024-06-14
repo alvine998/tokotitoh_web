@@ -194,7 +194,7 @@ export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: 
                 Lihat Lainnya
               </button>
             </div>
-          </div> : <p className='text-center font-semibold text-xl mt-36'>Item yang dicari tidak ada!</p>
+          </div> : <p className='text-center font-semibold text-xl mt-36'>Item yang anda dicari tidak ditemukan!</p>
       }
 
       <BottomTabs />
