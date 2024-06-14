@@ -59,17 +59,14 @@ export default function Category({ categories }: any) {
         }
     }
     return (
-        <div className='pb-20'>
-            <div className=''>
-                <HeaderHome />
-            </div>
-
+        <div className='pb-20  flex flex-col justify-center items-center'>
             {/* Kategori */}
-            <div className='p-2 mt-[90px]'>
+            <div className='p-2 mt-5 max-w-sm w-full'>
                 <button className='flex gap-3 items-center' onClick={() => { router.push('/') }}>
                     <ChevronLeftCircleIcon className='w-6 h-6' />
                     Kembali
                 </button>
+                <h2 className='text-center font-semibold text-xl'>Kategori</h2>
                 <div className='flex flex-wrap gap-5 items-center justify-center mt-5'>
                     {
                         categories?.map((v: any, i: number) => (

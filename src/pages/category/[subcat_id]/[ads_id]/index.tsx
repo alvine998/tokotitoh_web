@@ -7,7 +7,7 @@ import Modal, { useModal } from '@/components/Modal'
 import { CONFIG } from '@/config'
 import { toMoney } from '@/utils'
 import axios from 'axios'
-import { ArrowLeft, CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PhoneCallIcon, PlusCircleIcon, UserCircleIcon, XCircleIcon } from 'lucide-react'
+import { ArrowLeft, CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PencilIcon, PhoneCallIcon, PlusCircleIcon, UserCircleIcon, XCircleIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -16,6 +16,7 @@ import React, { useEffect, useState } from 'react'
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import dynamic from 'next/dynamic'
+import { getCookie } from 'cookies-next'
 
 const OwlCarousel = dynamic(() => import("react-owl-carousel"), { ssr: false })
 
@@ -23,6 +24,11 @@ export async function getServerSideProps(context: any) {
   try {
     const { page, size } = context.query;
     const { subcat_id, ads_id } = context.params;
+    const { req, res } = context;
+    let account: any = getCookie('account', { req, res }) || {}
+    if (account) {
+      account = JSON.parse(account)
+    }
     const result = await axios.get(CONFIG.base_url_api + `/ads?id=${ads_id}&pagination=true&page=${+page || 0}&size=${+size || 10}`, {
       headers: {
         "bearer-token": "tokotitohapi",
@@ -40,7 +46,8 @@ export async function getServerSideProps(context: any) {
         ads: result?.data?.items?.rows[0] || [],
         user: user?.data?.items?.rows[0] || [],
         subcat_id,
-        ads_id
+        ads_id,
+        account
       }
     }
   } catch (error: any) {
@@ -62,7 +69,7 @@ export async function getServerSideProps(context: any) {
 }
 
 
-export default function Ads({ ads, user, subcat_id }: any) {
+export default function Ads({ ads, user, subcat_id, account }: any) {
   const router = useRouter();
   const [modal, setModal] = useState<useModal>()
   const [show, setShow] = useState<boolean>(false);
@@ -106,7 +113,7 @@ export default function Ads({ ads, user, subcat_id }: any) {
     },
   }
   return (
-    <div className='pb-20'>
+    <div className='pb-20 flex flex-col justify-center items-center relative'>
       {
         show ?
           <>
@@ -181,12 +188,29 @@ export default function Ads({ ads, user, subcat_id }: any) {
                   </div>
                 </>
             }
-
-            <div className='flex gap-3 items-center pl-5 pt-3'>
-              <UserCircleIcon className='w-20 h-20' />
-              <div>
-                <p>Pengiklan</p>
-                <h5 className='font-bold text-lg'>{user?.name?.toUpperCase()}</h5>
+            {
+              ads?.user_id == account?.id ?
+                <>
+                  {/* Button Edit */}
+                  <div className='fixed bottom-4 right-4'>
+                    <Link href={`/sell?id=${ads?.id}&account_id=${account?.id}&category_id=${ads?.category_id}&brand_id=${ads?.brand_id}`}>
+                      <Button type='button' color='info' className={'rounded-full p-2 flex items-center gap-2'}>
+                        <PencilIcon className='w-8' />
+                        Edit
+                      </Button>
+                    </Link>
+                  </div>
+                </>
+                :
+                ""
+            }
+            <div className='absolute bottom-0 lg:left-[36%] left-0'>
+              <div className='flex gap-3 items-center pl-5 pt-3'>
+                <UserCircleIcon className='w-20 h-20' />
+                <div>
+                  <p>Pengiklan</p>
+                  <h5 className='font-bold text-lg'>{user?.name?.toUpperCase()}</h5>
+                </div>
               </div>
             </div>
           </> : ""

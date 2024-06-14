@@ -7,6 +7,8 @@ import ReactSelect from 'react-select';
 import Button from '../Button';
 import Input from '../Input';
 import { CONFIG } from '@/config';
+import { ReactSearchAutocomplete } from 'react-search-autocomplete';
+import { useRouter } from 'next/router';
 
 interface Props {
     ads: any;
@@ -16,11 +18,12 @@ interface Props {
     types?: any;
     provinces?: any;
     loading: any;
+    items?: any;
 }
 
 export default function HeaderAds(props: Props) {
-    const { ads, filter, setFilter, brands, types, provinces, loading } = props;
-
+    const { ads, filter, setFilter, brands, types, provinces, loading, items } = props;
+    const router = useRouter();
     const [location, setLocation] = useState<any>({ latitude: null, longitude: null });
     const [adress, setAddress] = useState<any>();
     const [modal, setModal] = useState<useModal>();
@@ -38,6 +41,9 @@ export default function HeaderAds(props: Props) {
                         const result = axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`).then((data) => {
                             const address = data.data.address
                             setAddress(`${address?.village || ""}, ${address?.county || ""}`)
+                        }).catch((err: any) => {
+                            console.log(err);
+                            setAddress('Indonesia')
                         })
                     }
                 );
@@ -197,7 +203,7 @@ export default function HeaderAds(props: Props) {
     ]
 
     return (
-        <div className='w-full fixed top-0 bg-white p-2'>
+        <div className='w-full lg:w-1/4 fixed top-0 bg-white p-2'>
             <div className='flex justify-between'>
                 <div className='flex gap-2'>
                     <button type='button' onClick={() => {
@@ -218,15 +224,14 @@ export default function HeaderAds(props: Props) {
             </div>
 
             <div className='mt-2 flex gap-2'>
-                <div className='border border-black rounded w-full flex pl-3 items-center gap-3 py-2'>
-                    <SearchIcon className='w-4 h-4' />
-                    <input type="search" placeholder='Cari Iklan' className='w-full focus:outline-none' defaultValue={filter?.search} onChange={(e) => {
-                        setFilter({ ...filter, search: e.target.value })
-                    }} />
+                <div className='w-full'>
+                    <ReactSearchAutocomplete
+                        items={items?.map((v: any) => ({ ...v, name: v?.title }))}
+                        onSearch={(string: string, results: any) => { setFilter({...filter, search: string }) }}
+                        placeholder='Cari disini...'
+                        onSelect={(item: any)=>router.push(`/category/${item?.subcategory_id}`)}
+                    />
                 </div>
-                <button type='button'>
-                    <BellIcon className='w-7 h-7' />
-                </button>
             </div>
 
             <div className='mt-2'>

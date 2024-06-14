@@ -19,7 +19,7 @@ import Swal from 'sweetalert2'
 
 export async function getServerSideProps(context: any) {
     try {
-        const { page, size, category_id, brand_id } = context.query;
+        const { page, size, category_id, brand_id, id, account_id } = context.query;
         const { req, res } = context;
         let user: any = getCookie('account', { req, res });
         if (!user) {
@@ -69,6 +69,15 @@ export async function getServerSideProps(context: any) {
                 }
             })
         }
+        let detail: any = []
+        if (id && account_id) {
+            detail = await axios.get(CONFIG.base_url_api + `/ads?id=${id}`, {
+                headers: {
+                    "bearer-token": "tokotitohapi",
+                    "x-partner-code": user?.partner_code
+                }
+            })
+        }
         return {
             props: {
                 categories: result?.data?.items?.rows,
@@ -76,6 +85,7 @@ export async function getServerSideProps(context: any) {
                 brands: brands?.data?.items?.rows || [],
                 types: types?.data?.items?.rows || [],
                 provinces: provinces?.data?.items?.rows || [],
+                detail: detail?.data?.items?.rows[0] || [],
                 user
             }
         }
@@ -97,7 +107,7 @@ export async function getServerSideProps(context: any) {
     }
 }
 
-export default function Sell({ categories, subcategories, brands, types, provinces, user }: any) {
+export default function Sell({ categories, subcategories, brands, types, provinces, user, detail }: any) {
     const router = useRouter();
     const [modal, setModal] = useState<useModal>()
     const [subcat, setSubcat] = useState<any>([]);
@@ -107,7 +117,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
         fileInputRef.current.click()
     }
 
-    const [images, setImages] = useState<any>([]);
+    const [images, setImages] = useState<any>(detail?.images || []);
     const [progress, setProgress] = useState<any>();
 
     const handleImage = async (e: any) => {
@@ -135,9 +145,11 @@ export default function Sell({ categories, subcategories, brands, types, provinc
 
         }
     }
-    const [isMoved, setIsMoved] = useState<number>(0);
-    const [selected, setSelected] = useState<any>();
-    const [filled, setFilled] = useState<any>([1]);
+    const [isMoved, setIsMoved] = useState<number>(filter?.account_id ? 2 : 0);
+    const [selected, setSelected] = useState<any>({
+        ...detail
+    });
+    const [filled, setFilled] = useState<any>(detail ? [1, 2, 3] : [1]);
     const [list, setList] = useState<any>({
         cities: [],
         districts: [],
@@ -146,14 +158,14 @@ export default function Sell({ categories, subcategories, brands, types, provinc
 
     const getCity = async (data: any) => {
         try {
-            const result = await axios.get(CONFIG.base_url_api + `/cities?province_id=${data?.value}`, {
+            const result = await axios.get(CONFIG.base_url_api + `/cities?province_id=${data?.value || data}`, {
                 headers: {
                     "bearer-token": "tokotitohapi",
                     "x-partner-code": "id.marketplace.tokotitoh"
                 }
             })
             setList({
-                cities: result?.data?.items?.rows,
+                cities: result?.data?.items?.rows?.map((v: any) => ({ ...v, value: v?.id, label: v?.name })),
                 districts: [],
                 villages: []
             })
@@ -165,7 +177,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
 
     const getDistrict = async (data: any) => {
         try {
-            const result = await axios.get(CONFIG.base_url_api + `/districts?city_id=${data?.value}`, {
+            const result = await axios.get(CONFIG.base_url_api + `/districts?city_id=${data?.value || data}`, {
                 headers: {
                     "bearer-token": "tokotitohapi",
                     "x-partner-code": "id.marketplace.tokotitoh"
@@ -173,7 +185,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
             })
             setList({
                 ...list,
-                districts: result?.data?.items?.rows,
+                districts: result?.data?.items?.rows?.map((v: any) => ({ ...v, value: v?.id, label: v?.name })),
                 villages: []
             })
             setSelected({ ...selected, city_id: data?.value, city_name: data?.label })
@@ -199,6 +211,31 @@ export default function Sell({ categories, subcategories, brands, types, provinc
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        if (detail) {
+            const geolocation = async () => {
+                const result = await axios.get(CONFIG.base_url_api + `/cities?province_id=${detail?.province_id}`, {
+                    headers: {
+                        "bearer-token": "tokotitohapi",
+                        "x-partner-code": "id.marketplace.tokotitoh"
+                    }
+                })
+                const result2 = await axios.get(CONFIG.base_url_api + `/districts?city_id=${detail?.city_id}`, {
+                    headers: {
+                        "bearer-token": "tokotitohapi",
+                        "x-partner-code": "id.marketplace.tokotitoh"
+                    }
+                })
+                setList({
+                    cities: result?.data?.items?.rows?.map((v: any) => ({ ...v, value: v?.id, label: v?.name })),
+                    districts: result2?.data?.items?.rows?.map((v: any) => ({ ...v, value: v?.id, label: v?.name })),
+                    villages: []
+                })
+            }
+            geolocation()
+        }
+    }, [])
 
     useEffect(() => {
         const queryFilter = new URLSearchParams(filter).toString();
@@ -234,20 +271,37 @@ export default function Sell({ categories, subcategories, brands, types, provinc
 
     const onSubmit = async () => {
         try {
+            if (images?.length < 1) {
+                return Swal.fire({
+                    icon: "warning",
+                    text: "Gambar Wajib Diisi"
+                })
+            }
+            console.log(selected, 'sllsl');
             const payload = {
                 ...selected,
                 images: images,
                 user_id: user?.id,
                 user_name: user?.name,
-                price: +selected?.price?.replaceAll(",", ""),
-                km: +selected?.km?.replaceAll(",", ""),
+                price: +selected?.price,
+                km: +selected?.km,
             }
-            const result = await axios.post(CONFIG.base_url_api + '/ads', payload, {
-                headers: {
-                    "bearer-token": "tokotitohapi",
-                    "x-partner-code": user?.partner_code
-                }
-            });
+            if (detail?.id) {
+                await axios.patch(CONFIG.base_url_api + '/ads', { ...payload, id: detail?.id, status: 0 }, {
+                    headers: {
+                        "bearer-token": "tokotitohapi",
+                        "x-partner-code": user?.partner_code
+                    }
+                });
+            } else {
+                await axios.post(CONFIG.base_url_api + '/ads', payload, {
+                    headers: {
+                        "bearer-token": "tokotitohapi",
+                        "x-partner-code": user?.partner_code
+                    }
+                });
+            }
+
             Swal.fire({
                 icon: "success",
                 text: "Berhasil membuat iklan!"
@@ -257,9 +311,27 @@ export default function Sell({ categories, subcategories, brands, types, provinc
             console.log(error);
         }
     }
+    let BRANDS = brands?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }));
+    let TYPES = types?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }));
+    let FUELTYPES = [
+        { value: "bensin", label: "Bensin" },
+        { value: "diesel", label: "Diesel" },
+        { value: "hybrid", label: "Hybrid" },
+        { value: "ev", label: "Listrik" }
+    ]
+    let TRANSMISSIONTYPES = [
+        { value: "MT", label: "Manual" },
+        { value: "AT", label: "Automatic" },
+        { value: "CVT", label: "CVT" }
+    ];
+    let OWNERSHIPS = [
+        { value: "individual", label: "Pribadi" },
+        { value: "company", label: "Dealer" },
+    ];
+    let PROVINCES = provinces?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }));
     return (
-        <div className='pb-20'>
-            <div className="relative w-full h-screen">
+        <div className='pb-20 flex justify-center items-center'>
+            <div className="relative w-full max-w-2xl h-screen">
 
                 {/* Numbering */}
                 <div className='flex gap-2 justify-center pt-2 fixed top-0 left-0 right-0 z-[99] bg-white'>
@@ -315,19 +387,24 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                 <div
                     className={`absolute z-20 top-10 ${isMoved == 2 ? 'left-0' : 'left-full hidden'} bg-white p-2 w-full h-auto transition-all duration-500`}
                 >
-                    <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
-                        <ArrowLeft />
-                    </button>
-                    <p className='m-2'>{selected?.category_name} {">"} {selected?.subcategory_name}</p>
+                    {
+                        filter?.id && filter?.account_id ?
+                            "" :
+                            <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
+                                <ArrowLeft />
+                            </button>
+                    }
+                    <p className='m-2 mt-4'>{selected?.category_name} {">"} {selected?.subcategory_name}</p>
                     <div className='mt-4'>
-                        <Input label='Judul' placeholder='Masukkan Judul Iklan' maxLength={30} onChange={(e: any) => { setSelected({ ...selected, title: e.target.value }) }} />
+                        <Input label='Judul' defaultValue={selected?.title || ""} placeholder='Masukkan Judul Iklan' maxLength={30} onChange={(e: any) => { setSelected({ ...selected, title: e.target.value }) }} />
                         <div>
                             <label className='text-gray-500' htmlFor="brand">Brand</label>
                             <ReactSelect
-                                options={brands?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))}
+                                options={BRANDS}
                                 placeholder="Pilih Brand"
                                 onChange={(e: any) => { setFilter({ ...filter, brand_id: e?.value }), setSelected({ ...selected, brand_id: e?.value, brand_name: e?.label }) }}
                                 maxMenuHeight={200}
+                                defaultValue={BRANDS?.find((v: any) => v?.id == detail?.brand_id)}
                                 id='brand'
                             />
                         </div>
@@ -335,71 +412,63 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                             <label className='text-gray-500' htmlFor="type">Tipe</label>
                             <ReactSelect
                                 isDisabled={types?.length < 1}
-                                options={types?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))}
+                                options={TYPES}
                                 placeholder="Pilih Tipe"
                                 onChange={(e: any) => { setSelected({ ...selected, type_id: e?.value, type_name: e?.label }) }}
                                 maxMenuHeight={200}
+                                defaultValue={TYPES?.find((v: any) => v?.id == selected?.type_id)}
                                 id='type'
                             />
                         </div>
-                        <Input label='Harga' placeholder='Masukkan Harga' numericformat onChange={(e: any) => { setSelected({ ...selected, price: e.target.value }) }} />
-                        <TextArea label='Deksripsi' placeholder='Masukkan Deskripsi' maxLength={250} onChange={(e) => { setSelected({ ...selected, description: e.target.value }) }} />
+                        <Input label='Harga' placeholder='Masukkan Harga' defaultValue={+selected?.price || ""} numericformat onChange={(e: any) => { setSelected({ ...selected, price: +e.target.value?.replaceAll(",", "") }) }} />
+                        <TextArea label='Deksripsi' placeholder='Masukkan Deskripsi' maxLength={250} defaultValue={selected?.description || ""} onChange={(e) => { setSelected({ ...selected, description: e.target.value }) }} />
                         {
                             selected?.category_name?.toLowerCase()?.includes('properti') ?
                                 <div>
-                                    <Input label='Luas (m2)' placeholder='Masukkan Luas (m2)' numericformat onChange={(e: any) => { setSelected({ ...selected, area: e.target.value }) }} />
-                                    <Input label='Sertifikat' placeholder='Masukkan Sertifikat' onChange={(e: any) => { setSelected({ ...selected, certificates: e.target.value }) }} />
+                                    <Input label='Luas (m2)' placeholder='Masukkan Luas (m2)' defaultValue={+selected?.area || ""} numericformat onChange={(e: any) => { setSelected({ ...selected, area: e.target.value }) }} />
+                                    <Input label='Sertifikat' placeholder='Masukkan Sertifikat' defaultValue={selected?.certificates || ""} onChange={(e: any) => { setSelected({ ...selected, certificates: e.target.value }) }} />
                                 </div> : ""
                         }
                         {
                             selected?.category_name?.toLowerCase()?.includes('mobil') || selected?.category_name?.toLowerCase()?.includes('motor') ?
                                 <div>
-                                    <Input label='Trip KM' placeholder='Masukkan Trip KM' numericformat onChange={(e: any) => { setSelected({ ...selected, km: e.target.value }) }} />
+                                    <Input label='Trip KM' placeholder='Masukkan Trip KM' defaultValue={+selected?.km || ""} numericformat onChange={(e: any) => { setSelected({ ...selected, km: +e.target.value?.replaceAll(",", "") }) }} />
                                     <div className='mt-2'>
                                         <label className='text-gray-500' htmlFor="fuel_type">Jenis Bahan Bakar</label>
                                         <ReactSelect
-                                            options={[
-                                                { value: "bensin", label: "Bensin" },
-                                                { value: "diesel", label: "Diesel" },
-                                                { value: "hybrid", label: "Hybrid" },
-                                                { value: "ev", label: "Listrik" }
-                                            ]}
+                                            options={FUELTYPES}
                                             placeholder="Pilih Jenis Bahan Bakar"
                                             onChange={(e: any) => { setSelected({ ...selected, fuel_type: e.value }) }}
                                             maxMenuHeight={200}
                                             id='fuel_type'
+                                            defaultValue={FUELTYPES?.find((v: any) => v?.value == selected?.fuel_type)}
                                         />
                                     </div>
                                     <div className='mt-2'>
                                         <label className='text-gray-500' htmlFor="transmission">Jenis Transmisi</label>
                                         <ReactSelect
-                                            options={[
-                                                { value: "MT", label: "Manual" },
-                                                { value: "AT", label: "Automatic" },
-                                                { value: "CVT", label: "CVT" }
-                                            ]}
+                                            options={TRANSMISSIONTYPES}
                                             onChange={(e: any) => { setSelected({ ...selected, transmission: e.value }) }}
                                             placeholder="Pilih Jenis Transmisi"
                                             maxMenuHeight={200}
                                             id='transmission'
+                                            defaultValue={TRANSMISSIONTYPES?.find((v: any) => v?.value == selected?.transmission)}
                                         />
                                     </div>
                                     <div className='mt-2'>
                                         <label className='text-gray-500' htmlFor="ownership">Kepemilikan</label>
                                         <ReactSelect
-                                            options={[
-                                                { value: "individual", label: "Pribadi" },
-                                                { value: "company", label: "Dealer" },
-                                            ]}
+                                            options={OWNERSHIPS}
                                             onChange={(e: any) => { setSelected({ ...selected, ownership: e.value }) }}
                                             placeholder="Pilih Kepemilikan"
                                             maxMenuHeight={200}
                                             id='ownership'
+                                            defaultValue={OWNERSHIPS?.find((v: any) => v?.value == selected?.ownership)}
                                         />
                                     </div>
-                                    <Input label='Tahun' placeholder='Masukkan Tahun' type='number' onChange={(e: any) => { setSelected({ ...selected, year: e.target.value }) }} />
-                                    <Input label='Warna' placeholder='Masukkan Warna' onChange={(e: any) => { setSelected({ ...selected, color: e.target.value }) }} />
-                                    <Input label='Plat Nomor' placeholder='X1234YYY' onChange={(e: any) => { setSelected({ ...selected, plat_no: e.target.value }) }} />
+                                    <Input label='Tahun' defaultValue={+selected?.year || ""} placeholder='Masukkan Tahun' type='number' onChange={(e: any) => { setSelected({ ...selected, year: e.target.value }) }} />
+                                    <Input label='Warna' defaultValue={selected?.color || ""} placeholder='Masukkan Warna' onChange={(e: any) => { setSelected({ ...selected, color: e.target.value }) }} />
+                                    <Input label='Plat Nomor' defaultValue={selected?.plat_no || ""} placeholder='X1234YYY' onChange={(e: any) => { setSelected({ ...selected, plat_no: e.target.value }) }} />
                                     <Button color='info' type='button' onClick={handleFormData} >Selanjutnya</Button>
                                 </div> : ""
                         }
@@ -418,44 +487,36 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                         <div>
                             <label className='text-gray-500' htmlFor="province">Provinsi</label>
                             <ReactSelect
-                                options={provinces?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))}
+                                options={PROVINCES}
                                 placeholder="Pilih Provinsi"
                                 onChange={(e: any) => { getCity(e) }}
                                 maxMenuHeight={200}
                                 id='province'
+                                defaultValue={PROVINCES?.find((v: any) => v?.id == detail?.province_id)}
                             />
                         </div>
                         <div className='mt-2'>
                             <label className='text-gray-500' htmlFor="city">Kota/Kab</label>
                             <ReactSelect
                                 isDisabled={list?.cities?.length < 1}
-                                options={list?.cities?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))}
+                                options={list?.cities}
                                 placeholder="Pilih Kota/Kab"
                                 maxMenuHeight={200}
                                 onChange={(e: any) => { getDistrict(e) }}
                                 id='city'
+                                defaultValue={{ value: detail?.city_id || "", label: detail?.city_name || "Pilih Kota/Kab" }}
                             />
                         </div>
                         <div className='mt-2'>
                             <label className='text-gray-500' htmlFor="district">Kecamatan</label>
                             <ReactSelect
                                 isDisabled={list?.districts?.length < 1}
-                                options={list?.districts?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))}
+                                options={list?.districts}
                                 placeholder="Pilih Kecamatan"
                                 maxMenuHeight={200}
                                 onChange={(e: any) => { getVillage(e) }}
                                 id='district'
-                            />
-                        </div>
-                        <div className='mt-2'>
-                            <label className='text-gray-500' htmlFor="village">Kelurahan/Desa</label>
-                            <ReactSelect
-                                isDisabled={list?.villages?.length < 1}
-                                options={list?.villages?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }))}
-                                placeholder="Pilih Kelurahan/Desa"
-                                onChange={(e: any) => setSelected({ ...selected, village_id: e.value, village_name: e.label })}
-                                maxMenuHeight={200}
-                                id='village'
+                                defaultValue={{ value: detail?.district_id || "", label: detail?.district_name || "Pilih Kecamatan" }}
                             />
                         </div>
                         <Button color='info' type='button' onClick={handleGeolocation} >Selanjutnya</Button>

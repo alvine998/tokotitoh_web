@@ -66,7 +66,7 @@ export default function Account() {
         }
     }, [])
     return (
-        <div className='pb-20'>
+        <div className='pb-20 flex flex-col justify-center items-center'>
             {
                 user == null ?
                     <LoginForm /> :

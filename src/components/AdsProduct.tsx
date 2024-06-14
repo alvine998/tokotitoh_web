@@ -18,14 +18,14 @@ export default function AdsProduct(props: Props) {
     const { path, price, thumbnail, title, status, onClick, calls, views } = props
     const router = useRouter();
     return (
-        <div>
+        <div className='w-full'>
             <button
                 type='button'
-                className='shadow border p-2 rounded lg:h-auto w-full'
+                className='shadow border p-2 rounded lg:h-auto w-full lg:w-full'
                 onClick={onClick}
             >
                 <Image alt='thumbnail' src={thumbnail} layout='relative' width={300} height={300} className='h-[200px] w-full rounded' />
-                <div className='flex justify-between items-center mt-4'>
+                <div className='flex justify-between items-end mt-4'>
                     <div>
                         <h5 className='text-left'>{title}</h5>
                         <p className='text-left font-bold text-lg'>Rp {toMoney(price)}</p>
@@ -53,7 +53,6 @@ export default function AdsProduct(props: Props) {
                             </div>
                         </div> : ""
                 }
-
             </button>
         </div>
     )

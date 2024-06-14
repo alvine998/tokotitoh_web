@@ -3,23 +3,37 @@ import HeaderHome from '@/components/headers/HeaderHome'
 import Modal, { useModal } from '@/components/Modal'
 import { CONFIG } from '@/config'
 import axios from 'axios'
+import { getCookie } from 'cookies-next'
 import { CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PlusCircleIcon, XCircleIcon } from 'lucide-react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 
 export async function getServerSideProps(context: any) {
   try {
-    const { page, size } = context.query;
+    const { page, size, search } = context.query;
     const result = await axios.get(CONFIG.base_url_api + `/categories?page=${page || 0}&size=${size || 99999}`, {
       headers: {
         "bearer-token": "tokotitohapi",
         "x-partner-code": "id.marketplace.tokotitoh"
       }
     })
+    const { req, res } = context;
+    let user: any = getCookie('account', { req, res });
+    let ads: any = []
+    if (user) {
+      user = JSON.parse(user)
+      ads = await axios.get(CONFIG.base_url_api + `/ads?status=1&pagination=true&page=${+page || 0}&size=${+size || 10}&search=${search || ""}`, {
+        headers: {
+          "bearer-token": "tokotitohapi",
+          "x-partner-code": user?.partner_code
+        }
+      })
+    }
     return {
       props: {
-        categories: result?.data?.items?.rows
+        categories: result?.data?.items?.rows,
+        ads: ads?.data?.items?.rows,
       }
     }
   } catch (error: any) {
@@ -40,10 +54,15 @@ export async function getServerSideProps(context: any) {
   }
 }
 
-export default function Home({ categories }: any) {
+export default function Home({ categories, ads }: any) {
   const router = useRouter();
   const [modal, setModal] = useState<useModal>()
   const [subcat, setSubcat] = useState<any>([]);
+  const [filter, setFilter] = useState<any>(router.query);
+  useEffect(() => {
+    const queryFilter = new URLSearchParams(filter).toString();
+    router.push(`?${queryFilter}`)
+  }, [filter])
 
   const getSubCat = async (cat_id: any) => {
     try {
@@ -59,11 +78,8 @@ export default function Home({ categories }: any) {
     }
   }
   return (
-    <div className='pb-20'>
-      <div className=''>
-        <HeaderHome />
-      </div>
-
+    <div className='pb-20 flex flex-col justify-center items-center'>
+      <HeaderHome items={ads} modal={modal} setModal={setModal} filter={filter} setFilter={setFilter} />
 
       {/* Kategori */}
       <div className='p-2 mt-28'>
@@ -107,7 +123,7 @@ export default function Home({ categories }: any) {
             <InfoIcon className='text-blue-700' />
             Tips Hindari Penipuan
           </button>
-          <button type='button' onClick={()=>{router.push('/sell')}} className='w-full border border-blue-500 p-2 rounded flex items-center gap-3 text-sm'>
+          <button type='button' onClick={() => { router.push('/sell') }} className='w-full border border-blue-500 p-2 rounded flex items-center gap-3 text-sm'>
             <PlusCircleIcon className='text-green-700' />
             Pasang Iklan Baru
           </button>
@@ -157,6 +173,23 @@ export default function Home({ categories }: any) {
                   </button>
                 ))
               }
+            </div>
+          </Modal> : ""
+      }
+      {
+        modal?.key == "notif" ?
+          <Modal
+            open={modal.open}
+            setOpen={() => setModal({ ...modal, open: false, key: "" })}
+          >
+            <div className='p-2'>
+              <div className='flex gap-3 items-center justify-between'>
+                <h1 className='font-bold text-xl'>Notifikasi</h1>
+                <button onClick={() => { setModal({ ...modal, open: false }) }}>
+                  <XCircleIcon />
+                </button>
+              </div>
+              <p className='mt-10 text-center text-xl font-semibold'>Belum ada notifikasi!</p>
             </div>
           </Modal> : ""
       }

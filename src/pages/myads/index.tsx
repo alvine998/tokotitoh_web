@@ -68,18 +68,18 @@ export default function MyAds({ ads, user }: any) {
         router.push(`/category/${v?.subcategory_id}/${v?.id}`)
     }
     return (
-        <div className='pb-2'>
+        <div className='pb-2 flex flex-col justify-center items-center'>
+            <HeaderMyAds items={ads} filter={filter} setFilter={setFilter} />
             {
                 user ?
                     <div className=''>
-                        <HeaderMyAds filter={filter} setFilter={setFilter} />
-                        <div className='p-2 mt-20'>
+                        <div className='p-2 mt-20 w-full'>
                             {
                                 ads?.length > 0 ?
-                                    <>
+                                    <div className='w-full'>
                                         {
                                             ads?.map((v: any, i: number) => (
-                                                <div key={i}>
+                                                <div key={i} className='w-[350px]'>
                                                     <AdsProduct
                                                         status={v?.status}
                                                         price={v?.price}
@@ -92,18 +92,16 @@ export default function MyAds({ ads, user }: any) {
                                                 </div>
                                             ))
                                         }
-                                    </> :
-                                    <>
-                                        <div className='flex flex-col justify-center items-center'>
-                                            <h5 className='text-center text-xl font-bold'>Iklan Tidak Ditemukan!</h5>
-                                            {/* <Link href={"/sell"}>
-                                                <button className='rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center'>
-                                                    <PlusIcon className='w-6' />
-                                                    Buat Iklan Disini
-                                                </button>
-                                            </Link> */}
-                                        </div>
-                                    </>
+                                    </div> :
+                                    <div className='flex flex-col justify-center items-center'>
+                                        <h5 className='text-center text-xl font-bold'>Iklan Tidak Ditemukan!</h5>
+                                        <Link href={"/sell"}>
+                                            <button className='rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center duration-200 transition-all'>
+                                                <PlusIcon className='w-6' />
+                                                Buat Iklan Disini
+                                            </button>
+                                        </Link>
+                                    </div>
                             }
                         </div>
                     </div>

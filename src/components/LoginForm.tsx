@@ -62,7 +62,7 @@ export default function LoginForm() {
     }
 
     return (
-        <div>
+        <div className='w-full lg:w-1/4'>
             {
                 type == "login" ?
                     <div className='flex-col flex justify-center items-center mt-20'>

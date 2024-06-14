@@ -59,7 +59,6 @@ export async function getServerSideProps(context: any) {
       sort: sort || "",
       year: year || "",
       fuel_type: fuel_type || "",
-
     }
     const result = await axios.get(CONFIG.base_url_api +
       `/ads?${createQueryString(filters)}`, {
@@ -157,18 +156,17 @@ export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: 
   }, [filter])
 
   return (
-    <div className='pb-20'>
-      <div className=''>
-        <HeaderAds
-          loading={loading}
-          filter={filter}
-          setFilter={setFilter}
-          ads={ads1}
-          brands={brands}
-          types={types}
-          provinces={provinces}
-        />
-      </div>
+    <div className='pb-20 flex flex-col justify-center items-center'>
+      <HeaderAds
+        loading={loading}
+        filter={filter}
+        setFilter={setFilter}
+        ads={ads1}
+        brands={brands}
+        types={types}
+        provinces={provinces}
+        items={ads}
+      />
 
       {
         ads?.length > 0 ?
@@ -177,7 +175,7 @@ export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: 
             <div className='p-2 mt-28'>
               {
                 ads?.map((v: any, i: number) => (
-                  <div key={i}>
+                  <div key={i} className='w-[350px]'>
                     <AdsProduct price={v?.price} thumbnail={v?.images[0]} title={v?.title} onClick={() => { addViews(v?.id) }} />
                   </div>
                 ))
@@ -186,7 +184,7 @@ export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: 
 
             <div className='flex items-center justify-center'>
               <button
-                onClick={() => setFilter({ ...filter, size: +filter.size + 2 })}
+                onClick={() => setFilter({ ...filter, size: (+filter.size || 5) + 5 })}
                 type='button'
                 className='rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center'
               >
@@ -194,7 +192,10 @@ export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: 
                 Lihat Lainnya
               </button>
             </div>
-          </div> : <p className='text-center font-semibold text-xl mt-36'>Item yang anda dicari tidak ditemukan!</p>
+          </div> : <div className='mt-40 flex flex-col gap-2 justify-center items-center'>
+            <Image alt='eror404' src={'/images/error404.webp'} layout='relative' width={300} height={300} className='w-[250px] h-[250px]' />
+            <p className='text-center font-semibold text-lg'>Item yang anda dicari tidak ditemukan!</p>
+          </div>
       }
 
       <BottomTabs />
