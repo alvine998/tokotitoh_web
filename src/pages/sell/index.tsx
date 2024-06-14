@@ -30,6 +30,7 @@ export async function getServerSideProps(context: any) {
                 }
             }
         }
+        user = JSON.parse(user);
         const result = await axios.get(CONFIG.base_url_api + `/categories?`, {
             headers: {
                 "bearer-token": "tokotitohapi",
