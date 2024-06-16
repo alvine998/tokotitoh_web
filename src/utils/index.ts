@@ -24,3 +24,15 @@ export const createQueryString = (filters: any) => {
     }
     return params.toString();
 };
+
+export function normalizePhoneNumber(phoneNumber: any) {
+    if (phoneNumber.startsWith('+62')) {
+        return '62' + phoneNumber.slice(3);
+    } else if (phoneNumber.startsWith('0')) {
+        return '62' + phoneNumber.slice(1);
+    } else if (phoneNumber.startsWith('8')) {
+        return '62' + phoneNumber.slice(1);
+    } else {
+        return phoneNumber;
+    }
+}

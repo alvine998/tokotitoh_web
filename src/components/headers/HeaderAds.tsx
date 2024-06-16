@@ -25,7 +25,7 @@ export default function HeaderAds(props: Props) {
     const { ads, filter, setFilter, brands, types, provinces, loading, items } = props;
     const router = useRouter();
     const [location, setLocation] = useState<any>({ latitude: null, longitude: null });
-    const [adress, setAddress] = useState<any>();
+    const [adress, setAddress] = useState<any>('Indonesia');
     const [modal, setModal] = useState<useModal>();
     const [filterName, setFilterName] = useState<any>("MEREK/MODEL");
 

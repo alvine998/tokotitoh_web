@@ -123,7 +123,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
     const handleImage = async (e: any) => {
         if (e.target.files) {
             const file = e.target.files[0]
-            if (file?.size <= 30000) {
+            if (file?.size <= 2000000) {
                 const storageRef = ref(storage, `images/ads/${file?.name}`);
                 const uploadTask = uploadBytesResumable(storageRef, file);
                 uploadTask.on('state_changed', (snapshot) => {
@@ -139,7 +139,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
             } else {
                 return Swal.fire({
                     icon: "error",
-                    text: "Ukuran Gambar Tidak Boleh Lebih Dari 30Kb"
+                    text: "Ukuran Gambar Tidak Boleh Lebih Dari 2mb"
                 })
             }
 

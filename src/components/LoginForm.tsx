@@ -7,6 +7,7 @@ import { CONFIG } from '@/config';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
 import { setCookie } from 'cookies-next';
+import { normalizePhoneNumber } from '@/utils';
 
 export default function LoginForm() {
     const router = useRouter();
@@ -41,7 +42,7 @@ export default function LoginForm() {
                 router.reload()
             }
             if (type == "register") {
-                const result = await axios.post(CONFIG.base_url_api + `/user`, { ...payload, role: "customer" }, {
+                const result = await axios.post(CONFIG.base_url_api + `/user`, { ...payload, role: "customer", phone: normalizePhoneNumber(payload?.phone) }, {
                     headers: {
                         "bearer-token": "tokotitohapi",
                         "x-partner-code": "id.marketplace.tokotitoh"
@@ -55,8 +56,12 @@ export default function LoginForm() {
                 setPayload({})
                 setType("login")
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
+            Swal.fire({
+                icon: "error",
+                text: error?.error_message
+            })
             setLoading(false)
         }
     }

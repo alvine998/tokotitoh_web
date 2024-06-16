@@ -17,7 +17,7 @@ export default function HeaderHome(props: Props) {
     const router = useRouter();
     const { modal, setModal, items, filter, setFilter } = props;
     const [location, setLocation] = useState<any>({ latitude: null, longitude: null });
-    const [adress, setAddress] = useState<any>();
+    const [adress, setAddress] = useState<any>('Indonesia');
 
     const geolocation = async () => {
         try {
