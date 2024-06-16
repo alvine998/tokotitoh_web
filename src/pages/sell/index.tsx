@@ -468,7 +468,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                     </div>
                                     <Input label='Tahun' defaultValue={+selected?.year || ""} placeholder='Masukkan Tahun' type='number' onChange={(e: any) => { setSelected({ ...selected, year: e.target.value }) }} />
                                     <Input label='Warna' defaultValue={selected?.color || ""} placeholder='Masukkan Warna' onChange={(e: any) => { setSelected({ ...selected, color: e.target.value }) }} />
-                                    <Input label='Plat Nomor' defaultValue={selected?.plat_no || ""} placeholder='X1234YYY' onChange={(e: any) => { setSelected({ ...selected, plat_no: e.target.value }) }} />
+                                    {/* <Input label='Plat Nomor' defaultValue={selected?.plat_no || ""} placeholder='X1234YYY' onChange={(e: any) => { setSelected({ ...selected, plat_no: e.target.value }) }} /> */}
                                     <Button color='info' type='button' onClick={handleFormData} >Selanjutnya</Button>
                                 </div> : ""
                         }
