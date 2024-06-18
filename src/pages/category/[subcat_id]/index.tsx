@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import { useRouter as router2 } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { createQueryString } from '@/utils'
+import { getCookie } from 'cookies-next'
 
 export async function getServerSideProps(context: any) {
   try {
@@ -132,17 +133,23 @@ export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: 
   const [modal, setModal] = useState<useModal>()
   const [filter, setFilter] = useState<any>(router.query);
   const [loading, setLoading] = useState<any>(false);
+  let user: any = getCookie('account')
 
-  const addViews = async (id: any) => {
+  const addViews = async (data: any) => {
     try {
-      const result = await axios.post(CONFIG.base_url_api + `/ads/views`, { id: id }, {
-        headers: {
-          "bearer-token": "tokotitohapi",
-          "x-partner-code": "id.marketplace.tokotitoh"
+      if (user) {
+        user = JSON.parse(user)
+        if (user?.id == data?.id) {
+          await axios.post(CONFIG.base_url_api + `/ads/views`, { id: data?.id }, {
+            headers: {
+              "bearer-token": "tokotitohapi",
+              "x-partner-code": "id.marketplace.tokotitoh"
+            }
+          })
         }
-      })
-      localStorage.setItem('from', 'subcat')
-      router.push(`/category/${subcat_id}/${id}`)
+        localStorage.setItem('from', 'subcat')
+        router.push(`/category/${subcat_id}/${data?.id}`)
+      }
     } catch (error) {
       console.log(error);
     }
@@ -176,7 +183,7 @@ export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: 
               {
                 ads?.rows?.map((v: any, i: number) => (
                   <div key={i} className='w-[350px]'>
-                    <AdsProduct price={v?.price} thumbnail={v?.images[0]} title={v?.title} onClick={() => { addViews(v?.id) }} />
+                    <AdsProduct price={v?.price} thumbnail={v?.images[0]} title={v?.title} onClick={() => { addViews(v) }} />
                   </div>
                 ))
               }

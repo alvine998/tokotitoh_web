@@ -5,9 +5,9 @@ import HeaderAds from '@/components/headers/HeaderAds'
 import HeaderHome from '@/components/headers/HeaderHome'
 import Modal, { useModal } from '@/components/Modal'
 import { CONFIG } from '@/config'
-import { toMoney } from '@/utils'
+import { normalizePhoneNumber, toMoney } from '@/utils'
 import axios from 'axios'
-import { ArrowLeft, CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PencilIcon, PhoneCallIcon, PlusCircleIcon, UserCircleIcon, XCircleIcon } from 'lucide-react'
+import { ArrowLeft, CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PencilIcon, PhoneCallIcon, PlusCircleIcon, TrashIcon, UserCircleIcon, XCircleIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -17,6 +17,11 @@ import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import dynamic from 'next/dynamic'
 import { getCookie } from 'cookies-next'
+import Input from '@/components/Input'
+import TextArea from '@/components/TextArea'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { storage } from '@/config/firebase'
+import Swal from 'sweetalert2'
 
 const OwlCarousel = dynamic(() => import("react-owl-carousel"), { ssr: false })
 
@@ -85,6 +90,37 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
     setFrom(from);
   }, [])
 
+  const [images, setImages] = useState<any>([]);
+  const [progress, setProgress] = useState<boolean>(false);
+
+  const handleImage = async (e: any) => {
+    setProgress(true)
+    if (e.target.files) {
+      const file = e.target.files[0]
+      if (file?.size <= 2000000) {
+        const storageRef = ref(storage, `images/ads/${file?.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on('state_changed', (snapshot) => {
+          const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        }, (error) => {
+          console.log(error);
+        }, () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setImages([...images, downloadURL]);
+            setProgress(false);
+          })
+        })
+      } else {
+        setProgress(false);
+        return Swal.fire({
+          icon: "error",
+          text: "Ukuran Gambar Tidak Boleh Lebih Dari 2mb"
+        })
+      }
+
+    }
+  }
+
   const addCalls = async () => {
     try {
       const result = await axios.post(CONFIG.base_url_api + `/ads/calls`, { id: ads?.id }, {
@@ -95,6 +131,34 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
       })
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  const onReport = async (e: any) => {
+    e.preventDefault();
+    try {
+      const formData = Object.fromEntries(new FormData(e.target))
+      const payload = {
+        ...formData,
+        images: images
+      }
+      await axios.post(CONFIG.base_url_api + '/report', payload, {
+        headers: {
+          "bearer-token": "tokotitohapi",
+          "x-partner-code": "id.marketplace.tokotitoh"
+        }
+      })
+      setModal({ ...modal, open: false })
+      Swal.fire({
+        icon: "success",
+        text: "Berhasil melaporkan iklan ini"
+      })
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        text: "Gagal melaporkan iklan ini, harap hubungi admin"
+      })
     }
   }
 
@@ -118,10 +182,19 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
         show ?
           <>
             <div className='p-3 max-w-[350px]'>
-              <button type='button' onClick={() => { from == "myads" ? router.push(`/myads`) : router.push(`/category/${subcat_id}`) }} className='flex gap-2 font-bold'>
-                <ArrowLeft className='w-5' />
-                Kembali
-              </button>
+              <div className='flex justify-between items-center'>
+                <button type='button' onClick={() => { from == "myads" ? router.push(`/myads`) : router.push(`/category/${subcat_id}`) }} className='flex gap-2 font-bold'>
+                  <ArrowLeft className='w-5' />
+                  Kembali
+                </button>
+                {
+                  (from == "myads") || (ads?.user_id == account?.id) ?
+                    "" :
+                    <button onClick={() => { setModal({ ...modal, open: true, data: ads, key: "report" }); setImages([]) }} className='text-red-500'>
+                      LAPORKAN
+                    </button>
+                }
+              </div>
               <p className='mt-4'>{ads?.district_name} {">"} {ads?.city_name} {">"} {ads?.province_name}</p>
               <OwlCarousel center responsive={responsive} dots className='owl-theme'>
                 {
@@ -171,14 +244,55 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 </Modal> : ""
             }
 
+            {
+              modal?.key == "report" ?
+                <Modal
+                  open={modal.open}
+                  setOpen={() => { setModal({ ...modal, open: false }) }}
+                >
+                  <div className='flex justify-end'>
+                    <button type='button' onClick={() => { setModal({ ...modal, open: false }) }}>
+                      <XCircleIcon className='w-7' />
+                    </button>
+                  </div>
+                  <h2 className='text-center text-xl font-bold'>Laporkan Iklan Ini</h2>
+                  <form onSubmit={onReport}>
+                    <Input placeholder='Apa yang ingin kamu laporkan?' label='' name='title' required />
+                    <TextArea placeholder='Ketik deskripsi disini...' label='' name='description' required />
+                    <Input type='file' label='Lampirkan Gambar' onChange={handleImage} accept='image/*' />
+                    {
+                      progress ? <p className={progress ? "block" : "hidden"}>Loading Upload....</p> : ""
+                    }
+                    <div className='flex flex-wrap mt-5'>
+                      {
+                        images?.map((v: any) => (
+                          <button key={v} onClick={() => { setImages(images.filter((val: any) => val !== v)) }} className='relative group w-1/3'>
+                            <Image alt='images' src={v} layout='relative' width={300} height={300} className='w-full h-[100px]' />
+                            <div className='absolute inset-0 bg-red-700 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-50 transition-opacity duration-300'>
+                              <TrashIcon className='text-white' /> <p className='text-white'>Hapus</p>
+                            </div>
+                          </button>
+                        ))
+                      }
+                    </div>
+                    <input type="hidden" name="user_id" value={account?.id} />
+                    <input type="hidden" name="user_name" value={account?.name} />
+                    <input type="hidden" name="ads_id" value={modal?.data?.id} />
+                    <input type="hidden" name="ads_name" value={modal?.data?.title} />
+                    <Button type='submit' color='danger' >Kirim</Button>
+                  </form>
+
+                </Modal> : ""
+            }
+
 
             {
-              from == "myads" ?
+              (from == "myads") || (ads?.user_id == account?.id) ?
                 "" :
                 <>
                   {/* Button WA */}
                   <div className='fixed bottom-4 right-4 lg:right-[37%]'>
-                    <Link href={`https://wa.me/${user?.phone}`} target='_blank'>
+                    <Link href={`https://wa.me/${normalizePhoneNumber(user?.phone)}`} target='_blank'>
                       <Button type='button' onClick={addCalls} className={'rounded-full p-2 flex items-center gap-2'}>
                         <PhoneCallIcon className='w-8' />
                         Whatsapp Now

@@ -422,6 +422,16 @@ export default function HeaderAds(props: Props) {
                                                             />
                                                             <span className='ml-2'>Automatic</span>
                                                         </div>
+                                                        <div>
+                                                            <input
+                                                                type="radio"
+                                                                name="transmission"
+                                                                value={'CVT'}
+                                                                defaultChecked={filter?.transmission == "CVT"}
+                                                                onChange={(e) => { setFilter({ ...filter, transmission: e.target.value }) }}
+                                                            />
+                                                            <span className='ml-2'>CVT</span>
+                                                        </div>
                                                     </div>
                                                 </div> : ""
                                         }

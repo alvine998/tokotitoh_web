@@ -118,9 +118,10 @@ export default function Sell({ categories, subcategories, brands, types, provinc
     }
 
     const [images, setImages] = useState<any>(detail?.images || []);
-    const [progress, setProgress] = useState<any>();
+    const [progress, setProgress] = useState<boolean>(false);
 
     const handleImage = async (e: any) => {
+        setProgress(true)
         if (e.target.files) {
             const file = e.target.files[0]
             if (file?.size <= 2000000) {
@@ -128,15 +129,16 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                 const uploadTask = uploadBytesResumable(storageRef, file);
                 uploadTask.on('state_changed', (snapshot) => {
                     const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                    setProgress(progress);
                 }, (error) => {
                     console.log(error);
                 }, () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         setImages([...images, downloadURL]);
+                        setProgress(false);
                     })
                 })
             } else {
+                setProgress(false);
                 return Swal.fire({
                     icon: "error",
                     text: "Ukuran Gambar Tidak Boleh Lebih Dari 2mb"
@@ -257,7 +259,6 @@ export default function Sell({ categories, subcategories, brands, types, provinc
 
     const validationFormData = (data: any) => {
         let next = true
-        console.log(data, 'sss');
         if (data?.category_name?.toLowerCase()?.includes('mobil') || data?.category_name?.toLowerCase()?.includes('motor')) {
             ['title', 'brand_id', 'type_id', 'price', 'description', 'km', 'fuel_type', 'transmission', 'ownership', 'year', 'color']?.map((val: any) => {
                 if (!data[val] || data[val] == "") {
@@ -605,7 +606,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                             Tambah
                         </button>
                         {
-                            progress ? <p className={progress == 100 ? "hidden" : "block"}>Loading Upload.... {progress}%</p> : ""
+                            progress ? <p className={progress ? "block" : "hidden"}>Loading Upload....</p> : ""
                         }
                         <div className='flex flex-wrap mt-5'>
                             {

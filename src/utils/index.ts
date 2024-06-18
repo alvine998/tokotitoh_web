@@ -31,7 +31,7 @@ export function normalizePhoneNumber(phoneNumber: any) {
     } else if (phoneNumber.startsWith('0')) {
         return '62' + phoneNumber.slice(1);
     } else if (phoneNumber.startsWith('8')) {
-        return '62' + phoneNumber.slice(1);
+        return '62' + phoneNumber;
     } else {
         return phoneNumber;
     }
