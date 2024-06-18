@@ -11,11 +11,12 @@ interface Props {
     modal?: any;
     setModal?: any;
     items?: any;
+    notif?: any;
 }
 
 export default function HeaderHome(props: Props) {
     const router = useRouter();
-    const { modal, setModal, items, filter, setFilter } = props;
+    const { modal, setModal, items, filter, setFilter, notif } = props;
     const [location, setLocation] = useState<any>({ latitude: null, longitude: null });
     const [adress, setAddress] = useState<any>('Indonesia');
 
@@ -65,11 +66,17 @@ export default function HeaderHome(props: Props) {
                         items={items?.map((v: any) => ({ ...v, name: v?.title }))}
                         onSearch={(string: string, results: any) => { setFilter({ ...filter, search: string }) }}
                         placeholder='Cari barangmu disini...'
-                        onSelect={(item: any)=>router.push(`/category/${item?.subcategory_id}`)}
+                        onSelect={(item: any) => router.push(`/category/${item?.subcategory_id}`)}
                     />
                 </div>
-                <button type='button' onClick={() => { setModal({ ...modal, open: true, key: "notif" }) }}>
+                <button type='button' onClick={() => { setModal({ ...modal, open: true, key: "notif" }) }} className='relative group'>
                     <BellIcon className='w-7 h-7' />
+                    {
+                        notif?.find((v: any) => v?.status == 0) ?
+                            <div className='absolute top-1 right-0 w-4 bg-red-700 p-2 rounded-full'>
+
+                            </div> : ""
+                    }
                 </button>
             </div>
         </div>

@@ -4,7 +4,7 @@ import Modal, { useModal } from '@/components/Modal'
 import { CONFIG } from '@/config'
 import axios from 'axios'
 import { getCookie } from 'cookies-next'
-import { CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PlusCircleIcon, XCircleIcon } from 'lucide-react'
+import { CarFrontIcon, CarIcon, ChevronLeftCircleIcon, ChevronLeftIcon, InfoIcon, LucideHome, PlusCircleIcon, XCircleIcon } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -19,17 +19,17 @@ export async function getServerSideProps(context: any) {
       }
     })
     const { req, res } = context;
-    // let user: any = getCookie('account', { req, res });
-    // let ads: any = []
-    // if (user) {
-    //   user = JSON.parse(user)
-    //   ads = await axios.get(CONFIG.base_url_api + `/ads?status=1&pagination=true&page=${+page || 0}&size=${+size || 10}&search=${search || ""}`, {
-    //     headers: {
-    //       "bearer-token": "tokotitohapi",
-    //       "x-partner-code": "id.marketplace.tokotitoh"
-    //     }
-    //   })
-    // }
+    let user: any = getCookie('account', { req, res });
+    let notif: any = []
+    if (user) {
+      user = JSON.parse(user)
+      notif = await axios.get(CONFIG.base_url_api + `/notifications?pagination=true&page=${+page || 0}&size=${+size || 5}`, {
+        headers: {
+          "bearer-token": "tokotitohapi",
+          "x-partner-code": "id.marketplace.tokotitoh"
+        }
+      })
+    }
     const ads = await axios.get(CONFIG.base_url_api + `/ads?status=1&pagination=true&page=${+page || 0}&size=${+size || 10}&search=${search || ""}`, {
       headers: {
         "bearer-token": "tokotitohapi",
@@ -40,6 +40,7 @@ export async function getServerSideProps(context: any) {
       props: {
         categories: result?.data?.items?.rows,
         ads: ads?.data?.items?.rows,
+        notif: notif?.data?.items?.rows || [],
       }
     }
   } catch (error: any) {
@@ -60,11 +61,15 @@ export async function getServerSideProps(context: any) {
   }
 }
 
-export default function Home({ categories, ads }: any) {
+export default function Home({ categories, ads, notif }: any) {
   const router = useRouter();
   const [modal, setModal] = useState<useModal>()
   const [subcat, setSubcat] = useState<any>([]);
   const [filter, setFilter] = useState<any>(router.query);
+  const [mode, setMode] = useState<any>({
+    type: 'default',
+    data: null
+  });
   useEffect(() => {
     const queryFilter = new URLSearchParams(filter).toString();
     router.push(`?${queryFilter}`)
@@ -83,9 +88,25 @@ export default function Home({ categories, ads }: any) {
       console.log(error);
     }
   }
+
+  const viewNotif = async (data: any) => {
+    try {
+      await axios.patch(CONFIG.base_url_api + `/notification`, { id: data?.id, status: 1 }, {
+        headers: {
+          "bearer-token": "tokotitohapi",
+          "x-partner-code": "id.marketplace.tokotitoh"
+        }
+      })
+      setMode({ type: 'read', data: data })
+      router.push('')
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className='pb-20 flex flex-col justify-center items-center'>
-      <HeaderHome items={ads} modal={modal} setModal={setModal} filter={filter} setFilter={setFilter} />
+      <HeaderHome notif={notif} items={ads} modal={modal} setModal={setModal} filter={filter} setFilter={setFilter} />
 
       {/* Kategori */}
       <div className='p-2 mt-28'>
@@ -195,7 +216,33 @@ export default function Home({ categories, ads }: any) {
                   <XCircleIcon />
                 </button>
               </div>
-              <p className='mt-10 text-center text-xl font-semibold'>Belum ada notifikasi!</p>
+              {
+                mode.type === "default" ?
+                  <>
+                    {
+                      notif?.length > 0 ?
+                        <div className='my-5'>
+                          {
+                            notif?.map((v: any) => (
+                              <button onClick={() => viewNotif(v)} className='flex flex-col gap-2 w-full border-2 rounded p-2'>
+                                <p className='font-semibold'>{v?.title}</p>
+                                <p className='text-gray-500'>{v?.content?.substring(0, 30)}{v?.content?.length > 30 ? "..." : ""}</p>
+                              </button>
+                            ))
+                          }
+                        </div> :
+                        <p className='mt-10 text-center text-xl font-semibold'>Belum ada notifikasi!</p>
+                    }
+                  </> :
+                  <div className='my-4 border-2 p-2 rounded'>
+                    <button className='flex gap-3 items-center' onClick={() => { setMode({ type: 'default', data: null }) }}>
+                      <ChevronLeftCircleIcon className='w-6 h-6' />
+                      Kembali
+                    </button>
+                    <h5 className='text-center text-xl font-semibold mt-3'>{mode?.data?.title}</h5>
+                    <p className='text-justify'>{mode?.data?.content}</p>
+                  </div>
+              }
             </div>
           </Modal> : ""
       }
