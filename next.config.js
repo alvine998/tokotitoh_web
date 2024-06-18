@@ -2,7 +2,12 @@
 const webpack = require('webpack')
 const nextConfig = {
   reactStrictMode: true,
-  webpack: (config, {buildId, dev, isServer, defaultLoaders, webpack}) => {
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        fs: false
+      };
+    }
     config.plugins.push(new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',

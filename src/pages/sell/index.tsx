@@ -9,7 +9,7 @@ import { storage } from '@/config/firebase'
 import axios from 'axios'
 import { getCookie } from 'cookies-next'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
-import { ArrowLeft, CarFrontIcon, CarIcon, ChevronLeftCircleIcon, ChevronLeftIcon, InfoIcon, LucideHome, PlusCircleIcon, PlusIcon } from 'lucide-react'
+import { ArrowLeft, CarFrontIcon, CarIcon, ChevronLeftCircleIcon, ChevronLeftIcon, InfoIcon, LucideHome, PlusCircleIcon, PlusIcon, TrashIcon } from 'lucide-react'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import { useRouter } from 'next/router'
@@ -149,7 +149,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
     const [selected, setSelected] = useState<any>({
         ...detail
     });
-    const [filled, setFilled] = useState<any>(detail ? [1, 2, 3] : [1]);
+    const [filled, setFilled] = useState<any>(detail?.id ? [1, 2, 3] : [1]);
     const [list, setList] = useState<any>({
         cities: [],
         districts: [],
@@ -254,13 +254,75 @@ export default function Sell({ categories, subcategories, brands, types, provinc
         setFilter({ ...filter, subcategory_id: data?.id })
         setSelected({ ...selected, subcategory_id: data?.id, subcategory_name: data?.name })
     };
-    const handleFormData = () => {
-        setFilled([...filled, 4])
-        setIsMoved(3);
-    };
-    const handleGeolocation = () => {
-        setFilled([...filled, 5])
-        setIsMoved(4);
+
+    const validationFormData = (data: any) => {
+        let next = true
+        console.log(data, 'sss');
+        if (data?.category_name?.toLowerCase()?.includes('mobil') || data?.category_name?.toLowerCase()?.includes('motor')) {
+            ['title', 'brand_id', 'type_id', 'price', 'description', 'km', 'fuel_type', 'transmission', 'ownership', 'year', 'color']?.map((val: any) => {
+                if (!data[val] || data[val] == "") {
+                    Swal.fire({
+                        icon: "warning",
+                        text: `Harap lengkapi semua kolom!`
+                    })
+                    next = false
+                }
+            })
+            if (next) {
+                setFilled([...filled, 4])
+                setIsMoved(3);
+                return
+            }
+        }
+        else if (data?.category_name?.toLowerCase()?.includes('properti')) {
+            ['title', 'price', 'description', 'certificates', 'area', 'building']?.map((val: any) => {
+                if (!data[val] || data[val] == "") {
+                    Swal.fire({
+                        icon: "warning",
+                        text: `Harap lengkapi kolom!`
+                    })
+                    next = false
+                }
+            })
+            if (next) {
+                setFilled([...filled, 4])
+                setIsMoved(3);
+                return
+            }
+        }
+        else {
+            ['title', 'brand_id', 'type_id', 'price', 'description']?.map((val: any) => {
+                if (!data[val] || data[val] == "") {
+                    Swal.fire({
+                        icon: "warning",
+                        text: `Harap lengkapi kolom!`
+                    })
+                    next = false
+                }
+            })
+            if (next) {
+                setFilled([...filled, 4])
+                setIsMoved(3);
+                return
+            }
+        }
+    }
+    const handleGeolocation = (data: any) => {
+        let next = true;
+        ['province_id', 'district_id', 'city_id']?.map((val: any) => {
+            if (!data[val] || data[val] == "") {
+                Swal.fire({
+                    icon: "warning",
+                    text: `Harap lengkapi kolom!`
+                })
+                next = false
+            }
+        })
+        if (next) {
+            setFilled([...filled, 5])
+            setIsMoved(4);
+            return
+        }
     };
     const handlePreviousButtonClick = () => {
         if (isMoved > 0) {
@@ -277,7 +339,6 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                     text: "Gambar Wajib Diisi"
                 })
             }
-            console.log(selected, 'sllsl');
             const payload = {
                 ...selected,
                 images: images,
@@ -301,7 +362,6 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                     }
                 });
             }
-
             Swal.fire({
                 icon: "success",
                 text: "Berhasil membuat iklan!"
@@ -309,6 +369,10 @@ export default function Sell({ categories, subcategories, brands, types, provinc
             router.push('/myads')
         } catch (error) {
             console.log(error);
+            Swal.fire({
+                icon: "error",
+                text: "Gagal membuat iklan!"
+            })
         }
     }
     let BRANDS = brands?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }));
@@ -469,7 +533,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                     <Input label='Tahun' defaultValue={+selected?.year || ""} placeholder='Masukkan Tahun' type='number' onChange={(e: any) => { setSelected({ ...selected, year: e.target.value }) }} />
                                     <Input label='Warna' defaultValue={selected?.color || ""} placeholder='Masukkan Warna' onChange={(e: any) => { setSelected({ ...selected, color: e.target.value }) }} />
                                     {/* <Input label='Plat Nomor' defaultValue={selected?.plat_no || ""} placeholder='X1234YYY' onChange={(e: any) => { setSelected({ ...selected, plat_no: e.target.value }) }} /> */}
-                                    <Button color='info' type='button' onClick={handleFormData} >Selanjutnya</Button>
+                                    <Button color='info' type='button' onClick={() => validationFormData(selected)} >Selanjutnya</Button>
                                 </div> : ""
                         }
                     </div>
@@ -519,7 +583,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                 defaultValue={{ value: detail?.district_id || "", label: detail?.district_name || "Pilih Kecamatan" }}
                             />
                         </div>
-                        <Button color='info' type='button' onClick={handleGeolocation} >Selanjutnya</Button>
+                        <Button color='info' type='button' onClick={() => { handleGeolocation(selected) }} >Selanjutnya</Button>
                     </div>
                 </div>
 
@@ -530,6 +594,9 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                     <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
                         <ArrowLeft />
                     </button>
+                    <div className='bg-green-300 p-2 w-full rounded'>
+                        <p className='text-center'>Pastikan ukuran gambar tidak lebih dari 2mb</p>
+                    </div>
                     <p className='m-2'>Pilih Gambar:</p>
                     <div className='mt-5'>
                         <input type="file" className='hidden' ref={fileInputRef} onChange={handleImage} accept='image/*' />
@@ -538,12 +605,17 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                             Tambah
                         </button>
                         {
-                            progress && <p className={progress == 100 ? "hidden" : ""}>Progress: {progress}%</p>
+                            progress ? <p className={progress == 100 ? "hidden" : "block"}>Loading Upload.... {progress}%</p> : ""
                         }
                         <div className='flex flex-wrap mt-5'>
                             {
                                 images?.map((v: any) => (
-                                    <Image alt='images' src={v} key={v} layout='relative' width={300} height={300} className='w-1/3 h-[100px]' />
+                                    <button key={v} onClick={() => { setImages(images.filter((val: any) => val !== v)) }} className='relative group w-1/3'>
+                                        <Image alt='images' src={v} layout='relative' width={300} height={300} className='w-full h-[100px]' />
+                                        <div className='absolute inset-0 bg-red-700 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-50 transition-opacity duration-300'>
+                                            <TrashIcon className='text-white' /> <p className='text-white'>Hapus</p>
+                                        </div>
+                                    </button>
                                 ))
                             }
                         </div>

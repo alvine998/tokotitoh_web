@@ -117,7 +117,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
       {
         show ?
           <>
-            <div className='p-3'>
+            <div className='p-3 max-w-[350px]'>
               <button type='button' onClick={() => { from == "myads" ? router.push(`/myads`) : router.push(`/category/${subcat_id}`) }} className='flex gap-2 font-bold'>
                 <ArrowLeft className='w-5' />
                 Kembali
@@ -177,7 +177,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 "" :
                 <>
                   {/* Button WA */}
-                  <div className='fixed bottom-4 right-4'>
+                  <div className='fixed bottom-4 right-4 lg:right-[37%]'>
                     <Link href={`https://wa.me/${user?.phone}`} target='_blank'>
                       <Button type='button' onClick={addCalls} className={'rounded-full p-2 flex items-center gap-2'}>
                         <PhoneCallIcon className='w-8' />
@@ -192,7 +192,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               ads?.user_id == account?.id ?
                 <>
                   {/* Button Edit */}
-                  <div className='fixed bottom-4 right-4'>
+                  <div className='fixed bottom-4 right-4 lg:right-[37%]'>
                     <Link href={`/sell?id=${ads?.id}&account_id=${account?.id}&category_id=${ads?.category_id}&brand_id=${ads?.brand_id}`}>
                       <Button type='button' color='info' className={'rounded-full p-2 flex items-center gap-2'}>
                         <PencilIcon className='w-8' />
@@ -204,7 +204,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 :
                 ""
             }
-            <div className='absolute bottom-0 lg:left-[36%] left-0'>
+            <div className='absolute bottom-0 lg:left-[37%] left-0'>
               <div className='flex gap-3 items-center pl-5 pt-3'>
                 <UserCircleIcon className='w-20 h-20' />
                 <div>
