@@ -214,7 +214,7 @@ export default function HeaderAds(props: Props) {
                     </button>
                     <button type='button' className='flex gap-2 items-center'>
                         <MapPinIcon className='w-4 h-4' />
-                        <h5 className='text-xs'>{adress}</h5>
+                        <h5 className='text-xs'>{adress?.substring(0, 30)}{adress?.length > 30 ? "..." : ""}</h5>
                     </button>
                 </div>
 
@@ -227,9 +227,9 @@ export default function HeaderAds(props: Props) {
                 <div className='w-full'>
                     <ReactSearchAutocomplete
                         items={items?.map((v: any) => ({ ...v, name: v?.title }))}
-                        onSearch={(string: string, results: any) => { setFilter({...filter, search: string }) }}
+                        onSearch={(string: string, results: any) => { setFilter({ ...filter, search: string }) }}
                         placeholder='Cari disini...'
-                        onSelect={(item: any)=>router.push(`/category/${item?.subcategory_id}`)}
+                        onSelect={(item: any) => router.push(`/category/${item?.subcategory_id}`)}
                     />
                 </div>
             </div>

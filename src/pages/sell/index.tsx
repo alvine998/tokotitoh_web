@@ -292,7 +292,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
             }
         }
         else {
-            ['title', 'brand_id', 'type_id', 'price', 'description']?.map((val: any) => {
+            ['title', 'price', 'description']?.map((val: any) => {
                 if (!data[val] || data[val] == "") {
                     Swal.fire({
                         icon: "warning",
@@ -340,6 +340,22 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                     text: "Gambar Wajib Diisi"
                 })
             }
+            // Get today's date
+            let today = new Date();
+
+            // Subtract 200 days
+            let pastDate = new Date();
+            pastDate.setDate(today.getDate() + 200);
+
+            // Format the date (optional)
+            let day: any = pastDate.getDate();
+            let month: any = pastDate.getMonth() + 1; // Months are zero-based in JavaScript
+            let year = pastDate.getFullYear();
+
+            // Pad single digit day and month with a leading zero (optional)
+            day = day < 10 ? '0' + day : day;
+            month = month < 10 ? '0' + month : month;
+
             const payload = {
                 ...selected,
                 images: images,
@@ -347,6 +363,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                 user_name: user?.name,
                 price: +selected?.price,
                 km: +selected?.km,
+                expired_on: `${year}-${month}-${day}`
             }
             if (detail?.id) {
                 await axios.patch(CONFIG.base_url_api + '/ads', { ...payload, id: detail?.id, status: 0 }, {
@@ -534,9 +551,9 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                     <Input label='Tahun' defaultValue={+selected?.year || ""} placeholder='Masukkan Tahun' type='number' onChange={(e: any) => { setSelected({ ...selected, year: e.target.value }) }} />
                                     <Input label='Warna' defaultValue={selected?.color || ""} placeholder='Masukkan Warna' onChange={(e: any) => { setSelected({ ...selected, color: e.target.value }) }} />
                                     {/* <Input label='Plat Nomor' defaultValue={selected?.plat_no || ""} placeholder='X1234YYY' onChange={(e: any) => { setSelected({ ...selected, plat_no: e.target.value }) }} /> */}
-                                    <Button color='info' type='button' onClick={() => validationFormData(selected)} >Selanjutnya</Button>
                                 </div> : ""
                         }
+                        <Button color='info' type='button' onClick={() => validationFormData(selected)} >Selanjutnya</Button>
                     </div>
                 </div>
 
