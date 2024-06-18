@@ -224,7 +224,7 @@ export default function Home({ categories, ads, notif }: any) {
                         <div className='my-5'>
                           {
                             notif?.map((v: any) => (
-                              <button onClick={() => viewNotif(v)} className='flex flex-col gap-2 w-full border-2 rounded p-2'>
+                              <button key={v?.id} onClick={() => viewNotif(v)} className='flex flex-col gap-2 w-full border-2 rounded p-2'>
                                 <p className='font-semibold'>{v?.title}</p>
                                 <p className='text-gray-500'>{v?.content?.substring(0, 30)}{v?.content?.length > 30 ? "..." : ""}</p>
                               </button>
