@@ -29,29 +29,29 @@ export default function HeaderAds(props: Props) {
     const [modal, setModal] = useState<useModal>();
     const [filterName, setFilterName] = useState<any>("MEREK/MODEL");
 
-    const geolocation = async () => {
-        try {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        setLocation({
-                            latitude: position.coords.latitude,
-                            longitude: position.coords.longitude,
-                        });
-                        const result = axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`).then((data) => {
-                            const address = data.data.address
-                            setAddress(`${address?.village || ""}, ${address?.county || ""}`)
-                        }).catch((err: any) => {
-                            console.log(err);
-                            setAddress('Indonesia')
-                        })
-                    }
-                );
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // const geolocation = async () => {
+    //     try {
+    //         if (navigator.geolocation) {
+    //             navigator.geolocation.getCurrentPosition(
+    //                 (position) => {
+    //                     setLocation({
+    //                         latitude: position.coords.latitude,
+    //                         longitude: position.coords.longitude,
+    //                     });
+    //                     const result = axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`).then((data) => {
+    //                         const address = data.data.address
+    //                         setAddress(`${address?.village || ""}, ${address?.county || ""}`)
+    //                     }).catch((err: any) => {
+    //                         console.log(err);
+    //                         setAddress('Indonesia')
+    //                     })
+    //                 }
+    //             );
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     const [selected, setSelected] = useState<any>();
     const [list, setList] = useState<any>({
@@ -123,9 +123,9 @@ export default function HeaderAds(props: Props) {
         }
     }
 
-    useEffect(() => {
-        geolocation();
-    }, [])
+    // useEffect(() => {
+    //     geolocation();
+    // }, [])
 
     let navsCar = [
         {
