@@ -413,7 +413,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
     let PROVINCES = provinces?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }));
     return (
         <div className='pb-20 flex justify-center items-center'>
-            <div className="relative w-full max-w-2xl h-screen">
+            <div className="relative w-full max-w-2xl">
 
                 {/* Numbering */}
                 <div className='flex gap-2 justify-center pt-2 fixed top-0 left-0 right-0 z-[99] bg-white'>
