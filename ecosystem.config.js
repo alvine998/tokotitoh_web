@@ -2,7 +2,7 @@
 module.exports = {
     apps: [
       {
-        name: 'nextjs-app',
+        name: 'tokotitohweb',
         script: 'npm',
         args: 'run dev',
         instances: 1,
