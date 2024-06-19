@@ -23,7 +23,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { storage } from '@/config/firebase'
 import Swal from 'sweetalert2'
 
-const OwlCarousel = dynamic(() => import("react-owl-carousel"), { ssr: false })
+const OwlCarousel = dynamic(async () => await import("react-owl-carousel"), { ssr: false })
 
 export async function getServerSideProps(context: any) {
   try {
