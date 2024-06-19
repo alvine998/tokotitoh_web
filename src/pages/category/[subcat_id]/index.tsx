@@ -137,19 +137,16 @@ export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: 
 
   const addViews = async (data: any) => {
     try {
-      if (user) {
-        user = JSON.parse(user)
-        if (user?.id == data?.id) {
-          await axios.post(CONFIG.base_url_api + `/ads/views`, { id: data?.id }, {
-            headers: {
-              "bearer-token": "tokotitohapi",
-              "x-partner-code": "id.marketplace.tokotitoh"
-            }
-          })
-        }
-        localStorage.setItem('from', 'subcat')
-        router.push(`/category/${subcat_id}/${data?.id}`)
+      if (user?.id !== data?.id) {
+        await axios.post(CONFIG.base_url_api + `/ads/views`, { id: data?.id }, {
+          headers: {
+            "bearer-token": "tokotitohapi",
+            "x-partner-code": "id.marketplace.tokotitoh"
+          }
+        })
       }
+      localStorage.setItem('from', 'subcat')
+      router.push(`/category/${subcat_id}/${data?.id}`)
     } catch (error) {
       console.log(error);
     }

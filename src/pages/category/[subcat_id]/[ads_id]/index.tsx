@@ -30,10 +30,11 @@ export async function getServerSideProps(context: any) {
     const { page, size } = context.query;
     const { subcat_id, ads_id } = context.params;
     const { req, res } = context;
-    let account: any = getCookie('account', { req, res }) || {}
+    let account: any = getCookie('account', { req, res })
     if (account) {
       account = JSON.parse(account)
     }
+    console.log(account);
     const result = await axios.get(CONFIG.base_url_api + `/ads?id=${ads_id}&pagination=true&page=${+page || 0}&size=${+size || 10}`, {
       headers: {
         "bearer-token": "tokotitohapi",
@@ -48,11 +49,11 @@ export async function getServerSideProps(context: any) {
     })
     return {
       props: {
-        ads: result?.data?.items?.rows[0] || [],
-        user: user?.data?.items?.rows[0] || [],
+        ads: result?.data?.items?.rows[0] || {},
+        user: user?.data?.items?.rows[0] || {},
         subcat_id,
         ads_id,
-        account
+        account: account || {}
       }
     }
   } catch (error: any) {
@@ -188,7 +189,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                   Kembali
                 </button>
                 {
-                  (from == "myads") || (ads?.user_id == account?.id) ?
+                  (from == "myads") || (ads?.user_id == account?.id) || !account?.id ?
                     "" :
                     <button onClick={() => { setModal({ ...modal, open: true, data: ads, key: "report" }); setImages([]) }} className='text-red-500'>
                       LAPORKAN
