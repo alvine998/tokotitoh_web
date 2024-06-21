@@ -514,7 +514,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                         </div> : ""
                                 }
                                 {
-                                    selected?.category_name?.toLowerCase()?.includes('mobil') || selected?.category_name?.toLowerCase()?.includes('motor') ?
+                                    (selected?.category_name?.toLowerCase()?.includes('mobil') && selected?.category_name?.toLowerCase()?.includes('dijual')) || (selected?.category_name?.toLowerCase()?.includes('motor') && selected?.category_name?.toLowerCase()?.includes('dijual')) ?
                                         <div>
                                             <Input label='Trip KM' placeholder='Masukkan Trip KM' defaultValue={+selected?.km || ""} numericformat onChange={(e: any) => { setSelected({ ...selected, km: +e.target.value?.replaceAll(",", "") }) }} />
                                             <div className='mt-2'>
