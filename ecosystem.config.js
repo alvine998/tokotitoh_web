@@ -4,13 +4,13 @@ module.exports = {
       {
         name: 'tokotitohweb',
         script: 'npm',
-        args: 'run dev',
+        args: 'start',
         instances: 1,
         autorestart: true,
         watch: false,
         max_memory_restart: '1G',
         env: {
-          NODE_ENV: 'development',
+          NODE_ENV: 'production',
           PORT: 3001, // Adjust port if needed
         },
       },
