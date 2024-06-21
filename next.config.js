@@ -15,7 +15,7 @@ const nextConfig = {
     return config
   },
   images: {
-    domains: ['firebasestorage.googleapis.com', 'localhost']
+    domains: ['firebasestorage.googleapis.com', 'localhost', '**']
   },
   env: {
     BASE_URL_API_TOKOTITOH: 'https://api.tokotitoh.co.id'

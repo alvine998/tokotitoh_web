@@ -7,6 +7,7 @@ import HeaderHome from '@/components/headers/HeaderHome'
 import { CONFIG } from '@/config'
 import { storage } from '@/config/firebase'
 import axios from 'axios'
+import imageCompression from 'browser-image-compression'
 import { getCookie } from 'cookies-next'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { ArrowLeft, CarFrontIcon, CarIcon, ChevronLeftCircleIcon, ChevronLeftIcon, InfoIcon, LucideHome, PlusCircleIcon, PlusIcon, TrashIcon } from 'lucide-react'
@@ -122,11 +123,17 @@ export default function Sell({ categories, subcategories, brands, types, provinc
 
     const handleImage = async (e: any) => {
         setProgress(true)
+        // Set compression options
+        const options = {
+            maxSizeMB: 0.01,          // Maximum size in MB
+            useWebWorker: true     // Use multi-threading for compression
+        };
         if (e.target.files) {
             const file = e.target.files[0]
-            if (file?.size <= 2000000) {
-                const storageRef = ref(storage, `images/ads/${file?.name}`);
-                const uploadTask = uploadBytesResumable(storageRef, file);
+            const compressedFile = await imageCompression(file, options);
+            if (file?.size <= 50000000) {
+                const storageRef = ref(storage, `images/ads/${compressedFile?.name}`);
+                const uploadTask = uploadBytesResumable(storageRef, compressedFile);
                 uploadTask.on('state_changed', (snapshot) => {
                     const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
                 }, (error) => {
