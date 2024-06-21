@@ -68,7 +68,7 @@ export default function MyAds({ ads, user }: any) {
         router.push(`/category/${v?.subcategory_id}/${v?.id}`)
     }
     return (
-        <div className='pb-2 flex flex-col justify-center items-center'>
+        <div className='pb-20 flex flex-col justify-center items-center'>
             {
                 user ?
                     <div className=''>

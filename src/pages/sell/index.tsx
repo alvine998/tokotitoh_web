@@ -427,219 +427,228 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                 </div>
 
                 {/* Select Category */}
-                <div
-                    className={`absolute z-0 top-10 ${isMoved == 0 ? 'left-0' : 'left-full hidden'} bg-white w-full h-auto mt-2 transition-all duration-500`}
-                >
-                    <button className='text-blue-700 m-2 flex items-center gap-2' type='button' onClick={() => { router.push('/') }}>
-                        <ArrowLeft />
-                        Kembali
-                    </button>
-                    <p className='m-2 mt-4'>Apa yang ingin anda jual?</p>
-                    <div className='mt-4'>
-                        {
-                            categories?.map((v: any) => (
-                                <button onClick={() => { handleCategory(v) }} type='button' key={v?.id} className='p-2 border w-full text-left hover:bg-gray-300'>
-                                    {v?.name}
-                                </button>
-                            ))
-                        }
-                    </div>
-                </div>
+                {
+                    isMoved == 0 ?
+                        <div className='mt-20'>
+                            <button className='text-blue-700 m-2 flex items-center gap-2' type='button' onClick={() => { router.push('/') }}>
+                                <ArrowLeft />
+                                Kembali
+                            </button>
+                            <p className='m-2 mt-4'>Apa yang ingin anda jual?</p>
+                            <div className='mt-4'>
+                                {
+                                    categories?.map((v: any) => (
+                                        <button onClick={() => { handleCategory(v) }} type='button' key={v?.id} className='p-2 border w-full text-left hover:bg-gray-300'>
+                                            {v?.name}
+                                        </button>
+                                    ))
+                                }
+                            </div>
+                        </div> : ""
+                }
 
                 {/* Select Subcategory */}
-                <div
-                    className={`absolute z-10 top-10 ${isMoved == 1 ? 'left-0' : 'left-full hidden'} bg-white p-2 w-full h-auto transition-all duration-500`}
-                >
-                    <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
-                        <ArrowLeft />
-                    </button>
-                    <p className='m-2'>Pilih Sub Kategori {selected?.category_name}:</p>
-                    <div className='mt-4'>
-                        {
-                            subcategories?.map((v: any) => (
-                                <button onClick={() => { handleSubCategory(v) }} type='button' key={v?.id} className='p-2 border w-full text-left hover:bg-gray-300'>
-                                    {v?.name}
-                                </button>
-                            ))
-                        }
-                    </div>
-                </div>
-
-                {/* Form Data */}
-                <div
-                    className={`absolute z-20 top-10 ${isMoved == 2 ? 'left-0' : 'left-full hidden'} bg-white p-2 w-full h-auto transition-all duration-500`}
-                >
-                    {
-                        filter?.id && filter?.account_id ?
-                            "" :
+                {
+                    isMoved == 1 ?
+                        <div className='mt-20'>
                             <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
                                 <ArrowLeft />
                             </button>
-                    }
-                    <p className='m-2 mt-4'>{selected?.category_name} {">"} {selected?.subcategory_name}</p>
-                    <div className='mt-4'>
-                        <Input label='Judul' defaultValue={selected?.title || ""} placeholder='Masukkan Judul Iklan' maxLength={30} onChange={(e: any) => { setSelected({ ...selected, title: e.target.value }) }} />
-                        <div>
-                            <label className='text-gray-500' htmlFor="brand">Brand</label>
-                            <ReactSelect
-                                options={BRANDS}
-                                placeholder="Pilih Brand"
-                                onChange={(e: any) => { setFilter({ ...filter, brand_id: e?.value }), setSelected({ ...selected, brand_id: e?.value, brand_name: e?.label }) }}
-                                maxMenuHeight={200}
-                                defaultValue={BRANDS?.find((v: any) => v?.id == detail?.brand_id)}
-                                id='brand'
-                            />
-                        </div>
-                        <div className='mt-2'>
-                            <label className='text-gray-500' htmlFor="type">Tipe</label>
-                            <ReactSelect
-                                isDisabled={types?.length < 1}
-                                options={TYPES}
-                                placeholder="Pilih Tipe"
-                                onChange={(e: any) => { setSelected({ ...selected, type_id: e?.value, type_name: e?.label }) }}
-                                maxMenuHeight={200}
-                                defaultValue={TYPES?.find((v: any) => v?.id == selected?.type_id)}
-                                id='type'
-                            />
-                        </div>
-                        <Input label='Harga' placeholder='Masukkan Harga' defaultValue={+selected?.price || ""} numericformat onChange={(e: any) => { setSelected({ ...selected, price: +e.target.value?.replaceAll(",", "") }) }} />
-                        <TextArea label='Deksripsi' placeholder='Masukkan Deskripsi' maxLength={250} defaultValue={selected?.description || ""} onChange={(e) => { setSelected({ ...selected, description: e.target.value }) }} />
-                        {
-                            selected?.category_name?.toLowerCase()?.includes('properti') ?
+                            <p className='m-2'>Pilih Sub Kategori {selected?.category_name}:</p>
+                            <div className='mt-4'>
+                                {
+                                    subcategories?.map((v: any) => (
+                                        <button onClick={() => { handleSubCategory(v) }} type='button' key={v?.id} className='p-2 border w-full text-left hover:bg-gray-300'>
+                                            {v?.name}
+                                        </button>
+                                    ))
+                                }
+                            </div>
+                        </div> : ""
+                }
+
+                {/* Form Data */}
+                {
+                    isMoved == 2 ?
+                        <div className='mt-20'>
+                            {
+                                filter?.id && filter?.account_id ?
+                                    "" :
+                                    <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
+                                        <ArrowLeft />
+                                    </button>
+                            }
+                            <p className='m-2 mt-4'>{selected?.category_name} {">"} {selected?.subcategory_name}</p>
+                            <div className='mt-4'>
+                                <Input label='Judul' defaultValue={selected?.title || ""} placeholder='Masukkan Judul Iklan' maxLength={30} onChange={(e: any) => { setSelected({ ...selected, title: e.target.value }) }} />
                                 <div>
-                                    <Input label='Luas (m2)' placeholder='Masukkan Luas (m2)' defaultValue={+selected?.area || ""} numericformat onChange={(e: any) => { setSelected({ ...selected, area: e.target.value }) }} />
-                                    <Input label='Sertifikat' placeholder='Masukkan Sertifikat' defaultValue={selected?.certificates || ""} onChange={(e: any) => { setSelected({ ...selected, certificates: e.target.value }) }} />
-                                </div> : ""
-                        }
-                        {
-                            selected?.category_name?.toLowerCase()?.includes('mobil') || selected?.category_name?.toLowerCase()?.includes('motor') ?
-                                <div>
-                                    <Input label='Trip KM' placeholder='Masukkan Trip KM' defaultValue={+selected?.km || ""} numericformat onChange={(e: any) => { setSelected({ ...selected, km: +e.target.value?.replaceAll(",", "") }) }} />
-                                    <div className='mt-2'>
-                                        <label className='text-gray-500' htmlFor="fuel_type">Jenis Bahan Bakar</label>
-                                        <ReactSelect
-                                            options={FUELTYPES}
-                                            placeholder="Pilih Jenis Bahan Bakar"
-                                            onChange={(e: any) => { setSelected({ ...selected, fuel_type: e.value }) }}
-                                            maxMenuHeight={200}
-                                            id='fuel_type'
-                                            defaultValue={FUELTYPES?.find((v: any) => v?.value == selected?.fuel_type)}
-                                        />
-                                    </div>
-                                    <div className='mt-2'>
-                                        <label className='text-gray-500' htmlFor="transmission">Jenis Transmisi</label>
-                                        <ReactSelect
-                                            options={TRANSMISSIONTYPES}
-                                            onChange={(e: any) => { setSelected({ ...selected, transmission: e.value }) }}
-                                            placeholder="Pilih Jenis Transmisi"
-                                            maxMenuHeight={200}
-                                            id='transmission'
-                                            defaultValue={TRANSMISSIONTYPES?.find((v: any) => v?.value == selected?.transmission)}
-                                        />
-                                    </div>
-                                    <div className='mt-2'>
-                                        <label className='text-gray-500' htmlFor="ownership">Kepemilikan</label>
-                                        <ReactSelect
-                                            options={OWNERSHIPS}
-                                            onChange={(e: any) => { setSelected({ ...selected, ownership: e.value }) }}
-                                            placeholder="Pilih Kepemilikan"
-                                            maxMenuHeight={200}
-                                            id='ownership'
-                                            defaultValue={OWNERSHIPS?.find((v: any) => v?.value == selected?.ownership)}
-                                        />
-                                    </div>
-                                    <Input label='Tahun' defaultValue={+selected?.year || ""} placeholder='Masukkan Tahun' type='number' onChange={(e: any) => { setSelected({ ...selected, year: e.target.value }) }} />
-                                    <Input label='Warna' defaultValue={selected?.color || ""} placeholder='Masukkan Warna' onChange={(e: any) => { setSelected({ ...selected, color: e.target.value }) }} />
-                                    {/* <Input label='Plat Nomor' defaultValue={selected?.plat_no || ""} placeholder='X1234YYY' onChange={(e: any) => { setSelected({ ...selected, plat_no: e.target.value }) }} /> */}
-                                </div> : ""
-                        }
-                        <Button color='info' type='button' onClick={() => validationFormData(selected)} >Selanjutnya</Button>
-                    </div>
-                </div>
+                                    <label className='text-gray-500' htmlFor="brand">Brand</label>
+                                    <ReactSelect
+                                        options={BRANDS}
+                                        placeholder="Pilih Brand"
+                                        onChange={(e: any) => { setFilter({ ...filter, brand_id: e?.value }), setSelected({ ...selected, brand_id: e?.value, brand_name: e?.label }) }}
+                                        maxMenuHeight={200}
+                                        defaultValue={BRANDS?.find((v: any) => v?.id == detail?.brand_id)}
+                                        id='brand'
+                                    />
+                                </div>
+                                <div className='mt-2'>
+                                    <label className='text-gray-500' htmlFor="type">Tipe</label>
+                                    <ReactSelect
+                                        isDisabled={types?.length < 1}
+                                        options={TYPES}
+                                        placeholder="Pilih Tipe"
+                                        onChange={(e: any) => { setSelected({ ...selected, type_id: e?.value, type_name: e?.label }) }}
+                                        maxMenuHeight={200}
+                                        defaultValue={TYPES?.find((v: any) => v?.id == selected?.type_id)}
+                                        id='type'
+                                    />
+                                </div>
+                                <Input label='Harga' placeholder='Masukkan Harga' defaultValue={+selected?.price || ""} numericformat onChange={(e: any) => { setSelected({ ...selected, price: +e.target.value?.replaceAll(",", "") }) }} />
+                                <TextArea label='Deksripsi' placeholder='Masukkan Deskripsi' maxLength={250} defaultValue={selected?.description || ""} onChange={(e) => { setSelected({ ...selected, description: e.target.value }) }} />
+                                {
+                                    selected?.category_name?.toLowerCase()?.includes('properti') ?
+                                        <div>
+                                            <Input label='Luas (m2)' placeholder='Masukkan Luas (m2)' defaultValue={+selected?.area || ""} numericformat onChange={(e: any) => { setSelected({ ...selected, area: e.target.value }) }} />
+                                            <Input label='Sertifikat' placeholder='Masukkan Sertifikat' defaultValue={selected?.certificates || ""} onChange={(e: any) => { setSelected({ ...selected, certificates: e.target.value }) }} />
+                                        </div> : ""
+                                }
+                                {
+                                    selected?.category_name?.toLowerCase()?.includes('mobil') || selected?.category_name?.toLowerCase()?.includes('motor') ?
+                                        <div>
+                                            <Input label='Trip KM' placeholder='Masukkan Trip KM' defaultValue={+selected?.km || ""} numericformat onChange={(e: any) => { setSelected({ ...selected, km: +e.target.value?.replaceAll(",", "") }) }} />
+                                            <div className='mt-2'>
+                                                <label className='text-gray-500' htmlFor="fuel_type">Jenis Bahan Bakar</label>
+                                                <ReactSelect
+                                                    options={FUELTYPES}
+                                                    placeholder="Pilih Jenis Bahan Bakar"
+                                                    onChange={(e: any) => { setSelected({ ...selected, fuel_type: e.value }) }}
+                                                    maxMenuHeight={200}
+                                                    id='fuel_type'
+                                                    defaultValue={FUELTYPES?.find((v: any) => v?.value == selected?.fuel_type)}
+                                                />
+                                            </div>
+                                            <div className='mt-2'>
+                                                <label className='text-gray-500' htmlFor="transmission">Jenis Transmisi</label>
+                                                <ReactSelect
+                                                    options={TRANSMISSIONTYPES}
+                                                    onChange={(e: any) => { setSelected({ ...selected, transmission: e.value }) }}
+                                                    placeholder="Pilih Jenis Transmisi"
+                                                    maxMenuHeight={200}
+                                                    id='transmission'
+                                                    defaultValue={TRANSMISSIONTYPES?.find((v: any) => v?.value == selected?.transmission)}
+                                                />
+                                            </div>
+                                            <div className='mt-2'>
+                                                <label className='text-gray-500' htmlFor="ownership">Kepemilikan</label>
+                                                <ReactSelect
+                                                    options={OWNERSHIPS}
+                                                    onChange={(e: any) => { setSelected({ ...selected, ownership: e.value }) }}
+                                                    placeholder="Pilih Kepemilikan"
+                                                    maxMenuHeight={200}
+                                                    id='ownership'
+                                                    defaultValue={OWNERSHIPS?.find((v: any) => v?.value == selected?.ownership)}
+                                                />
+                                            </div>
+                                            <Input label='Tahun' defaultValue={+selected?.year || ""} placeholder='Masukkan Tahun' type='number' onChange={(e: any) => { setSelected({ ...selected, year: e.target.value }) }} />
+                                            <Input label='Warna' defaultValue={selected?.color || ""} placeholder='Masukkan Warna' onChange={(e: any) => { setSelected({ ...selected, color: e.target.value }) }} />
+                                            {/* <Input label='Plat Nomor' defaultValue={selected?.plat_no || ""} placeholder='X1234YYY' onChange={(e: any) => { setSelected({ ...selected, plat_no: e.target.value }) }} /> */}
+                                        </div> : ""
+                                }
+                                <Button color='info' type='button' onClick={() => validationFormData(selected)} >Selanjutnya</Button>
+                            </div>
+                        </div> : ""
+                }
 
                 {/* Select Location */}
-                <div
-                    className={`absolute z-40 top-10 ${isMoved == 3 ? 'left-0' : 'left-full hidden'} bg-white p-2 w-full h-auto transition-all duration-500`}
-                >
-                    <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
-                        <ArrowLeft />
-                    </button>
-                    <p className='m-2'>Pilih Lokasi:</p>
-                    <div className='mt-4'>
-                        <div>
-                            <label className='text-gray-500' htmlFor="province">Provinsi</label>
-                            <ReactSelect
-                                options={PROVINCES}
-                                placeholder="Pilih Provinsi"
-                                onChange={(e: any) => { getCity(e) }}
-                                maxMenuHeight={200}
-                                id='province'
-                                defaultValue={PROVINCES?.find((v: any) => v?.id == detail?.province_id)}
-                            />
-                        </div>
-                        <div className='mt-2'>
-                            <label className='text-gray-500' htmlFor="city">Kota/Kab</label>
-                            <ReactSelect
-                                isDisabled={list?.cities?.length < 1}
-                                options={list?.cities}
-                                placeholder="Pilih Kota/Kab"
-                                maxMenuHeight={200}
-                                onChange={(e: any) => { getDistrict(e) }}
-                                id='city'
-                                defaultValue={{ value: detail?.city_id || "", label: detail?.city_name || "Pilih Kota/Kab" }}
-                            />
-                        </div>
-                        <div className='mt-2'>
-                            <label className='text-gray-500' htmlFor="district">Kecamatan</label>
-                            <ReactSelect
-                                isDisabled={list?.districts?.length < 1}
-                                options={list?.districts}
-                                placeholder="Pilih Kecamatan"
-                                maxMenuHeight={200}
-                                onChange={(e: any) => { getVillage(e) }}
-                                id='district'
-                                defaultValue={{ value: detail?.district_id || "", label: detail?.district_name || "Pilih Kecamatan" }}
-                            />
-                        </div>
-                        <Button color='info' type='button' onClick={() => { handleGeolocation(selected) }} >Selanjutnya</Button>
-                    </div>
-                </div>
+                {
+                    isMoved == 3 ?
+                        <div
+                            className='mt-20'
+                        >
+                            <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
+                                <ArrowLeft />
+                            </button>
+                            <p className='m-2'>Pilih Lokasi:</p>
+                            <div className='mt-4'>
+                                <div>
+                                    <label className='text-gray-500' htmlFor="province">Provinsi</label>
+                                    <ReactSelect
+                                        options={PROVINCES}
+                                        placeholder="Pilih Provinsi"
+                                        onChange={(e: any) => { getCity(e) }}
+                                        maxMenuHeight={200}
+                                        id='province'
+                                        defaultValue={PROVINCES?.find((v: any) => v?.id == detail?.province_id)}
+                                    />
+                                </div>
+                                <div className='mt-2'>
+                                    <label className='text-gray-500' htmlFor="city">Kota/Kab</label>
+                                    <ReactSelect
+                                        isDisabled={list?.cities?.length < 1}
+                                        options={list?.cities}
+                                        placeholder="Pilih Kota/Kab"
+                                        maxMenuHeight={200}
+                                        onChange={(e: any) => { getDistrict(e) }}
+                                        id='city'
+                                        defaultValue={{ value: detail?.city_id || "", label: detail?.city_name || "Pilih Kota/Kab" }}
+                                    />
+                                </div>
+                                <div className='mt-2'>
+                                    <label className='text-gray-500' htmlFor="district">Kecamatan</label>
+                                    <ReactSelect
+                                        isDisabled={list?.districts?.length < 1}
+                                        options={list?.districts}
+                                        placeholder="Pilih Kecamatan"
+                                        maxMenuHeight={200}
+                                        onChange={(e: any) => { getVillage(e) }}
+                                        id='district'
+                                        defaultValue={{ value: detail?.district_id || "", label: detail?.district_name || "Pilih Kecamatan" }}
+                                    />
+                                </div>
+                                <Button color='info' type='button' onClick={() => { handleGeolocation(selected) }} >Selanjutnya</Button>
+                            </div>
+                        </div> : ""
+                }
 
                 {/* Image */}
-                <div
-                    className={`absolute z-50 top-10 ${isMoved == 4 ? 'left-0' : 'left-full hidden'} bg-white p-2 w-full h-auto transition-all duration-500`}
-                >
-                    <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
-                        <ArrowLeft />
-                    </button>
-                    <div className='bg-green-300 p-2 w-full rounded'>
-                        <p className='text-center'>Pastikan ukuran gambar tidak lebih dari 2mb</p>
-                    </div>
-                    <p className='m-2'>Pilih Gambar:</p>
-                    <div className='mt-5'>
-                        <input type="file" className='hidden' ref={fileInputRef} onChange={handleImage} accept='image/*' />
-                        <button disabled={images?.length == 10} type='button' onClick={handleButtonClick} className='border rounded p-2 w-full flex gap-2 items-center justify-center'>
-                            <PlusIcon className='w-4' />
-                            Tambah
-                        </button>
-                        {
-                            progress ? <p className={progress ? "block" : "hidden"}>Loading Upload....</p> : ""
-                        }
-                        <div className='flex flex-wrap mt-5'>
-                            {
-                                images?.map((v: any) => (
-                                    <button key={v} onClick={() => { setImages(images.filter((val: any) => val !== v)) }} className='relative group w-1/3'>
-                                        <Image alt='images' src={v} layout='relative' width={300} height={300} className='w-full h-[100px]' />
-                                        <div className='absolute inset-0 bg-red-700 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-50 transition-opacity duration-300'>
-                                            <TrashIcon className='text-white' /> <p className='text-white'>Hapus</p>
-                                        </div>
-                                    </button>
-                                ))
-                            }
-                        </div>
-                        <Button color='info' className={'mt-4'} onClick={onSubmit}>Selesai</Button>
-                    </div>
-                </div>
+                {
+                    isMoved == 4 ?
+                        <div
+                            className='mt-20'
+                        >
+                            <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
+                                <ArrowLeft />
+                            </button>
+                            <div className='bg-green-300 p-2 w-full rounded'>
+                                <p className='text-center'>Pastikan ukuran gambar tidak lebih dari 2mb</p>
+                            </div>
+                            <p className='m-2'>Pilih Gambar:</p>
+                            <div className='mt-5'>
+                                <input type="file" className='hidden' ref={fileInputRef} onChange={handleImage} accept='image/*' />
+                                <button disabled={images?.length == 10} type='button' onClick={handleButtonClick} className='border rounded p-2 w-full flex gap-2 items-center justify-center'>
+                                    <PlusIcon className='w-4' />
+                                    Tambah
+                                </button>
+                                {
+                                    progress ? <p className={progress ? "block" : "hidden"}>Loading Upload....</p> : ""
+                                }
+                                <div className='flex flex-wrap mt-5'>
+                                    {
+                                        images?.map((v: any) => (
+                                            <button key={v} onClick={() => { setImages(images.filter((val: any) => val !== v)) }} className='relative group w-1/3'>
+                                                <Image alt='images' src={v} layout='relative' width={300} height={300} className='w-full h-[100px]' />
+                                                <div className='absolute inset-0 bg-red-700 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-50 transition-opacity duration-300'>
+                                                    <TrashIcon className='text-white' /> <p className='text-white'>Hapus</p>
+                                                </div>
+                                            </button>
+                                        ))
+                                    }
+                                </div>
+                                <Button color='info' className={'mt-4'} onClick={onSubmit}>Selesai</Button>
+                            </div>
+                        </div> : ""
+                }
             </div>
         </div>
     )
