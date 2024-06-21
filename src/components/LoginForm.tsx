@@ -59,9 +59,7 @@ export default function LoginForm() {
             if (type == "forget") {
                 const result = await axios.post(CONFIG.base_url_api + `/sendmail`, {
                     from: "tokotitoh2024@gmail.com",
-                    to: payload?.email,
-                    subject: "Reset Password",
-                    text: "Gunakan link ini untuk melakukan pemulihan password: https://tokotitoh.co.id/account?type=reset-password",
+                    to: payload?.email
                 }, {
                     headers: {
                         "bearer-token": "tokotitohapi",
@@ -71,36 +69,11 @@ export default function LoginForm() {
                 setLoading(false)
                 Swal.fire({
                     icon: "success",
-                    text: "Kami telah mengirimkan email pemulihan password ke email kamu!"
+                    text: "Kami telah mengirimkan kode OTP ke email kamu!"
                 })
                 setPayload({})
-                setType("login")
-            }
-            if (type == "reset") {
-                if (payload?.password !== payload?.confirm_password) {
-                    setLoading(false)
-                    Swal.fire({
-                        icon: "warning",
-                        text: "Password tidak sama!"
-                    })
-                    return
-                }
-                // const result = await axios.patch(CONFIG.base_url_api + `/user`, {
-                //     id: "tokotitoh2024@gmail.com",
-                //     subject: "Reset Password",
-                // }, {
-                //     headers: {
-                //         "bearer-token": "tokotitohapi",
-                //         "x-partner-code": "id.marketplace.tokotitoh"
-                //     }
-                // })
-                setLoading(false)
-                Swal.fire({
-                    icon: "success",
-                    text: "Berhasil memperbarui password!"
-                })
-                setPayload({})
-                setType("login")
+                localStorage.setItem("userReset", JSON.stringify(result?.data?.items))
+                router.push("/account/verification")
             }
         } catch (error: any) {
             console.log(error);
@@ -153,31 +126,16 @@ export default function LoginForm() {
                             </div>
                         </div>
                         :
-                        type == "reset" ?
-                            <div className='flex-col flex justify-center items-center mt-10'>
-                                <Image alt='logo' src={'/images/tokotitoh.png'} layout='relative' width={250} height={250} className='w-[150px] h-[150px]' />
-                                <div className='mt-2 w-full px-8'>
-                                    <h2 className='text-center text-xl font-semibold'>Reset Password</h2>
-                                    <Input label='' placeholder='Password Baru' type={show ? 'text' : 'password'} name='password' onChange={handleChange} defaultValue={payload?.password} />
-                                    <Input label='' placeholder='Konfirmasi Password Baru' name='confirm_password' type={show ? 'text' : 'password'} onChange={handleChange} defaultValue={payload?.confirm_password} />
-                                    <div className='flex items-center gap-2 pb-2'>
-                                        <input type="checkbox" onChange={(e) => setShow(e.target.checked)} defaultChecked={show} />
-                                        <span className='text-xs'>Tampilkan password</span>
-                                    </div>
-                                    <Button onClick={onSubmit} disabled={loading}>{loading ? "Mengganti..." : "Ganti"}</Button>
-                                </div>
+                        <div className='flex-col flex justify-center items-center mt-10'>
+                            <Image alt='logo' src={'/images/tokotitoh.png'} layout='relative' width={250} height={250} className='w-[150px] h-[150px]' />
+                            <div className='mt-2 w-full px-8'>
+                                <h2 className='text-center text-xl font-semibold'>Lupa Password</h2>
+                                <Input label='' placeholder='Email' name='email' onChange={handleChange} defaultValue={payload?.email} />
+                                <Button onClick={onSubmit} disabled={loading}>{loading ? "Mengirim..." : "Kirim"}</Button>
+                                <p className='text-center'>Atau</p>
+                                <Button color='warning' onClick={() => setType('login')} >Login</Button>
                             </div>
-                            :
-                            <div className='flex-col flex justify-center items-center mt-10'>
-                                <Image alt='logo' src={'/images/tokotitoh.png'} layout='relative' width={250} height={250} className='w-[150px] h-[150px]' />
-                                <div className='mt-2 w-full px-8'>
-                                    <h2 className='text-center text-xl font-semibold'>Lupa Password</h2>
-                                    <Input label='' placeholder='Email' name='email' onChange={handleChange} defaultValue={payload?.email} />
-                                    <Button onClick={onSubmit} disabled={loading}>{loading ? "Mengirim..." : "Kirim"}</Button>
-                                    <p className='text-center'>Atau</p>
-                                    <Button color='warning' onClick={() => setType('login')} >Login</Button>
-                                </div>
-                            </div>
+                        </div>
             }
 
         </div>
