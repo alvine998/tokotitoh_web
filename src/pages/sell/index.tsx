@@ -266,8 +266,8 @@ export default function Sell({ categories, subcategories, brands, types, provinc
 
     const validationFormData = (data: any) => {
         let next = true
-        if (data?.category_name?.toLowerCase()?.includes('mobil') || data?.category_name?.toLowerCase()?.includes('motor')) {
-            ['title', 'brand_id', 'type_id', 'price', 'description', 'km', 'fuel_type', 'transmission', 'ownership', 'year', 'color']?.map((val: any) => {
+        if ((data?.category_name?.toLowerCase()?.includes('mobil') && selected?.subcategory_name?.toLowerCase()?.includes('dijual')) || (data?.category_name?.toLowerCase()?.includes('motor') && selected?.subcategory_name?.toLowerCase()?.includes('dijual'))) {
+            ['title', 'brand_id', 'type_id', 'price', 'description', 'km', 'fuel_type', 'transmission', 'ownership', 'year', 'color', 'wa']?.map((val: any) => {
                 if (!data[val] || data[val] == "") {
                     Swal.fire({
                         icon: "warning",
@@ -283,7 +283,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
             }
         }
         else if (data?.category_name?.toLowerCase()?.includes('properti')) {
-            ['title', 'price', 'description', 'certificates', 'area', 'building']?.map((val: any) => {
+            ['title', 'price', 'description', 'certificates', 'area', 'building', 'wa']?.map((val: any) => {
                 if (!data[val] || data[val] == "") {
                     Swal.fire({
                         icon: "warning",
@@ -299,7 +299,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
             }
         }
         else {
-            ['title', 'price', 'description']?.map((val: any) => {
+            ['title', 'price', 'description', 'wa']?.map((val: any) => {
                 if (!data[val] || data[val] == "") {
                     Swal.fire({
                         icon: "warning",
@@ -513,6 +513,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                 </div>
                                 <Input label='Harga' placeholder='Masukkan Harga' defaultValue={+selected?.price || ""} numericformat onChange={(e: any) => { setSelected({ ...selected, price: +e.target.value?.replaceAll(",", "") }) }} />
                                 <TextArea label='Deksripsi' placeholder='Masukkan Deskripsi' maxLength={250} defaultValue={selected?.description || ""} onChange={(e) => { setSelected({ ...selected, description: e.target.value }) }} />
+                                <Input label='Nomor Whatsapp' type='number' defaultValue={selected?.wa || ""} placeholder='Masukkan Nomor Whatsapp' maxLength={13} onChange={(e: any) => { setSelected({ ...selected, wa: e.target.value }) }} />
                                 {
                                     selected?.category_name?.toLowerCase()?.includes('properti') ?
                                         <div>
@@ -521,7 +522,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                                         </div> : ""
                                 }
                                 {
-                                    (selected?.category_name?.toLowerCase()?.includes('mobil') && selected?.category_name?.toLowerCase()?.includes('dijual')) || (selected?.category_name?.toLowerCase()?.includes('motor') && selected?.category_name?.toLowerCase()?.includes('dijual')) ?
+                                    (selected?.category_name?.toLowerCase()?.includes('mobil') && selected?.subcategory_name?.toLowerCase()?.includes('dijual')) || (selected?.category_name?.toLowerCase()?.includes('motor') && selected?.subcategory_name?.toLowerCase()?.includes('dijual')) ?
                                         <div>
                                             <Input label='Trip KM' placeholder='Masukkan Trip KM' defaultValue={+selected?.km || ""} numericformat onChange={(e: any) => { setSelected({ ...selected, km: +e.target.value?.replaceAll(",", "") }) }} />
                                             <div className='mt-2'>
