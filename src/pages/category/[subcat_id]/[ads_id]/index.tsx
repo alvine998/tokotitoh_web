@@ -293,7 +293,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <>
                   {/* Button WA */}
                   <div className='fixed bottom-4 right-4 lg:right-[37%]'>
-                    <Link href={`https://wa.me/${normalizePhoneNumber(user?.phone)}`} target='_blank'>
+                    <Link href={`https://wa.me/${normalizePhoneNumber(ads?.wa)}`} target='_blank'>
                       <Button type='button' onClick={addCalls} className={'rounded-full p-2 flex items-center gap-2'}>
                         <PhoneCallIcon className='w-8' />
                         Whatsapp Now
