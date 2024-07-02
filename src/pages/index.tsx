@@ -83,7 +83,7 @@ export default function Home({ categories, ads, notif }: any) {
           "x-partner-code": "id.marketplace.tokotitoh"
         }
       })
-      setSubcat(result?.data?.items?.rows);
+      setSubcat(result?.data?.items?.rows?.sort((a:any, b:any) => a.name?.localeCompare(b.name)));
     } catch (error) {
       console.log(error);
     }
