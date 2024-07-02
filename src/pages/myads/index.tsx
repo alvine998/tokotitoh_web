@@ -13,6 +13,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import Swal from 'sweetalert2'
 
 export async function getServerSideProps(context: any) {
     try {
@@ -88,6 +89,7 @@ export default function MyAds({ ads, user }: any) {
                                                         onClick={() => onRoute(v)}
                                                         views={v?.views}
                                                         calls={v?.calls}
+                                                        id={v?.id}
                                                     />
                                                 </div>
                                             ))

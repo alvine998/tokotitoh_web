@@ -1,7 +1,11 @@
+import { CONFIG } from '@/config';
 import { toMoney } from '@/utils';
+import axios from 'axios';
+import { Trash2Icon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router'
 import React from 'react'
+import Swal from 'sweetalert2';
 
 interface Props {
     path?: string;
@@ -12,13 +16,44 @@ interface Props {
     onClick?: any;
     views?: any;
     calls?: any;
+    id?: any;
 }
 
 export default function AdsProduct(props: Props) {
-    const { path, price, thumbnail, title, status, onClick, calls, views } = props
+    const { path, price, thumbnail, title, status, onClick, calls, views, id } = props
     const router = useRouter();
+    const onDelete = async (id: any) => {
+        try {
+            const result = await axios.delete(CONFIG.base_url_api + '/ads?id=' + id, {
+                headers: {
+                    "bearer-token": "tokotitohapi",
+                    "x-partner-code": "id.marketplace.tokotitoh"
+                }
+            });
+            Swal.fire({
+                icon: "success",
+                text: "Berhasil hapus iklan!"
+            })
+            router.push('')
+        } catch (error) {
+            console.log(error);
+            Swal.fire({
+                icon: "error",
+                text: "Gagal hapus iklan!"
+            })
+        }
+    }
     return (
         <div className='w-full'>
+            {
+                router.pathname == '/myads' ?
+                    <div className='flex justify-end my-2'>
+                        <button type='button' onClick={() => onDelete(id)} className='text-white bg-red-700 rounded p-2 flex gap-2 text-xs items-center'>
+                            <Trash2Icon /> Hapus
+                        </button>
+                    </div>
+                    : ""
+            }
             <button
                 type='button'
                 className='shadow border p-2 rounded lg:h-auto w-full lg:w-full'
