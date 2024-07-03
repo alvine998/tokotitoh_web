@@ -126,6 +126,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
         // Set compression options
         const options = {
             maxSizeMB: 0.01,          // Maximum size in MB
+            maxWidthOrHeight: 600, // Max width or height (maintains aspect ratio)
             useWebWorker: true     // Use multi-threading for compression
         };
         if (e.target.files) {
