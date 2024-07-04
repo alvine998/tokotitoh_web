@@ -126,7 +126,7 @@ export default function Sell({ categories, subcategories, brands, types, provinc
         // Set compression options
         const options = {
             maxSizeMB: 0.01,          // Maximum size in MB
-            maxWidthOrHeight: 600, // Max width or height (maintains aspect ratio)
+            maxWidthOrHeight: 1000, // Max width or height (maintains aspect ratio)
             useWebWorker: true     // Use multi-threading for compression
         };
         if (e.target.files) {
@@ -629,9 +629,9 @@ export default function Sell({ categories, subcategories, brands, types, provinc
                             <button className='text-blue-700' type='button' onClick={handlePreviousButtonClick}>
                                 <ArrowLeft />
                             </button>
-                            <div className='bg-green-300 p-2 w-full rounded'>
+                            {/* <div className='bg-green-300 p-2 w-full rounded'>
                                 <p className='text-center'>Pastikan ukuran gambar tidak lebih dari 2mb</p>
-                            </div>
+                            </div> */}
                             <p className='m-2'>Pilih Gambar:</p>
                             <div className='mt-5'>
                                 <input type="file" className='hidden' ref={fileInputRef} onChange={handleImage} accept='image/*' />
