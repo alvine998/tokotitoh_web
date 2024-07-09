@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react'
 
 export async function getServerSideProps(context: any) {
   try {
-    const { page, size, search } = context.query;
+    const { page, size, search, category_id } = context.query;
     const result = await axios.get(CONFIG.base_url_api + `/categories?page=${page || 0}&size=${size || 99999}`, {
       headers: {
         "bearer-token": "tokotitohapi",
@@ -83,7 +83,7 @@ export default function Home({ categories, ads, notif }: any) {
           "x-partner-code": "id.marketplace.tokotitoh"
         }
       })
-      setSubcat(result?.data?.items?.rows?.sort((a:any, b:any) => a.name?.localeCompare(b.name)));
+      setSubcat(result?.data?.items?.rows);
     } catch (error) {
       console.log(error);
     }

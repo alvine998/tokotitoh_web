@@ -53,7 +53,7 @@ export default function Category({ categories }: any) {
                     "x-partner-code": "id.marketplace.tokotitoh"
                 }
             })
-            setSubcat(result?.data?.items?.rows?.sort((a:any, b:any) => a.name?.localeCompare(b.name)));
+            setSubcat(result?.data?.items?.rows);
         } catch (error) {
             console.log(error);
         }

@@ -213,8 +213,9 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                   Deskripsi: <br />
                   {ads?.description}
                 </p>
+                <p className='mt-2'>{ads?.phone}</p>
                 {
-                  ads?.category_name?.toLowerCase().includes('mobil') || ads?.category_name?.toLowerCase().includes('motor') ?
+                  (ads?.category_name?.toLowerCase().includes('mobil') && ads?.subcategory_name?.toLowerCase().includes('dijual')) || (ads?.category_name?.toLowerCase().includes('motor') && ads?.subcategory_name?.toLowerCase().includes('dijual')) ?
                     <p className='mt-3'>
                       Detail <br /><hr />
                       Brand: {ads?.brand_name}<br /><hr />
