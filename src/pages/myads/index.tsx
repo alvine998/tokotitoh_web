@@ -90,6 +90,9 @@ export default function MyAds({ ads, user }: any) {
                                                         views={v?.views}
                                                         calls={v?.calls}
                                                         id={v?.id}
+                                                        brand_id={v?.brand_id}
+                                                        category_id={v?.category_id}
+                                                        account_id={user?.id}
                                                     />
                                                 </div>
                                             ))

@@ -304,22 +304,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                   </div>
                 </>
             }
-            {
-              ads?.user_id == account?.id ?
-                <>
-                  {/* Button Edit */}
-                  <div className='fixed bottom-4 right-4 lg:right-[37%]'>
-                    <Link href={`/sell?id=${ads?.id}&account_id=${account?.id}&category_id=${ads?.category_id}&brand_id=${ads?.brand_id}`}>
-                      <Button type='button' color='info' className={'rounded-full p-2 flex items-center gap-2'}>
-                        <PencilIcon className='w-8' />
-                        Edit
-                      </Button>
-                    </Link>
-                  </div>
-                </>
-                :
-                ""
-            }
+           
             <div className='absolute bottom-0 lg:left-[37%] left-0'>
               <div className='flex gap-3 items-center pl-5 pt-3'>
                 <UserCircleIcon className='w-20 h-20' />

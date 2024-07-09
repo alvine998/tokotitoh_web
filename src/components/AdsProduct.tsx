@@ -1,8 +1,9 @@
 import { CONFIG } from '@/config';
 import { toMoney } from '@/utils';
 import axios from 'axios';
-import { Trash2Icon } from 'lucide-react';
+import { PencilIcon, Trash2Icon } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router'
 import React from 'react'
 import Swal from 'sweetalert2';
@@ -17,10 +18,13 @@ interface Props {
     views?: any;
     calls?: any;
     id?: any;
+    account_id?: any;
+    category_id?: any;
+    brand_id?: any;
 }
 
 export default function AdsProduct(props: Props) {
-    const { path, price, thumbnail, title, status, onClick, calls, views, id } = props
+    const { path, price, thumbnail, title, status, onClick, calls, views, id, account_id, brand_id, category_id } = props
     const router = useRouter();
     const onDelete = async (id: any) => {
         try {
@@ -47,10 +51,19 @@ export default function AdsProduct(props: Props) {
         <div className='w-full'>
             {
                 router.pathname == '/myads' ?
-                    <div className='flex justify-end my-2'>
-                        <button type='button' onClick={() => onDelete(id)} className='text-white bg-red-700 rounded p-2 flex gap-2 text-xs items-center'>
-                            <Trash2Icon /> Hapus
-                        </button>
+                    <div>
+
+                        <div className='flex justify-end gap-2 my-2'>
+                            <Link href={`/sell?id=${id}&account_id=${account_id}&category_id=${category_id}&brand_id=${brand_id}`}>
+                                <button type='button' className='text-white bg-blue-700 rounded p-2 flex gap-2 text-xs items-center'>
+                                    <PencilIcon className='w-8' />
+                                    Edit
+                                </button>
+                            </Link>
+                            <button type='button' onClick={() => onDelete(id)} className='text-white bg-red-700 rounded p-2 flex gap-2 text-xs items-center'>
+                                <Trash2Icon /> Hapus
+                            </button>
+                        </div>
                     </div>
                     : ""
             }
