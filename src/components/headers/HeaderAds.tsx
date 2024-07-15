@@ -256,7 +256,7 @@ export default function HeaderAds(props: Props) {
                                 <div className='flex mt-8'>
                                     <div className='w-auto flex flex-col gap-2'>
                                         {
-                                            ads?.category_name?.toLowerCase()?.includes("mobil") || ads?.category_name?.toLowerCase()?.includes("motor") ?
+                                            (ads?.category_name?.toLowerCase()?.includes("mobil") && (ads?.name?.toLowerCase()?.includes("mobil") || ads?.name?.toLowerCase()?.includes("karoseri"))) || (ads?.category_name?.toLowerCase()?.includes("motor") && ads?.name?.toLowerCase()?.includes("motor")) ?
                                                 <>
                                                     {
                                                         navsCar?.map((v: any, i: number) => (
