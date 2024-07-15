@@ -91,13 +91,13 @@ export default function Category({ categories }: any) {
                             <button onClick={() => { setModal({ ...modal, open: false }) }}>
                                 <ChevronLeftIcon />
                             </button>
-                            <h1>{modal?.data?.name}</h1>
+                            <h1>{modal?.data?.name?.toUpperCase()}</h1>
                         </div>
                         <div className='mt-5'>
                             {
                                 subcat?.map((v: any, i: number) => (
                                     <button key={i} onClick={() => router.push(`/category/${v?.id}`)} className='border border-gray-500 p-2 w-full'>
-                                        {v?.name}
+                                        {v?.name?.toUpperCase()}
                                     </button>
                                 ))
                             }

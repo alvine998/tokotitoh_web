@@ -386,7 +386,8 @@ export default function HeaderAds(props: Props) {
                                             filterName == "TAHUN" ?
                                                 <div>
                                                     <div className='flex flex-col items-center justify-center pl-2 mt-2'>
-                                                        <Input defaultValue={filter?.year} label='' placeholder='Masukkan Tahun' maxLength={4} type='tel' onChange={(e: any) => { setFilter({ ...filter, year: e.target.value }) }} />
+                                                        <Input defaultValue={filter?.year_start} label='' placeholder='Masukkan Tahun Awal' maxLength={4} type='tel' onChange={(e: any) => { setFilter({ ...filter, year_start: e.target.value }) }} />
+                                                        <Input defaultValue={filter?.year_end} label='' placeholder='Masukkan Tahun Akhir' maxLength={4} type='tel' onChange={(e: any) => { setFilter({ ...filter, year_end: e.target.value }) }} />
                                                     </div>
                                                 </div> : ""
                                         }

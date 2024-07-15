@@ -33,7 +33,8 @@ export async function getServerSideProps(context: any) {
       maxBuilding,
       minBuilding,
       sort,
-      year,
+      year_start,
+      year_end,
       fuel_type
     } = context.query;
     const { subcat_id } = context.params;
@@ -58,7 +59,8 @@ export async function getServerSideProps(context: any) {
       minBuilding: minBuilding || "",
       maxBuilding: maxBuilding || "",
       sort: sort || "",
-      year: year || "",
+      year_start: year_start || "",
+      year_end: year_end || "",
       fuel_type: fuel_type || "",
     }
     const result = await axios.get(CONFIG.base_url_api +
