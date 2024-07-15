@@ -187,6 +187,18 @@ export default function HeaderAds(props: Props) {
         },
     ]
 
+    let navsFoodPet = [
+        {
+            name: "LOKASI"
+        },
+        {
+            name: "HARGA"
+        },
+        {
+            name: "URUTKAN"
+        },
+    ]
+
     let navs = [
         {
             name: "LOKASI"
@@ -286,15 +298,26 @@ export default function HeaderAds(props: Props) {
                                                                 ))
                                                             }
                                                         </> :
-                                                        <>
-                                                            {
-                                                                navs?.map((v: any, i: number) => (
-                                                                    <button key={i} onClick={() => { setFilterName(v?.name) }} className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all`}>
-                                                                        {v?.name}
-                                                                    </button>
-                                                                ))
-                                                            }
-                                                        </>
+                                                        ads?.category_name?.toLowerCase()?.includes("makanan") || ads?.category_name?.toLowerCase()?.includes("hewan") ?
+                                                            <>
+                                                                {
+                                                                    navsFoodPet?.map((v: any, i: number) => (
+                                                                        <button key={i} onClick={() => { setFilterName(v?.name) }} className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all`}>
+                                                                            {v?.name}
+                                                                        </button>
+                                                                    ))
+                                                                }
+                                                            </>
+                                                            :
+                                                            <>
+                                                                {
+                                                                    navs?.map((v: any, i: number) => (
+                                                                        <button key={i} onClick={() => { setFilterName(v?.name) }} className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all`}>
+                                                                            {v?.name}
+                                                                        </button>
+                                                                    ))
+                                                                }
+                                                            </>
                                         }
                                     </div>
                                     <div className='w-full'>
