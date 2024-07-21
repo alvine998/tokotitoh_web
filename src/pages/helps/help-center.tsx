@@ -77,7 +77,7 @@ export default function HelpCenter() {
             <br />
             2. Anda dapat mengubah data tersebut.
             <br />
-            3. Pilih "Menu" {">"} "Pengaturan" {">"}
+            3. Pilih "Menu" &gt; "Pengaturan" &gt;
             <br />
             4. Klik “Alamat Email/ID Masuk” atau “Nomor Handphone”
             <br />
