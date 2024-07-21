@@ -77,13 +77,13 @@ export default function HelpCenter() {
             <br />
             2. Anda dapat mengubah data tersebut.
             <br />
-            3. Pilih "Menu" &gt; "Pengaturan" &gt;
+            3. Pilih &quot;Menu&quot; &gt; &quot;Pengaturan&quot; &gt;
             <br />
-            4. Klik “Alamat Email/ID Masuk” atau “Nomor Handphone”
+            4. Klik &quot;Alamat Email/ID Masuk&quot; atau &quot;Nomor Handphone&quot;
             <br />
             5. Lalu masukkan alamat email atau nomor HP baru
             <br />
-            6. dan klik tombol "Ubah".
+            6. dan klik tombol &quot;Ubah&quot;.
             <br />
             Ketika mengubah email, Anda akan diminta untuk mengisi kata sandi
             akun Anda.
@@ -95,23 +95,23 @@ export default function HelpCenter() {
           <p className="mt-3 text-justify">
             <strong>Lupa Password</strong>
             <br />
-            1. Klik “Lupa Password” pada laman "Masuk/Daftar”.
+            1. Klik &quot;Lupa Password&quot; pada laman &quot;Masuk/Daftar&quot;.
             <br />
             2. Masukkan alamat email yang telah Anda daftarkan lalu klik tombol
-            “Kirim“.
+            &quot;Kirim&quot;.
             <br />
             3. Kami akan mengirimkan link ke email Anda untuk membuat password
             baru.
             <br />
-            4. Klik tombol "Buat Password" pada email yang kami kirimkan.
+            4. Klik tombol &quot;Buat Password&quot; pada email yang kami kirimkan.
             <br />
-            5. Masukkan password baru Anda, lalu klik tombol “Ubah Password“.
+            5. Masukkan password baru Anda, lalu klik tombol &quot;Ubah Password&quot;.
           </p>
 
           <p className="mt-3 text-justify">
             <strong>Cara Pasang Iklan</strong>
             <br />
-            1. Klik tombol “Sell”.
+            1. Klik tombol &quot;Sell&quot;.
             <br />
             2. Pilih kategori produk yang Anda ingin jual.
             <br />
