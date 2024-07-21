@@ -70,7 +70,7 @@ export default function Account() {
             {
                 user == null ?
                     <LoginForm /> :
-                    <div className='p-2 pt-10'>
+                    <div className='p-2 pt-10 lg:max-w-sm'>
                         <div className='flex gap-3 items-center'>
                             <UserCircleIcon className='w-20 h-20' />
                             <div>
@@ -84,11 +84,24 @@ export default function Account() {
                             Edit Akun
                         </button>
                         <div className='py-2'>
-                            <button type='button' className='border p-2 w-full' >Tentang Kami</button>
-                            <button type='button' className='border p-2 w-full' >Bantuan</button>
                             <Link href={'https://play.google.com/'}>
-                                <button type='button' className='border p-2 w-full' >Download Aplikasi Tokotitoh</button>
+                                <button type='button' className='border p-2 w-full' >Download Aplikasi</button>
                             </Link>
+                            <button type='button' onClick={() => {
+                                router.push('helps/help-center')
+                            }} className='border p-2 w-full' >Pusat Bantuan</button>
+                            <button type='button' onClick={() => {
+                                router.push('helps/call-us')
+                            }} className='border p-2 w-full' >Hubungi Kami</button>
+                            <button type='button' onClick={() => {
+                                router.push('helps/about-us')
+                            }} className='border p-2 w-full' >Tentang Kami</button>
+                            <button type='button' onClick={() => {
+                                router.push('helps/term-condition')
+                            }} className='border p-2 w-full' >Syarat & Ketentuan</button>
+                            <button type='button' onClick={() => {
+                                router.push('helps/privacy-policy')
+                            }} className='border p-2 w-full' >Kebijakan Privasi</button>
                         </div>
                         <button onClick={logout} className='w-full bg-red-500 p-2 rounded text-white mt-2'>
                             Logout

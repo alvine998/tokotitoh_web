@@ -10,7 +10,7 @@ export default function BottomTabs() {
                 <HomeIcon className='w-5 h-5' />
                 <p>Home</p>
             </button>
-            <button type='button' onClick={() => { router.push('/category') }} className={`flex flex-col items-center justify-center w-[150px] ${router.pathname == '/category' ? 'font-bold' : ''} hover:font-bold`}>
+            <button type='button' onClick={() => { router.push('/menu') }} className={`flex flex-col items-center justify-center w-[150px] ${router.pathname == '/menu' ? 'font-bold' : ''} hover:font-bold`}>
                 <MenuIcon className='w-5 h-5' />
                 <p>Menu</p>
             </button>
