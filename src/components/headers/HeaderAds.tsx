@@ -27,7 +27,9 @@ export default function HeaderAds(props: Props) {
     const [location, setLocation] = useState<any>({ latitude: null, longitude: null });
     const [adress, setAddress] = useState<any>('Indonesia');
     const [modal, setModal] = useState<useModal>();
-    const [filterName, setFilterName] = useState<any>("MEREK/MODEL");
+    const [filterName, setFilterName] = useState<any>(
+        (ads?.category_name?.toLowerCase()?.includes("mobil") && (ads?.name?.toLowerCase()?.includes("mobil") || ads?.name?.toLowerCase()?.includes("karoseri"))) || (ads?.category_name?.toLowerCase()?.includes("motor") && ads?.name?.toLowerCase()?.includes("motor")) ? "MEREK/MODEL" : "LOKASI"
+    );
 
     // const geolocation = async () => {
     //     try {
