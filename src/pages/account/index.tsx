@@ -28,6 +28,14 @@ export default function Account() {
         e?.preventDefault();
         const formData = Object.fromEntries(new FormData(e.target))
         try {
+            if (formData?.password) {
+                if (formData?.password !== formData?.password_confirm) {
+                    return Swal.fire({
+                        icon: "warning",
+                        text: "Password tidak sesuai"
+                    })
+                }
+            }
             const payload = {
                 ...formData
             }
@@ -117,9 +125,10 @@ export default function Account() {
                                         <h2 className='text-xl font-semibold text-center'>Ubah Profil</h2>
                                         <div>
                                             <Input placeholder='Masukkan Nama' label='Nama' defaultValue={user?.name || ""} name='name' required />
-                                            <Input placeholder='Masukkan Email' label='Email' defaultValue={user?.email || ""} name='email' />
-                                            <Input placeholder='Masukkan No Telepon' label='No Telepon' defaultValue={user?.phone || ""} name='phone' />
-                                            <Input placeholder='********' minLength={8} label='Password' defaultValue={""} name='password' />
+                                            <Input placeholder='Masukkan Email' label='Email' defaultValue={user?.email || ""} name='email' type='email' />
+                                            <Input placeholder='Masukkan No Telepon' label='No Telepon' defaultValue={user?.phone || ""} name='phone' type='number' />
+                                            <Input placeholder='********' minLength={8} label='Password' defaultValue={""} name='password' type='password' />
+                                            <Input placeholder='********' minLength={8} label='Konfirmasi Password' defaultValue={""} name='password_confirm' type='password' />
                                             <input type="hidden" name="id" value={user?.id} />
                                         </div>
                                         <Button type='submit'>Simpan</Button>

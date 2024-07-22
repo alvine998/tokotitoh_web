@@ -30,8 +30,8 @@ export default function AboutUs() {
 
     return (
         <div className="pb-20 flex flex-col">
-            <button onClick={() => { router.push("/") }} className="flex gap-2 items-center mt-4 font-bold ml-2">
-                <ArrowLeftCircle /> Beranda
+            <button onClick={() => { router.push("/account") }} className="flex gap-2 items-center mt-4 font-bold ml-2">
+                <ArrowLeftCircle /> Kembali
             </button>
             <div className="flex-col flex justify-center items-center mt-10 w-full">
                 <Image

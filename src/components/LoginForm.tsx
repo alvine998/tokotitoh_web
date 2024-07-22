@@ -42,6 +42,12 @@ export default function LoginForm() {
                 router.reload()
             }
             if (type == "register") {
+                if(payload?.password !== payload?.password_confirm){
+                    return Swal.fire({
+                        icon: "warning",
+                        text: "Password tidak sesuai"
+                    })
+                }
                 const result = await axios.post(CONFIG.base_url_api + `/user`, { ...payload, role: "customer", phone: normalizePhoneNumber(payload?.phone) }, {
                     headers: {
                         "bearer-token": "tokotitohapi",
@@ -79,7 +85,7 @@ export default function LoginForm() {
             console.log(error);
             Swal.fire({
                 icon: "error",
-                text: error?.response?.data?.error_message
+                text: error?.response?.data?.error_message || error?.response?.data?.message
             })
             setLoading(false)
         }
@@ -116,6 +122,7 @@ export default function LoginForm() {
                                 <Input label='' placeholder='No Telepon' name='phone' onChange={handleChange} type='number' maxLength={13} />
                                 <Input label='' placeholder='Email' name='email' onChange={handleChange} type='email' />
                                 <Input label='' placeholder='Password' name='password' type={show ? "text" : "password"} onChange={handleChange} />
+                                <Input label='' placeholder='Konfirmasi Password' name='password_confirm' type={show ? "text" : "password"} onChange={handleChange} />
                                 <div className='flex items-center gap-2 pb-2'>
                                     <input type="checkbox" onChange={(e) => setShow(e.target.checked)} defaultChecked={show} />
                                     <span className='text-xs'>Tampilkan password</span>
