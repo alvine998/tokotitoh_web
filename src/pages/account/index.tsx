@@ -199,7 +199,7 @@ export default function Account() {
                     label="Password"
                     defaultValue={""}
                     name="password"
-                    type="password"
+                    isPassword
                   />
                   <Input
                     placeholder="********"
@@ -207,7 +207,7 @@ export default function Account() {
                     label="Konfirmasi Password"
                     defaultValue={""}
                     name="password_confirm"
-                    type="password"
+                    isPassword
                   />
                   <input type="hidden" name="id" value={user?.id} />
                 </div>
@@ -219,7 +219,7 @@ export default function Account() {
                   }}
                   color="white"
                 >
-                  Keluar
+                  Kembali
                 </Button>
               </form>
             </Modal>
