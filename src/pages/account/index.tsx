@@ -88,7 +88,7 @@ export default function Account() {
       {user == null ? (
         <LoginForm />
       ) : (
-        <div className="p-2 pt-10 lg:max-w-sm">
+        <div className="px-4 pt-10 lg:max-w-sm max-w-full">
           <div className="flex gap-3 items-center">
             <UserCircleIcon className="w-20 h-20" />
             <div>
