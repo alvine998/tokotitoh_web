@@ -290,16 +290,16 @@ export default function HeaderAds(props: Props) {
                                                             ))
                                                         }
                                                     </> :
-                                                    ads?.category_name?.toLowerCase()?.includes("elektronik") || ads?.category_name?.toLowerCase()?.includes("hp") ?
-                                                        <>
-                                                            {
-                                                                navsElectronic?.map((v: any, i: number) => (
-                                                                    <button key={i} onClick={() => { setFilterName(v?.name) }} className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all`}>
-                                                                        {v?.name}
-                                                                    </button>
-                                                                ))
-                                                            }
-                                                        </> :
+                                                    // ads?.category_name?.toLowerCase()?.includes("elektronik") || ads?.category_name?.toLowerCase()?.includes("hp") ?
+                                                    //     <>
+                                                    //         {
+                                                    //             navsElectronic?.map((v: any, i: number) => (
+                                                    //                 <button key={i} onClick={() => { setFilterName(v?.name) }} className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? 'bg-gray-300' : ''} hover:bg-gray-300 duration-200 transition-all`}>
+                                                    //                     {v?.name}
+                                                    //                 </button>
+                                                    //             ))
+                                                    //         }
+                                                    //     </> :
                                                         ads?.category_name?.toLowerCase()?.includes("makanan") || ads?.category_name?.toLowerCase()?.includes("hewan") ?
                                                             <>
                                                                 {
