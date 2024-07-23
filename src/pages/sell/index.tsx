@@ -82,7 +82,7 @@ export async function getServerSideProps(context: any) {
         return {
             props: {
                 categories: result?.data?.items?.rows,
-                subcategories: subcategories?.data?.items?.rows?.sort((a:any, b:any) => a.name?.localeCompare(b.name)) || [],
+                subcategories: subcategories?.data?.items || [],
                 brands: brands?.data?.items?.rows || [],
                 types: types?.data?.items?.rows || [],
                 provinces: provinces?.data?.items?.rows || [],
