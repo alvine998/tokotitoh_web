@@ -82,7 +82,7 @@ export async function getServerSideProps(context: any) {
         return {
             props: {
                 categories: result?.data?.items?.rows,
-                subcategories: subcategories?.data?.items || [],
+                subcategories: subcategories?.data?.items?.rows || [],
                 brands: brands?.data?.items?.rows || [],
                 types: types?.data?.items?.rows || [],
                 provinces: provinces?.data?.items?.rows || [],
