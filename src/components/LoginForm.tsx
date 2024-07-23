@@ -60,6 +60,7 @@ export default function LoginForm() {
       });
       router.reload();
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
