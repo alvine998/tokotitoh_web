@@ -708,6 +708,57 @@ export default function Sell({
                 ""
               )}
 
+              {selected?.subcategory_name
+                ?.toLowerCase()
+                ?.includes("sparepart") ||
+              selected?.subcategory_name
+                ?.toLowerCase()
+                ?.includes("aksesoris") ||
+              selected?.subcategory_name?.toLowerCase()?.includes("bengkel") ||
+              selected?.subcategory_name?.toLowerCase()?.includes("velg") ||
+              selected?.subcategory_name?.toLowerCase()?.includes("karoseri") ||
+              selected?.category_name?.toLowerCase()?.includes("hp") ||
+              selected?.category_name?.toLowerCase()?.includes("hobi") ||
+              selected?.category_name
+                ?.toLowerCase()
+                ?.includes("keperluan pribadi") ||
+              selected?.category_name
+                ?.toLowerCase()
+                ?.includes("bahan bangunan") ||
+              selected?.category_name
+                ?.toLowerCase()
+                ?.includes("kantor & industri") ||
+              selected?.category_name
+                ?.toLowerCase()
+                ?.includes("perlengkapan rumah") ? (
+                <div className="mt-2">
+                  <label className="text-gray-500" htmlFor="condition">
+                    Kondisi
+                  </label>
+                  <ReactSelect
+                    options={[
+                      { value: "baru", label: "Baru" },
+                      { value: "bekas", label: "Bekas" },
+                    ]}
+                    placeholder="Pilih Kondisi"
+                    onChange={(e: any) => {
+                      setSelected({
+                        ...selected,
+                        condition: e?.value,
+                      });
+                    }}
+                    maxMenuHeight={200}
+                    defaultValue={[
+                      { value: "baru", label: "Baru" },
+                      { value: "bekas", label: "Bekas" },
+                    ]?.find((v: any) => v?.value == selected?.condition)}
+                    id="condition"
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+
               <Input
                 label="Harga"
                 placeholder="Masukkan Harga"
@@ -742,12 +793,21 @@ export default function Sell({
               {selected?.category_name?.toLowerCase()?.includes("properti") ? (
                 <div>
                   <Input
-                    label="Luas (m2)"
-                    placeholder="Masukkan Luas (m2)"
+                    label="Luas Tanah (m2)"
+                    placeholder="Masukkan Luas Tanah (m2)"
                     defaultValue={+selected?.area || ""}
                     numericformat
                     onChange={(e: any) => {
                       setSelected({ ...selected, area: e.target.value });
+                    }}
+                  />
+                  <Input
+                    label="Luas Bangunan (m2)"
+                    placeholder="Masukkan Luas Bangunan (m2)"
+                    defaultValue={+selected?.building || ""}
+                    numericformat
+                    onChange={(e: any) => {
+                      setSelected({ ...selected, building: e.target.value });
                     }}
                   />
                   <Input
