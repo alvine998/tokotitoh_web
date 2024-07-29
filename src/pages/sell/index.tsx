@@ -651,13 +651,7 @@ export default function Sell({
                 }}
               />
               {selected?.subcategory_name?.toLowerCase()?.includes("mobil") ||
-              selected?.subcategory_name?.toLowerCase()?.includes("motor") ||
-              selected?.subcategory_name?.toLowerCase()?.includes("tv") ||
-              selected?.subcategory_name?.toLowerCase()?.includes("komputer") ||
-              selected?.subcategory_name
-                ?.toLowerCase()
-                ?.includes("handphone") ||
-              selected?.subcategory_name?.toLowerCase()?.includes("tablet") ? (
+              selected?.subcategory_name?.toLowerCase()?.includes("motor") ? (
                 <div>
                   <div>
                     <label className="text-gray-500" htmlFor="brand">
@@ -717,6 +711,7 @@ export default function Sell({
               selected?.subcategory_name?.toLowerCase()?.includes("bengkel") ||
               selected?.subcategory_name?.toLowerCase()?.includes("velg") ||
               selected?.subcategory_name?.toLowerCase()?.includes("karoseri") ||
+              selected?.category_name?.toLowerCase()?.includes("elektronik") ||
               selected?.category_name?.toLowerCase()?.includes("hp") ||
               selected?.category_name?.toLowerCase()?.includes("hobi") ||
               selected?.category_name
