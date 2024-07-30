@@ -309,7 +309,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <p className="mt-3">
                   Detail <br />
                   <hr />
-                  Brand: {ads?.brand_name}
+                  Merek: {ads?.brand_name}
                   <br />
                   <hr />
                   Tipe: {ads?.type_name}
@@ -318,22 +318,22 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                   Tahun: {ads?.year}
                   <br />
                   <hr />
-                  Warna: {ads?.color}
+                  {/* Warna: {ads?.color}
                   <br />
-                  <hr />
-                  Trip KM: {toMoney(ads?.km)} km
+                  <hr /> */}
+                  {/* Trip KM: {toMoney(ads?.km)} km
                   <br />
-                  <hr />
+                  <hr /> */}
                   Transmisi: {ads?.transmission}
                   <br />
                   <hr />
                   Bahan Bakar: {ads?.fuel_type}
                   <br />
                   <hr />
-                  Kepemilikan:{" "}
+                  {/* Kepemilikan:{" "}
                   {ads?.ownership == "individual" ? "Pribadi" : "Dealer"}
                   <br />
-                  <hr />
+                  <hr /> */}
                 </p>
               ) : (
                 ""
