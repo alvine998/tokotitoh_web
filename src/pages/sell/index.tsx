@@ -818,12 +818,14 @@ export default function Sell({
                 ""
               )}
 
-              {selected?.subcategory_name
-                ?.toLowerCase()
-                ?.includes("bus dan truk") ||
-              selected?.subcategory_name
-                ?.toLowerCase()
-                ?.includes("alat berat") ? (
+              {selected?.subcategory_name?.toLowerCase() ==
+                "bus dan truk dijual" ||
+              selected?.subcategory_name?.toLowerCase() ==
+                "bus dan truk di sewakan" ||
+              selected?.subcategory_name?.toLowerCase() ==
+                "alat berat di jual" ||
+              selected?.subcategory_name?.toLowerCase() ==
+                "alat berat di sewakan" ? (
                 <Input
                   label="Tahun"
                   defaultValue={+selected?.year || ""}
