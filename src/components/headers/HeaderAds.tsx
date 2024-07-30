@@ -343,13 +343,13 @@ export default function HeaderAds(props: Props) {
                         </button>
                       ))}
                     </>
-                  ) : ads?.subcategory_name?.toLowerCase() ==
+                  ) : ads?.name?.toLowerCase() ==
                       "alat berat di sewakan" ||
-                    ads?.subcategory_name?.toLowerCase() ==
+                    ads?.name?.toLowerCase() ==
                       "alat berat di jual" ||
-                    ads?.subcategory_name?.toLowerCase() ==
+                    ads?.name?.toLowerCase() ==
                       "bus dan truk dijual" ||
-                    ads?.subcategory_name?.toLowerCase() ==
+                    ads?.name?.toLowerCase() ==
                       "bus dan truk di sewakan" ? (
                     <>
                       {navsBusTruck?.map((v: any, i: number) => (
