@@ -302,6 +302,21 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 Deskripsi: <br />
                 {ads?.description}
               </p>
+              {ads?.subcategory_name?.toLowerCase() ==
+                "alat berat di sewakan" ||
+              ads?.subcategory_name?.toLowerCase() == "alat berat di jual" ||
+              ads?.subcategory_name?.toLowerCase() ==
+                "bus dan truk dijual" ||
+              ads?.subcategory_name?.toLowerCase() ==
+                "bus dan truk di sewakan" ? (
+                <p className="mt-3">
+                  Tahun: {ads?.year}
+                  <br />
+                  <hr />
+                </p>
+              ) : (
+                ""
+              )}
               {(ads?.category_name?.toLowerCase().includes("mobil") &&
                 ads?.subcategory_name?.toLowerCase().includes("dijual")) ||
               (ads?.category_name?.toLowerCase().includes("motor") &&

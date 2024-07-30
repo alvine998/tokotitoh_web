@@ -817,6 +817,26 @@ export default function Sell({
               ) : (
                 ""
               )}
+
+              {selected?.subcategory_name
+                ?.toLowerCase()
+                ?.includes("bus dan truk") ||
+              selected?.subcategory_name
+                ?.toLowerCase()
+                ?.includes("alat berat") ? (
+                <Input
+                  label="Tahun"
+                  defaultValue={+selected?.year || ""}
+                  placeholder="Masukkan Tahun"
+                  type="number"
+                  onChange={(e: any) => {
+                    setSelected({ ...selected, year: e.target.value });
+                  }}
+                />
+              ) : (
+                ""
+              )}
+
               {(selected?.category_name?.toLowerCase()?.includes("mobil") &&
                 selected?.subcategory_name?.toLowerCase()?.includes("mobil")) ||
               (selected?.category_name?.toLowerCase()?.includes("motor") &&
