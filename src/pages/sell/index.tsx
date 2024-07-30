@@ -357,12 +357,9 @@ export default function Sell({
         "type_id",
         "price",
         "description",
-        "km",
         "fuel_type",
         "transmission",
-        "ownership",
         "year",
-        "color",
         "wa",
       ]?.map((val: any) => {
         if (!data[val] || data[val] == "") {
@@ -827,7 +824,7 @@ export default function Sell({
                   ?.toLowerCase()
                   ?.includes("motor")) ? (
                 <div>
-                  <Input
+                  {/* <Input
                     label="Trip KM"
                     placeholder="Masukkan Trip KM"
                     defaultValue={+selected?.km || ""}
@@ -838,7 +835,7 @@ export default function Sell({
                         km: +e.target.value?.replaceAll(",", ""),
                       });
                     }}
-                  />
+                  /> */}
                   <div className="mt-2">
                     <label className="text-gray-500" htmlFor="fuel_type">
                       Jenis Bahan Bakar
@@ -873,7 +870,7 @@ export default function Sell({
                       )}
                     />
                   </div>
-                  <div className="mt-2">
+                  {/* <div className="mt-2">
                     <label className="text-gray-500" htmlFor="ownership">
                       Kepemilikan
                     </label>
@@ -889,7 +886,7 @@ export default function Sell({
                         (v: any) => v?.value == selected?.ownership
                       )}
                     />
-                  </div>
+                  </div> */}
                   <Input
                     label="Tahun"
                     defaultValue={+selected?.year || ""}
@@ -899,14 +896,14 @@ export default function Sell({
                       setSelected({ ...selected, year: e.target.value });
                     }}
                   />
-                  <Input
+                  {/* <Input
                     label="Warna"
                     defaultValue={selected?.color || ""}
                     placeholder="Masukkan Warna"
                     onChange={(e: any) => {
                       setSelected({ ...selected, color: e.target.value });
                     }}
-                  />
+                  /> */}
                   {/* <Input label='Plat Nomor' defaultValue={selected?.plat_no || ""} placeholder='X1234YYY' onChange={(e: any) => { setSelected({ ...selected, plat_no: e.target.value }) }} /> */}
                 </div>
               ) : (
