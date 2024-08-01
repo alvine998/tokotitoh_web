@@ -63,6 +63,7 @@ export default function MyAds({ ads, user }: any) {
         const queryFilter = new URLSearchParams(filter).toString();
         router.push(`?${queryFilter}`)
     }, [filter])
+    console.log(filter);
 
     const onRoute = async (v: any) => {
         await localStorage.setItem('from', 'saved-ads')
