@@ -16,6 +16,7 @@ import {
   LucideHome,
   PencilIcon,
   PhoneCallIcon,
+  PhoneIcon,
   PlusCircleIcon,
   TrashIcon,
   UserCircleIcon,
@@ -228,7 +229,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <ArrowLeft className="w-5" />
                 Kembali
               </button>
-              {from == "myads" ||
+              {/* {from == "myads" ||
               ads?.user_id == account?.id ||
               !account?.id ? (
                 ""
@@ -247,12 +248,8 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 >
                   LAPORKAN
                 </button>
-              )}
+              )} */}
             </div>
-            <p className="mt-4">
-              {ads?.district_name} {">"} {ads?.city_name} {">"}{" "}
-              {ads?.province_name}
-            </p>
             <OwlCarousel
               center
               responsive={responsive}
@@ -279,34 +276,46 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 </button>
               ))}
             </OwlCarousel>
-            <a
-              className="float-end"
-              target="_blank"
-              href={`https://api.whatsapp.com/send?text=https://tokotitoh.co.id/category/${router.query?.subcat_id}/${router.query?.ads_id}`}
-            >
-              <Image
-                alt="sharewa"
-                src={"/icons/sharewa.png"}
-                layout="relative"
-                width={200}
-                height={200}
-                className="w-full h-6"
-              />
-            </a>
+            <div className="flex justify-between gap-2 items-center">
+              <a
+                className="bg-blue-600 p-2 w-full rounded text-white text-xs text-center"
+                target="_blank"
+                href={`https://api.whatsapp.com/send?text=https://tokotitoh.co.id/category/${router.query?.subcat_id}/${router.query?.ads_id}`}
+              >
+                Bagikan Iklan
+              </a>
+              <button
+                className="bg-red-600 p-2 w-full rounded text-white text-xs text-center"
+                type="button"
+                onClick={() => {
+                  setModal({
+                    ...modal,
+                    open: true,
+                    data: ads,
+                    key: "report",
+                  });
+                  setImages([]);
+                }}
+              >
+                Laporkan
+              </button>
+              <button
+                className="bg-green-600 p-2 w-full rounded text-white text-xs text-center"
+                type="button"
+                onClick={() => {}}
+              >
+                Simpan Iklan
+              </button>
+            </div>
             <div className="mt-3">
               <h2 className="text-xl">{ads?.title}</h2>
               <h2 className="text-xl font-semibold">
                 Rp {toMoney(ads?.price)}
               </h2>
-              <p className="border rounded p-3 mt-2">
-                Deskripsi: <br />
-                {ads?.description}
-              </p>
               {ads?.subcategory_name?.toLowerCase() ==
                 "alat berat di sewakan" ||
               ads?.subcategory_name?.toLowerCase() == "alat berat di jual" ||
-              ads?.subcategory_name?.toLowerCase() ==
-                "bus dan truk dijual" ||
+              ads?.subcategory_name?.toLowerCase() == "bus dan truk dijual" ||
               ads?.subcategory_name?.toLowerCase() ==
                 "bus dan truk di sewakan" ? (
                 <p className="mt-3">
@@ -353,8 +362,19 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               ) : (
                 ""
               )}
-              <p>No Telepon: {ads?.wa}</p>
+              <p>
+                Kota: {ads?.district_name}
+                <br />
+                <hr />
+                Kabupata/Kota: {ads?.city_name}
+                <br />
+                <hr />
+              </p>
             </div>
+            <p className="border-2 rounded p-3 mt-2 text-sm">
+              Deskripsi: <br />
+              {ads?.description}
+            </p>
           </div>
 
           {modal?.key == "view" ? (
@@ -474,31 +494,8 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
             ""
           )}
 
-          {from == "myads" || ads?.user_id == account?.id ? (
-            ""
-          ) : (
-            <>
-              {/* Button WA */}
-              <div className="fixed bottom-4 right-4 lg:right-[37%]">
-                <Link
-                  href={`https://wa.me/${normalizePhoneNumber(ads?.wa)}`}
-                  target="_blank"
-                >
-                  <Button
-                    type="button"
-                    onClick={addCalls}
-                    className={"rounded-full p-2 flex items-center gap-2"}
-                  >
-                    <PhoneCallIcon className="w-8" />
-                    Whatsapp Now
-                  </Button>
-                </Link>
-              </div>
-            </>
-          )}
-
-          <div className="absolute bottom-0 mt-5 lg:left-[37%] left-0">
-            <div className="flex gap-3 items-center pl-5 pt-3">
+          <div className="pb-20 -ml-20">
+            <div className="flex gap-3 items-center pt-3">
               <UserCircleIcon className="w-20 h-20" />
               <div>
                 <p>Pengiklan</p>
@@ -512,6 +509,45 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
       ) : (
         ""
       )}
+      <div className="fixed bottom-0 bg-white h-[80px] flex flex-row-reverse justify-between items-center lg:w-[350px] gap-2">
+        {/* Button WA */}
+        <div className="w-full">
+          <Link href={`tel:${normalizePhoneNumber(ads?.wa)}`} target="_blank">
+            <Button
+              type="button"
+              color="info"
+              onClick={addCalls}
+              className={"rounded-full p-2 flex items-center gap-2"}
+            >
+              <PhoneIcon className="w-8" />
+              Telepon
+            </Button>
+          </Link>
+        </div>
+
+        {from == "myads" || ads?.user_id == account?.id ? (
+          ""
+        ) : (
+          <>
+            {/* Button WA */}
+            <div className="w-full">
+              <Link
+                href={`https://wa.me/${normalizePhoneNumber(ads?.wa)}`}
+                target="_blank"
+              >
+                <Button
+                  type="button"
+                  onClick={addCalls}
+                  className={"rounded-full p-2 flex items-center gap-2"}
+                >
+                  <PhoneCallIcon className="w-8" />
+                  Whatsapp Now
+                </Button>
+              </Link>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
