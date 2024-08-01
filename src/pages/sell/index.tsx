@@ -376,22 +376,17 @@ export default function Sell({
         return;
       }
     } else if (data?.category_name?.toLowerCase()?.includes("properti")) {
-      [
-        "title",
-        "price",
-        "description",
-        "area",
-        "building",
-        "wa",
-      ]?.map((val: any) => {
-        if (!data[val] || data[val] == "") {
-          Swal.fire({
-            icon: "warning",
-            text: `Harap lengkapi kolom!`,
-          });
-          next = false;
+      ["title", "price", "description", "area", "building", "wa"]?.map(
+        (val: any) => {
+          if (!data[val] || data[val] == "") {
+            Swal.fire({
+              icon: "warning",
+              text: `Harap lengkapi kolom!`,
+            });
+            next = false;
+          }
         }
-      });
+      );
       if (next) {
         setFilled([...filled, 4]);
         setIsMoved(3);
@@ -756,9 +751,12 @@ export default function Sell({
                 defaultValue={+selected?.price || ""}
                 numericformat
                 onChange={(e: any) => {
+                  if (e.target.value == "," || e.target.value?.includes(",")) {
+                    return false;
+                  }
                   setSelected({
                     ...selected,
-                    price: +e.target.value?.replaceAll(",", ""),
+                    price: +e.target.value?.replaceAll(".", ""),
                   });
                 }}
               />
@@ -789,7 +787,16 @@ export default function Sell({
                     defaultValue={+selected?.area || ""}
                     numericformat
                     onChange={(e: any) => {
-                      setSelected({ ...selected, area: e.target.value });
+                      if (
+                        e.target.value == "," ||
+                        e.target.value?.includes(",")
+                      ) {
+                        return false;
+                      }
+                      setSelected({
+                        ...selected,
+                        area: +e.target.value?.replaceAll(".", ""),
+                      });
                     }}
                   />
                   <Input
@@ -798,7 +805,16 @@ export default function Sell({
                     defaultValue={+selected?.building || ""}
                     numericformat
                     onChange={(e: any) => {
-                      setSelected({ ...selected, building: e.target.value });
+                      if (
+                        e.target.value == "," ||
+                        e.target.value?.includes(",")
+                      ) {
+                        return false;
+                      }
+                      setSelected({
+                        ...selected,
+                        building: +e.target.value?.replaceAll(".", ""),
+                      });
                     }}
                   />
                   {/* <Input
