@@ -590,7 +590,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
           </Link>
         </div>
 
-        {from == "myads" || ads?.user_id == account?.id ? (
+        {from == "myads" || from == "saved-ads" || ads?.user_id == account?.id ? (
           ""
         ) : (
           <>
