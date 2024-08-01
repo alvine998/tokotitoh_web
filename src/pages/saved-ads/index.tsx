@@ -23,7 +23,7 @@ export async function getServerSideProps(context: any) {
         let result: any = []
         if (user) {
             user = JSON.parse(user)
-            result = await axios.get(CONFIG.base_url_api + `/ads?user_id=${user?.id || 0}&pagination=true&page=${+page || 0}&size=${+size || 10}&search=${search || ""}`, {
+            result = await axios.get(CONFIG.base_url_api + `/ads?id=${user?.save_ads}&pagination=true&page=${+page || 0}&size=${+size || 10}&search=${(user?.save_ads !== null && user?.save_ads?.length > 0) ? (search || "") : "!!!"}`, {
                 headers: {
                     "bearer-token": "tokotitohapi",
                     "x-partner-code": user?.partner_code
@@ -65,7 +65,7 @@ export default function MyAds({ ads, user }: any) {
     }, [filter])
 
     const onRoute = async (v: any) => {
-        await localStorage.setItem('from', 'myads')
+        await localStorage.setItem('from', 'saved-ads')
         router.push(`/category/${v?.subcategory_id}/${v?.id}`)
     }
     return (
@@ -93,19 +93,14 @@ export default function MyAds({ ads, user }: any) {
                                                         brand_id={v?.brand_id}
                                                         category_id={v?.category_id}
                                                         account_id={user?.id}
+                                                        account={user}
                                                     />
                                                 </div>
                                             ))
                                         }
                                     </div> :
-                                    <div className='flex flex-col justify-center items-center'>
-                                        <h5 className='text-center text-xl font-bold'>Iklan Tidak Ditemukan!</h5>
-                                        <Link href={"/sell"}>
-                                            <button className='rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center duration-200 transition-all'>
-                                                <PlusIcon className='w-6' />
-                                                Buat Iklan Disini
-                                            </button>
-                                        </Link>
+                                    <div className='flex flex-col justify-center items-center mt-20'>
+                                        <h5 className='text-center text-xl font-bold'>Tidak Ada Iklan Yang Tersimpan!</h5>
                                     </div>
                             }
                         </div>

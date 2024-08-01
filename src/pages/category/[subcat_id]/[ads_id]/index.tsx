@@ -30,7 +30,7 @@ import React, { useEffect, useState } from "react";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import dynamic from "next/dynamic";
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import Input from "@/components/Input";
 import TextArea from "@/components/TextArea";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -50,7 +50,6 @@ export async function getServerSideProps(context: any) {
     if (account) {
       account = JSON.parse(account);
     }
-    console.log(account);
     const result = await axios.get(
       CONFIG.base_url_api +
         `/ads?id=${ads_id}&pagination=true&page=${+page || 0}&size=${
@@ -169,6 +168,47 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
       console.log(error);
     }
   };
+  const saveAds = async () => {
+    try {
+      const result = await axios.patch(
+        CONFIG.base_url_api + `/user`,
+        {
+          id: account?.id,
+          email: account?.email,
+          save_ads:
+            account?.save_ads !== null
+              ? [...account?.save_ads, ads?.id]
+              : [ads?.id],
+        },
+        {
+          headers: {
+            "bearer-token": "tokotitohapi",
+            "x-partner-code": "id.marketplace.tokotitoh",
+          },
+        }
+      );
+      const existUser = await axios.get(
+        CONFIG.base_url_api + `/users?id=${account?.id}`,
+        {
+          headers: {
+            "bearer-token": "tokotitohapi",
+            "x-partner-code": "id.marketplace.tokotitoh",
+          },
+        }
+      );
+      setCookie("account", {
+        ...account,
+        save_ads: existUser?.data?.items?.rows?.[0]?.save_ads
+      });
+      Swal.fire({
+        icon: "success",
+        text: "Iklan Berhasil Disimpan",
+      });
+      router.reload()
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const onReport = async (e: any) => {
     e.preventDefault();
@@ -215,7 +255,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
     <div className="pb-20 flex flex-col justify-center items-center relative">
       {show ? (
         <>
-          <div className="p-3 max-w-[350px]">
+          <div className="p-3 lg:max-w-[350px] w-full">
             <div className="flex justify-between items-center">
               <button
                 type="button"
@@ -300,11 +340,14 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 Laporkan
               </button>
               <button
-                className="bg-green-600 p-2 w-full rounded text-white text-xs text-center"
+                className={`bg-green-600 p-2 w-full rounded text-white text-xs text-center ${account?.save_ads?.includes(ads?.id) ? "opacity-80" : "opacity-100"}`}
                 type="button"
-                onClick={() => {}}
+                onClick={() => {
+                  saveAds();
+                }}
+                disabled={account?.save_ads?.includes(ads?.id)}
               >
-                Simpan Iklan
+                {account?.save_ads?.includes(ads?.id) ? "Iklan Tersimpan" : "Simpan Iklan"}
               </button>
             </div>
             <div className="mt-3">
@@ -509,7 +552,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
       ) : (
         ""
       )}
-      <div className="fixed bottom-0 bg-white h-[80px] flex flex-row-reverse justify-between items-center lg:w-[350px] gap-2">
+      <div className="fixed bottom-0 bg-white h-[80px] flex flex-row-reverse justify-between items-center lg:w-[350px] w-full px-5 lg:px-0 gap-2">
         {/* Button WA */}
         <div className="w-full">
           <Link href={`tel:${normalizePhoneNumber(ads?.wa)}`} target="_blank">
@@ -517,7 +560,9 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               type="button"
               color="info"
               onClick={addCalls}
-              className={"rounded-full p-2 flex items-center gap-2"}
+              className={
+                "rounded-full p-2 flex items-center gap-2 lg:text-md text-sm"
+              }
             >
               <PhoneIcon className="w-8" />
               Telepon
@@ -538,7 +583,9 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <Button
                   type="button"
                   onClick={addCalls}
-                  className={"rounded-full p-2 flex items-center gap-2"}
+                  className={
+                    "rounded-full p-2 flex items-center gap-2 lg:text-md text-sm"
+                  }
                 >
                   <PhoneCallIcon className="w-8" />
                   Whatsapp Now
