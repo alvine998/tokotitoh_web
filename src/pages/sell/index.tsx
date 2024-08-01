@@ -642,7 +642,7 @@ export default function Sell({
                 label="Judul"
                 defaultValue={selected?.title || ""}
                 placeholder="Masukkan Judul Iklan"
-                maxLength={30}
+                maxLength={40}
                 onChange={(e: any) => {
                   setSelected({ ...selected, title: e.target.value });
                 }}
@@ -766,7 +766,7 @@ export default function Sell({
               <TextArea
                 label="Deksripsi"
                 placeholder="Masukkan Deskripsi"
-                maxLength={250}
+                maxLength={1000}
                 defaultValue={selected?.description || ""}
                 onChange={(e) => {
                   setSelected({ ...selected, description: e.target.value });
