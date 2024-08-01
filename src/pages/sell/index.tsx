@@ -380,7 +380,6 @@ export default function Sell({
         "title",
         "price",
         "description",
-        "certificates",
         "area",
         "building",
         "wa",
