@@ -198,13 +198,13 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
       );
       setCookie("account", {
         ...account,
-        save_ads: existUser?.data?.items?.rows?.[0]?.save_ads
+        save_ads: existUser?.data?.items?.rows?.[0]?.save_ads,
       });
       Swal.fire({
         icon: "success",
         text: "Iklan Berhasil Disimpan",
       });
-      router.reload()
+      router.reload();
     } catch (error) {
       console.log(error);
     }
@@ -340,14 +340,20 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 Laporkan
               </button>
               <button
-                className={`bg-green-600 p-2 w-full rounded text-white text-xs text-center ${account?.save_ads?.includes(ads?.id) ? "opacity-80" : "opacity-100"}`}
+                className={`bg-green-600 p-2 w-full rounded text-white text-xs text-center ${
+                  account?.save_ads?.includes(ads?.id)
+                    ? "opacity-80"
+                    : "opacity-100"
+                }`}
                 type="button"
                 onClick={() => {
                   saveAds();
                 }}
                 disabled={account?.save_ads?.includes(ads?.id)}
               >
-                {account?.save_ads?.includes(ads?.id) ? "Iklan Tersimpan" : "Simpan Iklan"}
+                {account?.save_ads?.includes(ads?.id)
+                  ? "Iklan Tersimpan"
+                  : "Simpan Iklan"}
               </button>
             </div>
             <div className="mt-3">
@@ -401,6 +407,20 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                   {ads?.ownership == "individual" ? "Pribadi" : "Dealer"}
                   <br />
                   <hr /> */}
+                </p>
+              ) : (
+                ""
+              )}
+              {ads?.category_name?.toLowerCase().includes("properti") ? (
+                <p className="mt-3">
+                  Detail <br />
+                  <hr />
+                  Luas Tanah: {ads?.area || 0} m2
+                  <br />
+                  <hr />
+                  Luas Bangunan: {ads?.building || 0} m2
+                  <br />
+                  <hr />
                 </p>
               ) : (
                 ""

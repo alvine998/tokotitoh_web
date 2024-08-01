@@ -802,7 +802,7 @@ export default function Sell({
                       setSelected({ ...selected, building: e.target.value });
                     }}
                   />
-                  <Input
+                  {/* <Input
                     label="Sertifikat"
                     placeholder="Masukkan Sertifikat"
                     defaultValue={selected?.certificates || ""}
@@ -812,7 +812,7 @@ export default function Sell({
                         certificates: e.target.value,
                       });
                     }}
-                  />
+                  /> */}
                 </div>
               ) : (
                 ""
