@@ -434,7 +434,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <hr />
               </p>
             </div>
-            <p className="border-2 rounded p-3 mt-2 text-sm">
+            <p className="border-2 rounded p-3 mt-2 text-sm whitespace-pre-line">
               Deskripsi: <br />
               {ads?.description}
             </p>
