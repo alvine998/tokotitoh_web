@@ -573,27 +573,29 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
         ""
       )}
       <div className="fixed bottom-0 bg-white h-[80px] flex flex-row-reverse justify-between items-center lg:w-[350px] w-full px-5 lg:px-0 gap-2">
-        {/* Button WA */}
-        <div className="w-full">
-          <Link href={`tel:${normalizePhoneNumber(ads?.wa)}`} target="_blank">
-            <Button
-              type="button"
-              color="info"
-              onClick={addCalls}
-              className={
-                "rounded-full p-2 flex items-center gap-2 lg:text-md text-sm"
-              }
-            >
-              <PhoneIcon className="w-8" />
-              Telepon
-            </Button>
-          </Link>
-        </div>
-
-        {from == "myads" || from == "saved-ads" || ads?.user_id == account?.id ? (
+        {from == "myads" || ads?.user_id == account?.id ? (
           ""
         ) : (
           <>
+            {/* Button Telepon */}
+            <div className="w-full">
+              <Link
+                href={`tel:${normalizePhoneNumber(ads?.wa)}`}
+                target="_blank"
+              >
+                <Button
+                  type="button"
+                  color="info"
+                  onClick={addCalls}
+                  className={
+                    "rounded-full p-2 flex items-center gap-2 lg:text-md text-sm"
+                  }
+                >
+                  <PhoneIcon className="w-8" />
+                  Telepon
+                </Button>
+              </Link>
+            </div>
             {/* Button WA */}
             <div className="w-full">
               <Link
