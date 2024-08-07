@@ -542,7 +542,7 @@ export default function HeaderAds(props: Props) {
                           numericformat
                           label=""
                           placeholder="Dari Harga"
-                          defaultValue={filter?.min}
+                          defaultValue={filter?.min || 0}
                           onChange={(e: any) => {
                             setFilter({
                               ...filter,
@@ -554,7 +554,7 @@ export default function HeaderAds(props: Props) {
                           numericformat
                           label=""
                           placeholder="Sampai Harga"
-                          defaultValue={filter?.max}
+                          defaultValue={filter?.max || 1000000000000}
                           onChange={(e: any) => {
                             setFilter({
                               ...filter,
@@ -635,7 +635,7 @@ export default function HeaderAds(props: Props) {
                     <div>
                       <div className="flex flex-col items-center justify-center pl-2 mt-2">
                         <Input
-                          defaultValue={filter?.year_start}
+                          defaultValue={filter?.year_start || '2000'}
                           label=""
                           placeholder="Masukkan Tahun Awal"
                           maxLength={4}
@@ -648,7 +648,7 @@ export default function HeaderAds(props: Props) {
                           }}
                         />
                         <Input
-                          defaultValue={filter?.year_end}
+                          defaultValue={filter?.year_end || new Date().getFullYear()}
                           label=""
                           placeholder="Masukkan Tahun Akhir"
                           maxLength={4}
