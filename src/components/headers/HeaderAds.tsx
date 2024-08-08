@@ -299,12 +299,22 @@ export default function HeaderAds(props: Props) {
                 <p>
                   Filter: {ads?.category_name} {">"} {ads?.name}
                 </p>
-                <button
-                  type="button"
-                  onClick={() => setModal({ ...modal, open: false })}
-                >
-                  <XCircleIcon className="w-7" />
-                </button>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setModal({ ...modal, open: false })}
+                  >
+                    <XCircleIcon className="w-7" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setFilter({ subcat_id: filter?.subcat_id, size: 5 });
+                    }}
+                    className="mt-2 text-blue-500"
+                  >
+                    Reset
+                  </button>
+                </div>
               </div>
               <div className="flex mt-8">
                 <div className="w-auto flex flex-col gap-2">
@@ -929,18 +939,6 @@ export default function HeaderAds(props: Props) {
                       disabled={loading}
                     >
                       Terapkan
-                    </Button>
-                  </div>
-
-                  <div className="flex flex-col gap-2 items-center justify-center pl-2">
-                    <Button
-                      color="warning"
-                      onClick={() => {
-                        setFilter({subcat_id: filter?.subcat_id, size: 5});
-                      }}
-                      disabled={loading}
-                    >
-                      Reset Filter
                     </Button>
                   </div>
                 </div>
