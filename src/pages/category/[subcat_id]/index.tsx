@@ -52,8 +52,8 @@ export async function getServerSideProps(context: any) {
       city_id: city_id || "",
       district_id: district_id || "",
       transmission: transmission || "",
-      min: min || "0",
-      max: max || "1000000000000",
+      min: min?.replaceAll(".", "") || "5",
+      max: max?.replaceAll(".", "") || "1000000000000",
       minArea: minArea || "",
       maxArea: maxArea || "",
       minBuilding: minBuilding || "",
@@ -70,6 +70,7 @@ export async function getServerSideProps(context: any) {
         "x-partner-code": "id.marketplace.tokotitoh"
       }
     })
+    console.log(filters);
     const result2 = await axios.get(CONFIG.base_url_api +
       `/subcategories?id=${subcat_id}`, {
       headers: {
@@ -133,7 +134,7 @@ export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: 
   const router = useRouter();
   const routers = router2()
   const [modal, setModal] = useState<useModal>()
-  const [filter, setFilter] = useState<any>(router.query);
+  const [filter, setFilter] = useState<any>({...router?.query, size:5});
   const [loading, setLoading] = useState<any>(false);
   let user: any = getCookie('account')
 

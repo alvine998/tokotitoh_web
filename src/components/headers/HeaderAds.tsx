@@ -542,7 +542,7 @@ export default function HeaderAds(props: Props) {
                           numericformat
                           label=""
                           placeholder="Dari Harga"
-                          defaultValue={filter?.min || 0}
+                          defaultValue={filter?.min || 5}
                           onChange={(e: any) => {
                             setFilter({
                               ...filter,
