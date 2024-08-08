@@ -295,11 +295,11 @@ export default function HeaderAds(props: Props) {
         <Modal open={modal.open} setOpen={() => {}} type="filters">
           <div className="h-screen">
             <div className="p-2">
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-start">
                 <p>
                   Filter: {ads?.category_name} {">"} {ads?.name}
                 </p>
-                <div>
+                <div className="flex flex-col">
                   <button
                     type="button"
                     onClick={() => setModal({ ...modal, open: false })}
@@ -310,7 +310,7 @@ export default function HeaderAds(props: Props) {
                     onClick={() => {
                       setFilter({ subcat_id: filter?.subcat_id, size: 5 });
                     }}
-                    className="mt-2 text-blue-500"
+                    className="text-blue-700 mr-2"
                   >
                     Reset
                   </button>
