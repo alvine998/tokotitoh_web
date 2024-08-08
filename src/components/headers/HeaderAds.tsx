@@ -635,9 +635,8 @@ export default function HeaderAds(props: Props) {
                     <div>
                       <div className="flex flex-col items-center justify-center pl-2 mt-2">
                         <Input
-                          defaultValue={filter?.year_start || '2000'}
                           label=""
-                          placeholder="Masukkan Tahun Awal"
+                          placeholder={"1945"}
                           maxLength={4}
                           type="tel"
                           onChange={(e: any) => {
@@ -648,9 +647,8 @@ export default function HeaderAds(props: Props) {
                           }}
                         />
                         <Input
-                          defaultValue={filter?.year_end || new Date().getFullYear()}
                           label=""
-                          placeholder="Masukkan Tahun Akhir"
+                          placeholder={`${new Date().getFullYear()}`}
                           maxLength={4}
                           type="tel"
                           onChange={(e: any) => {
