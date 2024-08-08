@@ -145,6 +145,8 @@ export default function HeaderAds(props: Props) {
     }
   };
 
+  // console.log(router.query, 'testes');
+
   // useEffect(() => {
   //     geolocation();
   // }, [])
@@ -927,6 +929,18 @@ export default function HeaderAds(props: Props) {
                       disabled={loading}
                     >
                       Terapkan
+                    </Button>
+                  </div>
+
+                  <div className="flex flex-col gap-2 items-center justify-center pl-2">
+                    <Button
+                      color="warning"
+                      onClick={() => {
+                        setFilter({subcat_id: filter?.subcat_id, size: 5});
+                      }}
+                      disabled={loading}
+                    >
+                      Reset Filter
                     </Button>
                   </div>
                 </div>
