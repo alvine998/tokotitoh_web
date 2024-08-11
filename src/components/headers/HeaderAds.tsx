@@ -303,14 +303,16 @@ export default function HeaderAds(props: Props) {
                   <button
                     type="button"
                     onClick={() => setModal({ ...modal, open: false })}
+                    className="justify-end items-end flex"
                   >
                     <XCircleIcon className="w-7" />
                   </button>
                   <button
                     onClick={() => {
                       setFilter({ subcat_id: filter?.subcat_id, size: 5 });
+                      setModal({...modal, open: false})
                     }}
-                    className="text-blue-700 mr-2"
+                    className="text-blue-700 mr-2 border-2 border-black rounded py-1 px-4 mt-1"
                   >
                     Reset
                   </button>
