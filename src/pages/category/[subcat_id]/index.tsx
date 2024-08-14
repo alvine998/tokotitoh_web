@@ -1,18 +1,28 @@
-import AdsProduct from '@/components/AdsProduct'
-import BottomTabs from '@/components/BottomTabs'
-import Button from '@/components/Button'
-import HeaderAds from '@/components/headers/HeaderAds'
-import HeaderHome from '@/components/headers/HeaderHome'
-import Modal, { useModal } from '@/components/Modal'
-import { CONFIG } from '@/config'
-import axios from 'axios'
-import { CarFrontIcon, CarIcon, ChevronLeftIcon, InfoIcon, LucideHome, PlusCircleIcon, PlusIcon, XCircleIcon } from 'lucide-react'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { useRouter as router2 } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-import { createQueryString } from '@/utils'
-import { getCookie } from 'cookies-next'
+import AdsProduct from "@/components/AdsProduct";
+import BottomTabs from "@/components/BottomTabs";
+import Button from "@/components/Button";
+import HeaderAds from "@/components/headers/HeaderAds";
+import HeaderHome from "@/components/headers/HeaderHome";
+import Modal, { useModal } from "@/components/Modal";
+import { CONFIG } from "@/config";
+import axios from "axios";
+import {
+  CarFrontIcon,
+  CarIcon,
+  ChevronLeftIcon,
+  CircleDotDashedIcon,
+  InfoIcon,
+  LucideHome,
+  PlusCircleIcon,
+  PlusIcon,
+  XCircleIcon,
+} from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useRouter as router2 } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { createQueryString } from "@/utils";
+import { getCookie } from "cookies-next";
 
 export async function getServerSideProps(context: any) {
   try {
@@ -35,13 +45,13 @@ export async function getServerSideProps(context: any) {
       sort,
       year_start,
       year_end,
-      fuel_type
+      fuel_type,
     } = context.query;
     const { subcat_id } = context.params;
 
     const filters = {
       subcategory_id: subcat_id,
-      status: '1',
+      status: "1",
       pagination: true,
       page: +page || 0,
       size: +size || 5,
@@ -62,45 +72,54 @@ export async function getServerSideProps(context: any) {
       year_start: year_start || "1945",
       year_end: year_end || new Date().getFullYear(),
       fuel_type: fuel_type || "",
-    }
-    const result = await axios.get(CONFIG.base_url_api +
-      `/ads?${createQueryString(filters)}`, {
-      headers: {
-        "bearer-token": "tokotitohapi",
-        "x-partner-code": "id.marketplace.tokotitoh"
-      }
-    })
-    console.log(filters);
-    const result2 = await axios.get(CONFIG.base_url_api +
-      `/subcategories?id=${subcat_id}`, {
-      headers: {
-        "bearer-token": "tokotitohapi",
-        "x-partner-code": "id.marketplace.tokotitoh"
-      }
-    })
-    const ads1 = result2?.data?.items?.rows?.[0] || {};
-    const [brands, provinces] = await Promise.all([
-      axios.get(CONFIG.base_url_api + `/brands?category_id=${ads1?.category_id}`, {
+    };
+    const result = await axios.get(
+      CONFIG.base_url_api + `/ads?${createQueryString(filters)}`,
+      {
         headers: {
           "bearer-token": "tokotitohapi",
-          "x-partner-code": "id.marketplace.tokotitoh"
+          "x-partner-code": "id.marketplace.tokotitoh",
+        },
+      }
+    );
+    const result2 = await axios.get(
+      CONFIG.base_url_api + `/subcategories?id=${subcat_id}`,
+      {
+        headers: {
+          "bearer-token": "tokotitohapi",
+          "x-partner-code": "id.marketplace.tokotitoh",
+        },
+      }
+    );
+    const ads1 = result2?.data?.items?.rows?.[0] || {};
+    const [brands, provinces] = await Promise.all([
+      axios.get(
+        CONFIG.base_url_api + `/brands?category_id=${ads1?.category_id}`,
+        {
+          headers: {
+            "bearer-token": "tokotitohapi",
+            "x-partner-code": "id.marketplace.tokotitoh",
+          },
         }
-      }),
+      ),
       axios.get(CONFIG.base_url_api + `/provinces`, {
         headers: {
           "bearer-token": "tokotitohapi",
-          "x-partner-code": "id.marketplace.tokotitoh"
-        }
-      })
-    ])
-    let types: any = []
+          "x-partner-code": "id.marketplace.tokotitoh",
+        },
+      }),
+    ]);
+    let types: any = [];
     if (brand_id) {
-      types = await axios.get(CONFIG.base_url_api + `/types?brand_id=${brand_id}`, {
-        headers: {
-          "bearer-token": "tokotitohapi",
-          "x-partner-code": "id.marketplace.tokotitoh"
+      types = await axios.get(
+        CONFIG.base_url_api + `/types?brand_id=${brand_id}`,
+        {
+          headers: {
+            "bearer-token": "tokotitohapi",
+            "x-partner-code": "id.marketplace.tokotitoh",
+          },
         }
-      })
+      );
     }
     return {
       props: {
@@ -109,61 +128,73 @@ export async function getServerSideProps(context: any) {
         types: types?.data?.items?.rows || [],
         provinces: provinces?.data?.items?.rows || [],
         subcat_id,
-        ads1
-      }
-    }
+        ads1,
+      },
+    };
   } catch (error: any) {
     console.log(error);
     if (error?.response?.status == 401) {
       return {
         redirect: {
-          destination: '/',
+          destination: "/",
           permanent: false,
-        }
-      }
+        },
+      };
     }
     return {
       props: {
         error: error?.response?.data?.message,
-      }
-    }
+      },
+    };
   }
 }
 
-export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: any) {
+export default function Ads({
+  ads,
+  subcat_id,
+  brands,
+  types,
+  ads1,
+  provinces,
+}: any) {
   const router = useRouter();
-  const routers = router2()
-  const [modal, setModal] = useState<useModal>()
-  const [filter, setFilter] = useState<any>({...router?.query, size:5});
+  const routers = router2();
+  const [modal, setModal] = useState<useModal>();
+  const [spinning, setSpinning] = useState<boolean>(false);
+  const [filter, setFilter] = useState<any>({ ...router?.query, size: 5 });
   const [loading, setLoading] = useState<any>(false);
-  let user: any = getCookie('account')
+  let user: any = getCookie("account");
 
   const addViews = async (data: any) => {
     try {
       if (user?.id !== data?.id) {
-        await axios.post(CONFIG.base_url_api + `/ads/views`, { id: data?.id }, {
-          headers: {
-            "bearer-token": "tokotitohapi",
-            "x-partner-code": "id.marketplace.tokotitoh"
+        await axios.post(
+          CONFIG.base_url_api + `/ads/views`,
+          { id: data?.id },
+          {
+            headers: {
+              "bearer-token": "tokotitohapi",
+              "x-partner-code": "id.marketplace.tokotitoh",
+            },
           }
-        })
+        );
       }
-      localStorage.setItem('from', 'subcat')
-      router.push(`/category/${subcat_id}/${data?.id}`)
+      localStorage.setItem("from", "subcat");
+      router.push(`/category/${subcat_id}/${data?.id}`);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     const queryFilter = new URLSearchParams(filter).toString();
-    routers.push(`?${queryFilter}`, { scroll: false })
-    setLoading(false)
-  }, [filter])
+    routers.push(`?${queryFilter}`, { scroll: false });
+    setLoading(false);
+  }, [filter]);
 
   return (
-    <div className='pb-20 flex flex-col justify-center items-center'>
+    <div className="pb-20 flex flex-col justify-center items-center">
       <HeaderAds
         loading={loading}
         filter={filter}
@@ -175,42 +206,68 @@ export default function Ads({ ads, subcat_id, brands, types, ads1, provinces }: 
         items={ads?.rows}
       />
 
-      {
-        ads?.count > 0 ?
-          <div>
-            {/* Kategori */}
-            <div className='p-2 mt-28'>
-              {
-                ads?.rows?.map((v: any, i: number) => (
-                  <div key={i} className='w-[350px]'>
-                    <AdsProduct price={v?.price} thumbnail={v?.images[0]} title={v?.title} onClick={() => { addViews(v) }} />
-                  </div>
-                ))
-              }
-            </div>
-
-            {
-              filter?.size < ads?.count ?
-                <div className='flex items-center justify-center'>
-                  <button
-                    onClick={() => setFilter({ ...filter, size: (+filter.size || 5) + 5 })}
-                    type='button'
-                    className='rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center'
-                  >
-                    <PlusIcon className='w-6' />
-                    Lihat Lainnya
-                  </button>
-                </div> : ""
-            }
-
-
-          </div> : <div className='mt-40 flex flex-col gap-2 justify-center items-center'>
-            <Image alt='eror404' src={'/images/error404.webp'} layout='relative' width={300} height={300} className='w-[250px] h-[250px]' />
-            <p className='text-center font-semibold text-lg'>Item yang anda dicari tidak ditemukan!</p>
+      {ads?.count > 0 ? (
+        <div>
+          {/* Kategori */}
+          <div className="p-2 mt-28">
+            {ads?.rows?.map((v: any, i: number) => (
+              <div key={i} className="w-[350px]">
+                <AdsProduct
+                  price={v?.price}
+                  thumbnail={v?.images[0]}
+                  title={v?.title}
+                  onClick={() => {
+                    addViews(v);
+                  }}
+                />
+              </div>
+            ))}
           </div>
-      }
+
+          {filter?.size < ads?.count ? (
+            <div className="flex items-center justify-center">
+              {spinning ? (
+                <CircleDotDashedIcon className="animate-spin text-green-500" />
+              ) : (
+                <button
+                  onClick={() =>
+                  {
+                    setSpinning(true)
+                    setTimeout(() => {
+                      setSpinning(false)
+                    }, 3000);
+                    setFilter({ ...filter, size: (+filter.size || 5) + 5 })
+                  }
+                  }
+                  type="button"
+                  className="rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center"
+                >
+                  <PlusIcon className="w-6" />
+                  Lihat Lainnya
+                </button>
+              )}
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+      ) : (
+        <div className="mt-40 flex flex-col gap-2 justify-center items-center">
+          <Image
+            alt="eror404"
+            src={"/images/error404.webp"}
+            layout="relative"
+            width={300}
+            height={300}
+            className="w-[250px] h-[250px]"
+          />
+          <p className="text-center font-semibold text-lg">
+            Item yang anda dicari tidak ditemukan!
+          </p>
+        </div>
+      )}
 
       <BottomTabs />
     </div>
-  )
+  );
 }
