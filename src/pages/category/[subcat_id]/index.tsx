@@ -54,7 +54,7 @@ export async function getServerSideProps(context: any) {
       status: "1",
       pagination: true,
       page: +page || 0,
-      size: +size || 5,
+      size: +size || 6,
       search: search || "",
       brand_id: brand_id || "",
       type_id: type_id || "",
@@ -209,9 +209,9 @@ export default function Ads({
       {ads?.count > 0 ? (
         <div>
           {/* Kategori */}
-          <div className="p-2 mt-28">
+          <div className="p-2 mt-28 flex lg:flex-col flex-row flex-wrap justify-center items-center">
             {ads?.rows?.map((v: any, i: number) => (
-              <div key={i} className="w-[350px]">
+              <div key={i} className="lg:w-[350px] w-[350px]">
                 <AdsProduct
                   price={v?.price}
                   thumbnail={v?.images[0]}

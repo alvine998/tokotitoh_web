@@ -37,6 +37,7 @@ export default function HeaderAds(props: Props) {
     latitude: null,
     longitude: null,
   });
+  const [resets, setResets] = useState<boolean>(false);
   const [adress, setAddress] = useState<any>("Indonesia");
   const [modal, setModal] = useState<useModal>();
   const [filterName, setFilterName] = useState<any>(
@@ -72,7 +73,6 @@ export default function HeaderAds(props: Props) {
   //     }
   // }
 
-  const [selected, setSelected] = useState<any>();
   const [list, setList] = useState<any>({
     cities: [],
     districts: [],
@@ -144,6 +144,29 @@ export default function HeaderAds(props: Props) {
       console.log(error);
     }
   };
+
+  let initialValue: any = {
+    size: 5,
+    province_id: "",
+    city_id: "",
+    district_id: "",
+    brand_id: "",
+    type_id: "",
+    max: filter?.max || "1000000000000",
+    min: filter?.min || "5",
+    maxArea: "",
+    minArea: "",
+    maxBuilding: "",
+    minBuilding: "",
+    year_start: "1945",
+    year_end: `${new Date().getFullYear()}`,
+    transmission: "",
+    condition: "",
+    fuel_type: "",
+    sort: "newest"
+  }
+
+  const [selected, setSelected] = useState<any>(initialValue);
 
   // console.log(router.query, 'testes');
 
@@ -309,8 +332,8 @@ export default function HeaderAds(props: Props) {
                   </button>
                   <button
                     onClick={() => {
-                      setFilter({ subcat_id: filter?.subcat_id, size: 5 });
-                      setModal({...modal, open: false})
+                      setResets(true);
+                      setSelected(initialValue);
                     }}
                     className="text-blue-700 mr-2 border-2 border-black rounded py-1 px-4 mt-1"
                   >
@@ -425,8 +448,8 @@ export default function HeaderAds(props: Props) {
                             })),
                           ]}
                           onChange={(e: any) => {
-                            setFilter({
-                              ...filter,
+                            setSelected({
+                              ...selected,
                               brand_id: e.value,
                               type_id: "",
                             });
@@ -453,7 +476,7 @@ export default function HeaderAds(props: Props) {
                             })),
                           ]}
                           onChange={(e: any) => {
-                            setFilter({ ...filter, type_id: e.value });
+                            setSelected({ ...selected, type_id: e.value });
                           }}
                           maxMenuHeight={150}
                           placeholder="Semua Model"
@@ -531,7 +554,7 @@ export default function HeaderAds(props: Props) {
                             })),
                           ]}
                           onChange={(e: any) => {
-                            setFilter({ ...filter, district_id: e.value });
+                            setSelected({ ...selected, district_id: e.value });
                           }}
                           maxMenuHeight={150}
                           placeholder="Semua Kecamatan"
@@ -556,10 +579,10 @@ export default function HeaderAds(props: Props) {
                           numericformat
                           label=""
                           placeholder="Dari Harga"
-                          defaultValue={filter?.min || 5}
+                          defaultValue={+selected?.min}
                           onChange={(e: any) => {
-                            setFilter({
-                              ...filter,
+                            setSelected({
+                              ...selected,
                               min: e.target.value.replaceAll(",", ""),
                             });
                           }}
@@ -568,10 +591,10 @@ export default function HeaderAds(props: Props) {
                           numericformat
                           label=""
                           placeholder="Sampai Harga"
-                          defaultValue={filter?.max || 1000000000000}
+                          defaultValue={+selected?.max}
                           onChange={(e: any) => {
-                            setFilter({
-                              ...filter,
+                            setSelected({
+                              ...selected,
                               max: e.target.value.replaceAll(",", ""),
                             });
                           }}
@@ -590,8 +613,8 @@ export default function HeaderAds(props: Props) {
                           placeholder="Mulai Dari"
                           defaultValue={filter?.minArea}
                           onChange={(e: any) => {
-                            setFilter({
-                              ...filter,
+                            setSelected({
+                              ...selected,
                               minArea: e.target.value.replaceAll(",", ""),
                             });
                           }}
@@ -602,8 +625,8 @@ export default function HeaderAds(props: Props) {
                           placeholder="Sampai"
                           defaultValue={filter?.maxArea}
                           onChange={(e: any) => {
-                            setFilter({
-                              ...filter,
+                            setSelected({
+                              ...selected,
                               maxArea: e.target.value.replaceAll(",", ""),
                             });
                           }}
@@ -622,8 +645,8 @@ export default function HeaderAds(props: Props) {
                           placeholder="Mulai Dari"
                           defaultValue={filter?.minBuilding}
                           onChange={(e: any) => {
-                            setFilter({
-                              ...filter,
+                            setSelected({
+                              ...selected,
                               minBuilding: e.target.value.replaceAll(",", ""),
                             });
                           }}
@@ -634,8 +657,8 @@ export default function HeaderAds(props: Props) {
                           placeholder="Sampai"
                           defaultValue={filter?.maxBuilding}
                           onChange={(e: any) => {
-                            setFilter({
-                              ...filter,
+                            setSelected({
+                              ...selected,
                               maxBuilding: e.target.value.replaceAll(",", ""),
                             });
                           }}
@@ -654,8 +677,8 @@ export default function HeaderAds(props: Props) {
                           maxLength={4}
                           type="tel"
                           onChange={(e: any) => {
-                            setFilter({
-                              ...filter,
+                            setSelected({
+                              ...selected,
                               year_start: e.target.value,
                             });
                           }}
@@ -666,7 +689,10 @@ export default function HeaderAds(props: Props) {
                           maxLength={4}
                           type="tel"
                           onChange={(e: any) => {
-                            setFilter({ ...filter, year_end: e.target.value });
+                            setSelected({
+                              ...selected,
+                              year_end: e.target.value,
+                            });
                           }}
                         />
                       </div>
@@ -687,8 +713,8 @@ export default function HeaderAds(props: Props) {
                               !filter?.transmission
                             }
                             onChange={(e) => {
-                              setFilter({
-                                ...filter,
+                              setSelected({
+                                ...selected,
                                 transmission: e.target.value,
                               });
                             }}
@@ -702,8 +728,8 @@ export default function HeaderAds(props: Props) {
                             value={"MT"}
                             defaultChecked={filter?.transmission == "MT"}
                             onChange={(e) => {
-                              setFilter({
-                                ...filter,
+                              setSelected({
+                                ...selected,
                                 transmission: e.target.value,
                               });
                             }}
@@ -717,8 +743,8 @@ export default function HeaderAds(props: Props) {
                             value={"AT"}
                             defaultChecked={filter?.transmission == "AT"}
                             onChange={(e) => {
-                              setFilter({
-                                ...filter,
+                              setSelected({
+                                ...selected,
                                 transmission: e.target.value,
                               });
                             }}
@@ -732,8 +758,8 @@ export default function HeaderAds(props: Props) {
                             value={"CVT"}
                             defaultChecked={filter?.transmission == "CVT"}
                             onChange={(e) => {
-                              setFilter({
-                                ...filter,
+                              setSelected({
+                                ...selected,
                                 transmission: e.target.value,
                               });
                             }}
@@ -757,8 +783,8 @@ export default function HeaderAds(props: Props) {
                               filter?.condition == "" || !filter?.condition
                             }
                             onChange={(e) => {
-                              setFilter({
-                                ...filter,
+                              setSelected({
+                                ...selected,
                                 condition: e.target.value,
                               });
                             }}
@@ -772,8 +798,8 @@ export default function HeaderAds(props: Props) {
                             value={"new"}
                             defaultChecked={filter?.condition == "new"}
                             onChange={(e) => {
-                              setFilter({
-                                ...filter,
+                              setSelected({
+                                ...selected,
                                 condition: e.target.value,
                               });
                             }}
@@ -787,8 +813,8 @@ export default function HeaderAds(props: Props) {
                             value={"second"}
                             defaultChecked={filter?.condition == "second"}
                             onChange={(e) => {
-                              setFilter({
-                                ...filter,
+                              setSelected({
+                                ...selected,
                                 condition: e.target.value,
                               });
                             }}
@@ -812,8 +838,8 @@ export default function HeaderAds(props: Props) {
                               filter?.fuel_type == "" || !filter?.fuel_type
                             }
                             onChange={(e) => {
-                              setFilter({
-                                ...filter,
+                              setSelected({
+                                ...selected,
                                 fuel_type: e.target.value,
                               });
                             }}
@@ -827,8 +853,8 @@ export default function HeaderAds(props: Props) {
                             value={"bensin"}
                             defaultChecked={filter?.fuel_type == "bensin"}
                             onChange={(e) => {
-                              setFilter({
-                                ...filter,
+                              setSelected({
+                                ...selected,
                                 fuel_type: e.target.value,
                               });
                             }}
@@ -842,8 +868,8 @@ export default function HeaderAds(props: Props) {
                             value={"diesel"}
                             defaultChecked={filter?.fuel_type == "diesel"}
                             onChange={(e) => {
-                              setFilter({
-                                ...filter,
+                              setSelected({
+                                ...selected,
                                 fuel_type: e.target.value,
                               });
                             }}
@@ -857,8 +883,8 @@ export default function HeaderAds(props: Props) {
                             value={"hybrid"}
                             defaultChecked={filter?.fuel_type == "hybrid"}
                             onChange={(e) => {
-                              setFilter({
-                                ...filter,
+                              setSelected({
+                                ...selected,
                                 fuel_type: e.target.value,
                               });
                             }}
@@ -872,8 +898,8 @@ export default function HeaderAds(props: Props) {
                             value={"ev"}
                             defaultChecked={filter?.fuel_type == "ev"}
                             onChange={(e) => {
-                              setFilter({
-                                ...filter,
+                              setSelected({
+                                ...selected,
                                 fuel_type: e.target.value,
                               });
                             }}
@@ -889,7 +915,7 @@ export default function HeaderAds(props: Props) {
                     <div className="pl-2 mt-4 flex flex-col gap-2">
                       <button
                         onClick={() => {
-                          setFilter({ ...filter, sort: "newest" });
+                          setSelected({ ...selected, sort: "newest" });
                         }}
                         className={`border-2 w-full p-2 rounded text-xs ${
                           filter?.sort == "newest" || !filter?.sort
@@ -904,7 +930,7 @@ export default function HeaderAds(props: Props) {
                       </button>
                       <button
                         onClick={() => {
-                          setFilter({ ...filter, sort: "minprice" });
+                          setSelected({ ...selected, sort: "minprice" });
                         }}
                         className={`border-2 w-full p-2 rounded text-xs ${
                           filter?.sort == "minprice" ? "bg-gray-300" : ""
@@ -917,7 +943,7 @@ export default function HeaderAds(props: Props) {
                       </button>
                       <button
                         onClick={() => {
-                          setFilter({ ...filter, sort: "maxprice" });
+                          setSelected({ ...selected, sort: "maxprice" });
                         }}
                         className={`border-2 w-full p-2 rounded text-xs ${
                           filter?.sort == "maxprice" ? "bg-gray-300" : ""
@@ -936,7 +962,13 @@ export default function HeaderAds(props: Props) {
                     <Button
                       color="info"
                       onClick={() => {
+                        console.log(selected);
+                        setFilter({
+                          subcat_id: filter?.subcat_id,
+                          ...selected,
+                        });
                         setModal({ ...modal, open: false });
+                        setResets(false);
                       }}
                       disabled={loading}
                     >

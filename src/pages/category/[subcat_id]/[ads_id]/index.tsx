@@ -309,9 +309,9 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                     alt="thumbnail"
                     src={v}
                     layout="relative"
-                    width={600}
-                    height={400}
-                    className="h-[200px] w-full rounded mt-5"
+                    width={1020}
+                    height={1920}
+                    className="h-[200px] md:h-[300px] lg:h-[300px] w-[100px] md:w-[400px] lg:w-full rounded mt-5"
                   />
                 </button>
               ))}
@@ -578,7 +578,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
         ) : (
           <>
             {/* Button Telepon */}
-            <div className="w-full">
+            {/* <div className="w-full">
               <Link
                 href={`tel:${normalizePhoneNumber(ads?.wa)}`}
                 target="_blank"
@@ -595,7 +595,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                   Telepon
                 </Button>
               </Link>
-            </div>
+            </div> */}
             {/* Button WA */}
             <div className="w-full">
               <Link
