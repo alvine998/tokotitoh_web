@@ -161,7 +161,7 @@ export default function Ads({
   const routers = router2();
   const [modal, setModal] = useState<useModal>();
   const [spinning, setSpinning] = useState<boolean>(false);
-  const [filter, setFilter] = useState<any>({ ...router?.query, size: 5 });
+  const [filter, setFilter] = useState<any>({ ...router?.query, size: 6 });
   const [loading, setLoading] = useState<any>(false);
   let user: any = getCookie("account");
 
@@ -211,7 +211,7 @@ export default function Ads({
           {/* Kategori */}
           <div className="p-2 mt-28 flex lg:flex-col flex-row flex-wrap justify-center items-center">
             {ads?.rows?.map((v: any, i: number) => (
-              <div key={i} className="lg:w-[350px] w-[350px]">
+              <div key={i} className="lg:w-[350px] sm:w-[300px] w-[400px]">
                 <AdsProduct
                   price={v?.price}
                   thumbnail={v?.images[0]}

@@ -150,7 +150,7 @@ export default function Sell({
     setProgress(true);
     // Set compression options
     const options = {
-      maxSizeMB: 0.1, // Maximum size in MB
+      maxSizeMB: 1, // Maximum size in MB
       maxWidthOrHeight: 1000, // Max width or height (maintains aspect ratio)
       useWebWorker: true, // Use multi-threading for compression
     };
