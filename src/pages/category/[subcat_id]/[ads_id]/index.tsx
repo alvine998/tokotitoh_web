@@ -311,7 +311,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                     layout="relative"
                     width={1020}
                     height={1920}
-                    className="h-[200px] md:h-[300px] lg:h-[300px] w-[100px] md:w-[400px] lg:w-full rounded mt-5"
+                    className="h-[200px] sm:h-auto lg:h-[300px] w-[100px] lg:w-full rounded mt-5"
                   />
                 </button>
               ))}
@@ -463,7 +463,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 layout="relative"
                 width={800}
                 height={500}
-                className="h-[400px] w-full rounded mt-5"
+                className="h-auto w-full rounded mt-5"
               />
             </Modal>
           ) : (
