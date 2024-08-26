@@ -299,7 +299,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               {ads?.images?.map((v: any, i: number) => (
                 <button
                   type="button"
-                  className="w-full"
+                  className="w-full sm:w-[300px] sm:ml-52 ml-0"
                   key={i}
                   onClick={() => {
                     setModal({ ...modal, open: true, data: v, key: "view" });
@@ -311,7 +311,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                     layout="relative"
                     width={1020}
                     height={1920}
-                    className="h-[200px] sm:h-auto lg:h-[300px] w-[100px] lg:w-full rounded mt-5"
+                    className="h-[200px] sm:h-auto lg:h-[300px] w-[200px] lg:w-[200px] rounded mt-5"
                   />
                 </button>
               ))}
