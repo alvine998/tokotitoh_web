@@ -209,9 +209,9 @@ export default function Ads({
       {ads?.count > 0 ? (
         <div>
           {/* Kategori */}
-          <div className="p-2 mt-28 flex lg:flex-col flex-row flex-wrap justify-center items-center">
+          <div className="mt-28 flex lg:flex-col flex-row flex-wrap justify-center items-center">
             {ads?.rows?.map((v: any, i: number) => (
-              <div key={i} className="lg:w-[350px] sm:w-[300px] w-[400px]">
+              <div key={i} className="lg:w-[350px] sm:w-[300px] w-[350px]">
                 <AdsProduct
                   price={v?.price}
                   thumbnail={v?.images[0]}

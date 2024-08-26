@@ -160,7 +160,7 @@ export default function AdsProduct(props: Props) {
           layout="relative"
           width={300}
           height={300}
-          className="h-[200px] sm:h-[250px] w-full rounded"
+          className="h-[250px] lg:h-[200px] w-full rounded"
         />
         <div className="flex justify-between items-end mt-4">
           <div>

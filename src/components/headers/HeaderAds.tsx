@@ -259,7 +259,7 @@ export default function HeaderAds(props: Props) {
   ];
 
   return (
-    <div className="w-full lg:w-1/4 fixed top-0 bg-white p-2">
+    <div className="w-full lg:w-1/3 fixed top-0 bg-white p-2">
       <div className="flex justify-between">
         <div className="flex gap-2">
           <button
