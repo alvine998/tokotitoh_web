@@ -18,6 +18,7 @@ import {
   UserIcon,
   XCircleIcon,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -90,7 +91,18 @@ export default function Account() {
       ) : (
         <div className="px-4 pt-10 lg:max-w-sm max-w-full">
           <div className="flex gap-3 items-center">
-            <UserCircleIcon className="w-20 h-20" />
+            {user?.image ? (
+              <Image
+                alt="image"
+                src={user?.image}
+                layout="relative"
+                width={800}
+                height={500}
+                className="h-20 w-20 rounded-full mt-5"
+              />
+            ) : (
+              <UserCircleIcon className="w-20 h-20" />
+            )}
             <div>
               <h5 className="font-bold text-lg">{user?.name}</h5>
               <h5 className="text-lg">{user?.email || user?.phone}</h5>

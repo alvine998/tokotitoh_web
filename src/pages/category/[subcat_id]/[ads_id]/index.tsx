@@ -559,7 +559,18 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
 
           <div className="pb-20 -ml-20">
             <div className="flex gap-3 items-center pt-3">
-              <UserCircleIcon className="w-20 h-20" />
+              {user?.image ? (
+                <Image
+                  alt="image"
+                  src={user?.image}
+                  layout="relative"
+                  width={800}
+                  height={500}
+                  className="h-20 w-20 rounded-full mt-5"
+                />
+              ) : (
+                <UserCircleIcon className="w-20 h-20" />
+              )}
               <div>
                 <p>Pengiklan</p>
                 <h5 className="font-bold text-lg">
