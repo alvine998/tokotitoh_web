@@ -311,7 +311,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                     layout="relative"
                     width={1020}
                     height={1920}
-                    className="h-[200px] sm:h-auto lg:h-[300px] w-[200px] lg:w-[200px] rounded mt-5"
+                    className="h-[250px] sm:h-auto lg:h-[300px] w-[200px] lg:w-[200px] rounded mt-5"
                   />
                 </button>
               ))}
