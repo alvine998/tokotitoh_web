@@ -5,8 +5,11 @@ import Input from "@/components/Input";
 import LoginForm from "@/components/LoginForm";
 import Modal, { useModal } from "@/components/Modal";
 import { CONFIG } from "@/config";
+import { storage } from "@/config/firebase";
 import axios from "axios";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import imageCompression from "browser-image-compression";
 import {
   CarFrontIcon,
   CarIcon,
@@ -35,6 +38,9 @@ export default function Account() {
     router.reload();
   };
 
+  const [images, setImages] = useState<any>(user?.image || []);
+  const [progress, setProgress] = useState<boolean>(false);
+
   const update = async (e: any) => {
     e?.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target));
@@ -49,6 +55,7 @@ export default function Account() {
       }
       const payload = {
         ...formData,
+        image: images[0],
       };
       const result = await axios.patch(CONFIG.base_url_api + `/user`, payload, {
         headers: {
@@ -65,6 +72,7 @@ export default function Account() {
         name: formData?.name,
         phone: formData?.phone,
         email: formData?.email,
+        image: images[0],
       });
       setModal({ ...modal, open: false });
       router.reload();
@@ -74,6 +82,47 @@ export default function Account() {
         icon: "error",
         text: "Data Gagal Disimpan",
       });
+    }
+  };
+
+  const handleImage = async (e: any) => {
+    setProgress(true);
+    // Set compression options
+    const options = {
+      maxSizeMB: 0.1, // Maximum size in MB
+      maxWidthOrHeight: 1000, // Max width or height (maintains aspect ratio)
+      useWebWorker: true, // Use multi-threading for compression
+    };
+    if (e.target.files) {
+      const file = e.target.files[0];
+      const compressedFile = await imageCompression(file, options);
+      if (file?.size <= 50000000) {
+        const storageRef = ref(storage, `images/user/${compressedFile?.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, compressedFile);
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+          },
+          (error) => {
+            console.log(error);
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              setImages([...images, downloadURL]);
+              setProgress(false);
+            });
+          }
+        );
+      } else {
+        setProgress(false);
+        return Swal.fire({
+          icon: "error",
+          text: "Ukuran Gambar Tidak Boleh Lebih Dari 2mb",
+        });
+      }
     }
   };
 
@@ -91,18 +140,24 @@ export default function Account() {
       ) : (
         <div className="px-4 pt-10 lg:max-w-sm max-w-full">
           <div className="flex gap-3 items-center">
-            {user?.image ? (
-              <Image
-                alt="image"
-                src={user?.image}
-                layout="relative"
-                width={800}
-                height={500}
-                className="h-20 w-20 rounded-full mt-5"
-              />
-            ) : (
-              <UserCircleIcon className="w-20 h-20" />
-            )}
+            <button
+              onClick={() => {
+                setModal({ ...modal, open: true, key: "view", data: user });
+              }}
+            >
+              {user?.image ? (
+                <Image
+                  alt="image"
+                  src={user?.image}
+                  layout="relative"
+                  width={800}
+                  height={500}
+                  className="h-20 w-20 rounded-full mt-5"
+                />
+              ) : (
+                <UserCircleIcon className="w-20 h-20" />
+              )}
+            </button>
             <div>
               <h5 className="font-bold text-lg">{user?.name}</h5>
               <h5 className="text-lg">{user?.email || user?.phone}</h5>
@@ -185,6 +240,15 @@ export default function Account() {
                 </h2>
                 <div>
                   <Input
+                    label="Foto"
+                    name="image"
+                    type="file"
+                    onChange={(e: any) => {
+                      handleImage(e);
+                    }}
+                    accept="image/*"
+                  />
+                  <Input
                     placeholder="Masukkan Nama"
                     label="Nama"
                     defaultValue={user?.name || ""}
@@ -264,6 +328,33 @@ export default function Account() {
                     className="font-semibold text-blue-700"
                   >
                     Ya
+                  </button>
+                </div>
+              </div>
+            </Modal>
+          ) : (
+            ""
+          )}
+          {modal?.key == "view" ? (
+            <Modal open={modal.open} setOpen={() => {}}>
+              <div className="px-2">
+                <Image
+                  alt="userimage"
+                  src={modal?.data?.image}
+                  width={500}
+                  height={500}
+                  className="w-full h-auto"
+                  layout="relative"
+                />
+                <div className="flex gap-10 justify-end items-center mt-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setModal({ ...modal, open: false });
+                    }}
+                    className="font-semibold text-blue-700"
+                  >
+                    Tutup
                   </button>
                 </div>
               </div>
