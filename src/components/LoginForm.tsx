@@ -10,6 +10,7 @@ import { setCookie } from "cookies-next";
 import { normalizePhoneNumber } from "@/utils";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { provider } from "@/config/firebase";
+import Modal, { useModal } from "./Modal";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -19,6 +20,9 @@ export default function LoginForm() {
   );
   const [payload, setPayload] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [modal, setModal] = useState<useModal>();
+
+  const [checkEmail, setCheckEmail] = useState<any>();
 
   const handleChange = (e: any) => {
     const { value, name } = e.target;
@@ -35,12 +39,11 @@ export default function LoginForm() {
       const user = result.user;
 
       const payloads = {
-        ...user
-      }
+        ...user,
+      };
 
-      const result2 = await axios.post(
-        CONFIG.base_url_api + `/user/login/by/google`,
-        payloads,
+      const checking = await axios.get(
+        CONFIG.base_url_api + `/users?search=${user?.email}`,
         {
           headers: {
             "bearer-token": "tokotitohapi",
@@ -48,17 +51,37 @@ export default function LoginForm() {
           },
         }
       );
-      setLoading(false);
-      Swal.fire({
-        icon: "success",
-        text: "Selamat Datang " + result2?.data?.user?.name,
-      });
-      setPayload({});
-      localStorage.setItem("usertokotitoh", JSON.stringify(result2?.data?.user));
-      setCookie("account", JSON.stringify(result2?.data?.user), {
-        secure: true,
-      });
-      router.reload();
+
+      if (checking?.data?.items?.rows?.length > 0 || checkEmail == "checked") {
+        const result2 = await axios.post(
+          CONFIG.base_url_api + `/user/login/by/google`,
+          payloads,
+          {
+            headers: {
+              "bearer-token": "tokotitohapi",
+              "x-partner-code": "id.marketplace.tokotitoh",
+            },
+          }
+        );
+        setLoading(false);
+        Swal.fire({
+          icon: "success",
+          text: "Selamat Datang " + result2?.data?.user?.name,
+        });
+        setPayload({});
+        localStorage.setItem(
+          "usertokotitoh",
+          JSON.stringify(result2?.data?.user)
+        );
+        setCookie("account", JSON.stringify(result2?.data?.user), {
+          secure: true,
+        });
+        router.reload();
+      } else {
+        setModal({ ...modal, open: true, key: "term" });
+        
+        setLoading(false);
+      }
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -330,6 +353,60 @@ export default function LoginForm() {
             </Button>
           </div>
         </div>
+      )}
+      {modal?.key == "term" ? (
+        <Modal open={modal.open} setOpen={() => {}}>
+          <div className="px-2">
+            <h1 className="text-center font-bold text-xl">
+              Persetujuan Kebijakan
+            </h1>
+            <p className="text-justify mt-2">
+              Saya menyetujui{" "}
+              <a
+                href="/helps/term-condition"
+                target="_blank"
+                className="text-blue-500 hover:text-blue-600"
+              >
+                Syarat dan Ketentuan
+              </a>{" "}
+              Tokotitoh dan data saya untuk diproses sesuai dengan Tokotitoh{" "}
+              <a
+                href="/helps/privacy-policy"
+                target="_blank"
+                className="text-blue-500 hover:text-blue-600"
+              >
+                Kebijakan Privasi.
+              </a>
+            </p>
+            <div className="flex gap-10 justify-end items-center mt-4">
+              <button
+                type="button"
+                onClick={() => {
+                  setModal({ ...modal, open: false });
+                }}
+                className="font-semibold text-blue-700"
+              >
+                Batalkan
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setCheckEmail("checked");
+                  setModal({ ...modal, open: false });
+                  Swal.fire({
+                    icon: "success",
+                    text: "Silakan Tekan Kembali Tombol Login dengan Google",
+                  });
+                }}
+                className="font-semibold text-blue-700"
+              >
+                Setuju
+              </button>
+            </div>
+          </div>
+        </Modal>
+      ) : (
+        ""
       )}
     </div>
   );
