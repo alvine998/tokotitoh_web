@@ -23,6 +23,7 @@ export default function LoginForm() {
   const [modal, setModal] = useState<useModal>();
 
   const [checkEmail, setCheckEmail] = useState<any>();
+  const [googlePayload, setGooglePayload] = useState<any>(null);
 
   const handleChange = (e: any) => {
     const { value, name } = e.target;
@@ -79,7 +80,7 @@ export default function LoginForm() {
         router.reload();
       } else {
         setModal({ ...modal, open: true, key: "term" });
-        
+        setGooglePayload(user)
         setLoading(false);
       }
     } catch (error) {
@@ -87,6 +88,39 @@ export default function LoginForm() {
       console.log(error);
     }
   };
+
+  const registByGoogle = async () => {
+    setLoading(true)
+    try {
+      const result2 = await axios.post(
+        CONFIG.base_url_api + `/user/login/by/google`,
+        googlePayload,
+        {
+          headers: {
+            "bearer-token": "tokotitohapi",
+            "x-partner-code": "id.marketplace.tokotitoh",
+          },
+        }
+      );
+      setLoading(false);
+      Swal.fire({
+        icon: "success",
+        text: "Selamat Datang " + result2?.data?.user?.name,
+      });
+      setPayload({});
+      localStorage.setItem(
+        "usertokotitoh",
+        JSON.stringify(result2?.data?.user)
+      );
+      setCookie("account", JSON.stringify(result2?.data?.user), {
+        secure: true,
+      });
+      router.reload();
+    } catch (error) {
+      setLoading(false)
+      console.log(error);
+    }
+  }
 
   const onSubmit = async () => {
     setLoading(true);
@@ -393,10 +427,7 @@ export default function LoginForm() {
                 onClick={() => {
                   setCheckEmail("checked");
                   setModal({ ...modal, open: false });
-                  Swal.fire({
-                    icon: "success",
-                    text: "Silakan Tekan Kembali Tombol Login dengan Google",
-                  });
+                  registByGoogle();
                 }}
                 className="font-semibold text-blue-700"
               >
