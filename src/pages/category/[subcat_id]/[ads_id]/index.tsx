@@ -294,25 +294,32 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               center
               responsive={responsive}
               dots
-              className="owl-theme"
+              className="owl-theme mt-2"
             >
               {ads?.images?.map((v: any, i: number) => (
                 <button
                   type="button"
-                  className="w-full sm:w-[300px] sm:ml-52 ml-0"
+                  className="w-full"
                   key={i}
                   onClick={() => {
                     setModal({ ...modal, open: true, data: v, key: "view" });
                   }}
                 >
-                  <Image
+                  {/* <Image
                     alt="thumbnail"
                     src={v}
                     layout="relative"
                     width={1020}
                     height={1920}
                     className="h-[250px] sm:h-auto lg:h-[300px] w-[200px] lg:w-[200px] rounded mt-5"
-                  />
+                  /> */}
+                  <div className="bg-gray-300 w-full h-[200px] overflow-hidden">
+                    <img
+                      src={v}
+                      alt="thumbnail"
+                      className="h-auto w-full object-cover rounded"
+                    />
+                  </div>
                 </button>
               ))}
             </OwlCarousel>
@@ -457,14 +464,25 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                   <XCircleIcon className="w-7" />
                 </button>
               </div>
-              <Image
-                alt="image"
-                src={modal.data}
-                layout="relative"
-                width={800}
-                height={500}
-                className="h-auto w-full rounded mt-5"
-              />
+              <OwlCarousel
+              center
+              responsive={responsive}
+              dots
+              className="owl-theme"
+            >
+              {ads?.images?.map((v: any, i: number) => (
+                 <Image
+                 alt="image"
+                 key={i}
+                 src={v}
+                 layout="relative"
+                 width={800}
+                 height={500}
+                 className="h-auto w-full rounded mt-5"
+               />
+              ))}
+            </OwlCarousel>
+             
             </Modal>
           ) : (
             ""

@@ -209,7 +209,7 @@ export default function Ads({
       {ads?.count > 0 ? (
         <div>
           {/* Kategori */}
-          <div className="mt-28 flex lg:flex-col flex-row flex-wrap justify-center items-center">
+          <div className="mt-28 flex lg:flex-col lg:gap-4 gap-0 flex-row flex-wrap justify-center items-center">
             {ads?.rows?.map((v: any, i: number) => (
               <div key={i} className="lg:w-[350px] sm:w-[300px] w-[350px]">
                 <AdsProduct
@@ -236,7 +236,7 @@ export default function Ads({
                     setTimeout(() => {
                       setSpinning(false)
                     }, 3000);
-                    setFilter({ ...filter, size: (+filter.size || 5) + 5 })
+                    setFilter({ ...filter, size: (+filter.size || 6) + 6 })
                   }
                   }
                   type="button"
