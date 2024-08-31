@@ -85,6 +85,32 @@ export default function Account() {
     }
   };
 
+  const remove = async (e: any) => {
+    e?.preventDefault();
+    const formData = Object.fromEntries(new FormData(e.target));
+    try {
+      const result = await axios.delete(CONFIG.base_url_api + `/user?id=${formData?.id}`, {
+        headers: {
+          "bearer-token": "tokotitohapi",
+          "x-partner-code": "id.marketplace.tokotitoh",
+        },
+      });
+      Swal.fire({
+        icon: "success",
+        text: "Akun Berhasil Dihapus",
+      });
+      deleteCookie("account");
+      setModal({ ...modal, open: false });
+      router.reload();
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        text: "Data Gagal Disimpan",
+      });
+    }
+  };
+
   const handleImage = async (e: any) => {
     setProgress(true);
     // Set compression options
@@ -225,6 +251,14 @@ export default function Account() {
           </div>
           <button
             onClick={() => {
+              setModal({ ...modal, open: true, data: null, key: "remove" });
+            }}
+            className="w-full bg-orange-500 p-2 rounded text-white mt-2"
+          >
+            Hapus Akun
+          </button>
+          <button
+            onClick={() => {
               setModal({ ...modal, open: true, data: null, key: "logout" });
             }}
             className="w-full bg-red-500 p-2 rounded text-white mt-2"
@@ -320,7 +354,7 @@ export default function Account() {
                     }}
                     className="font-semibold text-blue-700"
                   >
-                    Batal
+                    Batalkan
                   </button>
                   <button
                     type="button"
@@ -330,6 +364,40 @@ export default function Account() {
                     Ya
                   </button>
                 </div>
+              </div>
+            </Modal>
+          ) : (
+            ""
+          )}
+          {modal?.key == "remove" ? (
+            <Modal open={modal.open} setOpen={() => {}}>
+              <div className="px-2">
+                <form onSubmit={remove}>
+                  <h2 className="text-xl font-semibold">Hapus Akun</h2>
+                  <input type="hidden" name="id" value={user?.id} />
+                  <div className="mt-2">
+                    <p>
+                      Apakah anda yakin ingin menghapus akun ini dari tokotitoh ?
+                    </p>
+                  </div>
+                  <div className="flex gap-10 justify-end items-center mt-4">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setModal({ ...modal, open: false });
+                      }}
+                      className="font-semibold text-blue-700"
+                    >
+                      Batalkan
+                    </button>
+                    <button
+                      type="submit"
+                      className="font-semibold text-red-700"
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                </form>
               </div>
             </Modal>
           ) : (
