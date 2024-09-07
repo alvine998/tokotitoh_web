@@ -598,7 +598,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
           )}
 
           <div className="pb-20 -ml-20">
-            <div className="flex gap-3 items-center pt-3">
+            <div className="flex gap-3 items-start pt-3">
               {user?.image ? (
                 <Image
                   alt="image"
@@ -616,6 +616,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <h5 className="font-bold text-lg">
                   {user?.name?.toUpperCase()}
                 </h5>
+                <p>Bergabung sejak {new Date(user?.created_on)?.getFullYear()}</p>
               </div>
             </div>
           </div>
