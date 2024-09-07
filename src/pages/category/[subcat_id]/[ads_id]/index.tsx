@@ -217,7 +217,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
       const payload = {
         ...formData,
         images: images,
-        title: `${formData?.type} - ${formData?.title}`
+        title: `${formData?.type} - ${formData?.title}`,
       };
       await axios.post(CONFIG.base_url_api + "/report", payload, {
         headers: {
@@ -598,7 +598,13 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
           )}
 
           <div className="pb-20 -ml-20">
-            <div className="flex gap-3 items-start pt-3">
+            <button
+              className="flex gap-3 items-start pt-3 justify-start"
+              type="button"
+              onClick={() => {
+                router.push(`/account/${user?.id}`);
+              }}
+            >
               {user?.image ? (
                 <Image
                   alt="image"
@@ -612,13 +618,15 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <UserCircleIcon className="w-20 h-20" />
               )}
               <div>
-                <p>Pengiklan</p>
-                <h5 className="font-bold text-lg">
+                <p className="text-left">Pengiklan</p>
+                <h5 className="font-bold text-lg text-left">
                   {user?.name?.toUpperCase()}
                 </h5>
-                <p>Bergabung sejak {new Date(user?.created_on)?.getFullYear()}</p>
+                <p className="text-left">
+                  Bergabung sejak {new Date(user?.created_on)?.getFullYear()}
+                </p>
               </div>
-            </div>
+            </button>
           </div>
         </>
       ) : (
