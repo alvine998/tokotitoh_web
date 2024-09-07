@@ -217,6 +217,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
       const payload = {
         ...formData,
         images: images,
+        title: `${formData?.type} - ${formData?.title}`
       };
       await axios.post(CONFIG.base_url_api + "/report", payload, {
         headers: {
@@ -387,7 +388,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               (ads?.category_name?.toLowerCase().includes("motor") &&
                 ads?.subcategory_name?.toLowerCase().includes("dijual")) ? (
                 <p className="mt-3">
-                  Detail <br />
+                  <strong className="text-lg">Detail</strong> <br />
                   <hr />
                   Merek: {ads?.brand_name}
                   <br />
@@ -442,7 +443,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               </p>
             </div>
             <p className="border-2 rounded p-3 mt-2 text-sm whitespace-pre-line">
-              Deskripsi: <br />
+              <strong className="text-lg">Deskripsi:</strong> <br />
               {ads?.description}
             </p>
           </div>
@@ -465,24 +466,23 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 </button>
               </div>
               <OwlCarousel
-              center
-              responsive={responsive}
-              dots
-              className="owl-theme"
-            >
-              {ads?.images?.map((v: any, i: number) => (
-                 <Image
-                 alt="image"
-                 key={i}
-                 src={v}
-                 layout="relative"
-                 width={800}
-                 height={500}
-                 className="h-auto w-full rounded mt-5"
-               />
-              ))}
-            </OwlCarousel>
-             
+                center
+                responsive={responsive}
+                dots
+                className="owl-theme"
+              >
+                {ads?.images?.map((v: any, i: number) => (
+                  <Image
+                    alt="image"
+                    key={i}
+                    src={v}
+                    layout="relative"
+                    width={800}
+                    height={500}
+                    className="h-auto w-full rounded mt-5"
+                  />
+                ))}
+              </OwlCarousel>
             </Modal>
           ) : (
             ""
@@ -521,12 +521,34 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                   name="description"
                   required
                 />
-                <Input
+                <div>
+                  <label htmlFor="type">Jenis Laporan:</label>
+                  {[
+                    "Penipuan",
+                    "Produk Terjual",
+                    "Duplikat",
+                    "Mengandung Unsur Pornografi",
+                    "Konten Mengganggu",
+                    "Lainnya",
+                  ]?.map((v: any, i: number) => (
+                    <div key={i} className="flex gap-2 items-center">
+                      <input
+                        type="radio"
+                        name="type"
+                        id="type"
+                        value={v}
+                        defaultChecked={i == 0}
+                      />
+                      <span>{v}</span>
+                    </div>
+                  ))}
+                </div>
+                {/* <Input
                   type="file"
                   label="Lampirkan Gambar"
                   onChange={handleImage}
                   accept="image/*"
-                />
+                /> */}
                 {progress ? (
                   <p className={progress ? "block" : "hidden"}>
                     Loading Upload....
