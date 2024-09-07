@@ -7,6 +7,7 @@ import {
   SearchIcon,
   Settings2Icon,
   XCircleIcon,
+  XIcon,
 } from "lucide-react";
 import Image from "next/image";
 import axios from "axios";
@@ -145,26 +146,48 @@ export default function HeaderAds(props: Props) {
     }
   };
 
+  const getType = async (data: any) => {
+    try {
+      if (data?.value !== "") {
+        const result = await axios.get(
+          CONFIG.base_url_api + `/subcategories?category_id=${data?.value}`,
+          {
+            headers: {
+              "bearer-token": "tokotitohapi",
+              "x-partner-code": "id.marketplace.tokotitoh",
+            },
+          }
+        );
+        setList({
+          ...list,
+          types: result.data.items.rows,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   let initialValue: any = {
-    size: 5,
+    size: "",
     province_id: "",
     city_id: "",
     district_id: "",
     brand_id: "",
     type_id: "",
-    max: filter?.max || "1000000000000",
-    min: filter?.min || "5",
+    max: filter?.max || "",
+    min: filter?.min || "",
     maxArea: "",
     minArea: "",
     maxBuilding: "",
     minBuilding: "",
-    year_start: "1945",
-    year_end: `${new Date().getFullYear()}`,
+    year_start: "",
+    year_end: ``,
     transmission: "",
     condition: "",
     fuel_type: "",
-    sort: "newest"
-  }
+    sort: "",
+  };
 
   const [selected, setSelected] = useState<any>(initialValue);
 
@@ -296,13 +319,13 @@ export default function HeaderAds(props: Props) {
       <div className="mt-2 flex gap-2">
         <div className="w-full">
           <ReactSearchAutocomplete
-            items={items?.map((v: any) => ({ ...v, name: v?.title }))}
+            items={items?.map((v: any) => ({ ...v, name: `${v?.title}` }))}
             onSearch={(string: string, results: any) => {
-              setFilter({ ...filter, search: string });
+              setFilter({ ...filter, q: string });
             }}
-            placeholder="Cari disini..."
+            placeholder="Cari barangmu disini..."
             onSelect={(item: any) =>
-              router.push(`/category/${item?.subcategory_id}`)
+              router.push(`/category/${item?.subcategory_id}?search=${item?.title}`)
             }
           />
         </div>
@@ -340,6 +363,29 @@ export default function HeaderAds(props: Props) {
                     Reset
                   </button>
                 </div>
+              </div>
+              {/* Filter Selected */}
+              <div className="w-full overflow-y-auto mt-2 flex">
+                {Object.entries(selected)
+                  ?.filter(([key, value]: any) => value !== "")
+                  ?.map(([key, value]: any) => (
+                    <div className="flex bg-blue-500 rounded-full py-1 px-2 items-end w-auto">
+                      <p className="text-white">
+                        {key}: {value}
+                      </p>
+                      <button
+                        className="ml-2"
+                        onClick={() => {
+                          setSelected({
+                            ...selected,
+                            [key]: "",
+                          });
+                        }}
+                      >
+                        <XIcon className="text-white w-4" />
+                      </button>
+                    </div>
+                  ))}
               </div>
               <div className="flex mt-8">
                 <div className="w-auto flex flex-col gap-2">
@@ -448,46 +494,54 @@ export default function HeaderAds(props: Props) {
                             })),
                           ]}
                           onChange={(e: any) => {
-                            setSelected({
-                              ...selected,
-                              brand_id: e.value,
-                              type_id: "",
-                            });
+                            if (e.value !== "") {
+                              setSelected({
+                                ...selected,
+                                brand: e.label,
+                                tipe: "",
+                              });
+                              getType(e);
+                            }
                           }}
                           maxMenuHeight={150}
                           placeholder="Semua Merek"
                           className="w-full"
                           defaultValue={{
-                            value: filter?.brand_id,
+                            value: selected?.brand_id,
                             label:
                               brands?.find(
-                                (v: any) => v?.id == filter?.brand_id
+                                (v: any) => v?.id == selected?.brand_id
                               )?.name || "Semua Merek",
                           }}
                         />
-                        <ReactSelect
-                          isDisabled={types?.length < 1}
-                          options={[
-                            { value: "", label: "Semua Model" },
-                            ...types?.map((v: any) => ({
-                              ...v,
-                              value: v?.id,
-                              label: v?.name?.toUpperCase(),
-                            })),
-                          ]}
-                          onChange={(e: any) => {
-                            setSelected({ ...selected, type_id: e.value });
-                          }}
-                          maxMenuHeight={150}
-                          placeholder="Semua Model"
-                          className="w-full"
-                          defaultValue={{
-                            value: filter?.type_id,
-                            label:
-                              types?.find((v: any) => v?.id == filter?.type_id)
-                                ?.name || "Semua Model",
-                          }}
-                        />
+                        {list?.types ? (
+                          <ReactSelect
+                            isDisabled={list?.types?.length < 1}
+                            options={[
+                              { value: "", label: "Semua Model" },
+                              ...list?.types?.map((v: any) => ({
+                                ...v,
+                                value: v?.id,
+                                label: v?.name?.toUpperCase(),
+                              })),
+                            ]}
+                            onChange={(e: any) => {
+                              setSelected({ ...selected, type_id: e.value });
+                            }}
+                            maxMenuHeight={150}
+                            placeholder="Semua Model"
+                            className="w-full"
+                            defaultValue={{
+                              value: filter?.type_id,
+                              label:
+                                list?.types?.find(
+                                  (v: any) => v?.id == filter?.type_id
+                                )?.name || "Semua Model",
+                            }}
+                          />
+                        ) : (
+                          ""
+                        )}
                       </div>
                     </div>
                   ) : (

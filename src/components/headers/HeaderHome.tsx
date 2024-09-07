@@ -63,7 +63,7 @@ export default function HeaderHome(props: Props) {
             <div className='mt-2 flex gap-2'>
                 <div className='w-full'>
                     <ReactSearchAutocomplete
-                        items={items?.map((v: any) => ({ ...v, name: v?.title }))}
+                        items={items?.map((v: any) => ({ ...v, name: `${v?.title}` }))}
                         onSearch={(string: string, results: any) => { setFilter({ ...filter, search: string }) }}
                         placeholder='Cari barangmu disini...'
                         onSelect={(item: any) => router.push(`/category/${item?.subcategory_id}`)}

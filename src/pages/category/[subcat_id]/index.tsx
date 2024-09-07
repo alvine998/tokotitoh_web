@@ -46,16 +46,17 @@ export async function getServerSideProps(context: any) {
       year_start,
       year_end,
       fuel_type,
+      q
     } = context.query;
     const { subcat_id } = context.params;
 
     const filters = {
       subcategory_id: subcat_id,
       status: "1",
+      search: search || "",
       pagination: true,
       page: +page || 0,
       size: +size || 6,
-      search: search || "",
       brand_id: brand_id || "",
       type_id: type_id || "",
       province_id: province_id || "",
@@ -121,9 +122,23 @@ export async function getServerSideProps(context: any) {
         }
       );
     }
+    let searchAds: any = [];
+    if(q){
+      searchAds = await axios.get(
+        CONFIG.base_url_api +
+          `/ads?pagination=true&page=${+page || 0}&size=${10}&status=1&search=${q || ""}`,
+        {
+          headers: {
+            "bearer-token": "tokotitohapi",
+            "x-partner-code": "id.marketplace.tokotitoh",
+          },
+        }
+      );
+    }
     return {
       props: {
         ads: result?.data?.items,
+        searchAds: searchAds?.data?.items?.rows || [],
         brands: brands?.data?.items?.rows || [],
         types: types?.data?.items?.rows || [],
         provinces: provinces?.data?.items?.rows || [],
@@ -156,6 +171,7 @@ export default function Ads({
   types,
   ads1,
   provinces,
+  searchAds,
 }: any) {
   const router = useRouter();
   const routers = router2();
@@ -203,7 +219,7 @@ export default function Ads({
         brands={brands}
         types={types}
         provinces={provinces}
-        items={ads?.rows}
+        items={searchAds}
       />
 
       {ads?.count > 0 ? (
@@ -230,15 +246,13 @@ export default function Ads({
                 <CircleDotDashedIcon className="animate-spin text-green-500" />
               ) : (
                 <button
-                  onClick={() =>
-                  {
-                    setSpinning(true)
+                  onClick={() => {
+                    setSpinning(true);
                     setTimeout(() => {
-                      setSpinning(false)
+                      setSpinning(false);
                     }, 3000);
-                    setFilter({ ...filter, size: (+filter.size || 6) + 6 })
-                  }
-                  }
+                    setFilter({ ...filter, size: (+filter.size || 6) + 6 });
+                  }}
                   type="button"
                   className="rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center"
                 >
