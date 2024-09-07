@@ -369,7 +369,7 @@ export default function HeaderAds(props: Props) {
                 {Object.entries(selected)
                   ?.filter(([key, value]: any) => value !== "")
                   ?.map(([key, value]: any) => (
-                    <div className="flex bg-blue-500 rounded-full py-1 px-2 items-end w-auto">
+                    <div key={key} className="flex bg-blue-500 rounded-full py-1 px-2 items-end w-auto">
                       <p className="text-white">
                         {key}: {value}
                       </p>
