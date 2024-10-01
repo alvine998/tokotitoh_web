@@ -95,10 +95,10 @@ export default function MyAds({ ads, detailBuyer }: any) {
       <div className="">
         <div className="p-2">
           {detailBuyer?.image ? (
-            <Image
+            <img
               alt="image"
               src={detailBuyer?.image}
-              layout="relative"
+              // layout="relative"
               width={800}
               height={500}
               className="h-20 w-20 rounded-full mt-5"

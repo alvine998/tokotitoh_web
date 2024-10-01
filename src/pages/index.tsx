@@ -32,7 +32,7 @@ export async function getServerSideProps(context: any) {
       }
     );
     const { req, res } = context;
-    let user: any = getCookie("account", { req, res });
+    let user: any = getCookie("account", { req, res }) || null;
     let notif: any = [];
     if (user) {
       user = JSON.parse(user);
@@ -176,9 +176,9 @@ export default function Home({ categories, ads, notif, subcategories }: any) {
               }}
               className="flex flex-col items-center justify-center w-[100px]"
             >
-              <Image
+              <img
                 src={v?.icon}
-                layout="relative"
+                // layout="relative"
                 width={100}
                 height={100}
                 alt="icon"
@@ -206,9 +206,9 @@ export default function Home({ categories, ads, notif, subcategories }: any) {
               }}
               className="flex flex-col items-center justify-center w-[100px]"
             >
-              <Image
+              <img
                 src={v?.icon}
-                layout="relative"
+                // layout="relative"
                 width={100}
                 height={100}
                 alt="icon"

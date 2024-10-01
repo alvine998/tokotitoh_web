@@ -156,6 +156,7 @@ export default function AdsProduct(props: Props) {
       >
         <div className="bg-white w-full h-[200px] overflow-hidden">
           <img src={thumbnail} alt="thumbnail" className="h-auto w-full object-cover rounded" />
+          <p>{thumbnail}</p>
         </div>
         {/* <Image
           alt="thumbnail"

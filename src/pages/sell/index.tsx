@@ -1088,10 +1088,10 @@ export default function Sell({
                     }}
                     className="relative group w-1/3"
                   >
-                    <Image
+                    <img
                       alt="images"
                       src={v}
-                      layout="relative"
+                      // layout="relative"
                       width={300}
                       height={300}
                       className="w-full h-[100px]"

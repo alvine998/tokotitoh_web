@@ -297,7 +297,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               dots
               className="owl-theme mt-2"
             >
-              {ads?.images?.map((v: any, i: number) => (
+              {JSON.parse(ads?.images)?.map((v: any, i: number) => (
                 <button
                   type="button"
                   className="w-full"
@@ -471,12 +471,12 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 dots
                 className="owl-theme"
               >
-                {ads?.images?.map((v: any, i: number) => (
-                  <Image
+                {JSON.parse(ads?.images)?.map((v: any, i: number) => (
+                  <img
                     alt="image"
                     key={i}
                     src={v}
-                    layout="relative"
+                    // layout="relative"
                     width={800}
                     height={500}
                     className="h-auto w-full rounded mt-5"
@@ -565,10 +565,10 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                       }}
                       className="relative group w-1/3"
                     >
-                      <Image
+                      <img
                         alt="images"
                         src={v}
-                        layout="relative"
+                        // layout="relative"
                         width={300}
                         height={300}
                         className="w-full h-[100px]"
@@ -606,10 +606,10 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               }}
             >
               {user?.image ? (
-                <Image
+                <img
                   alt="image"
                   src={user?.image}
-                  layout="relative"
+                  // layout="relative"
                   width={800}
                   height={500}
                   className="h-20 w-20 rounded-full mt-5"

@@ -230,7 +230,7 @@ export default function Ads({
               <div key={i} className="lg:w-[350px] sm:w-[300px] w-[350px]">
                 <AdsProduct
                   price={v?.price}
-                  thumbnail={v?.images[0]}
+                  thumbnail={JSON.parse(v?.images)[0]}
                   title={v?.title}
                   onClick={() => {
                     addViews(v);
@@ -267,10 +267,10 @@ export default function Ads({
         </div>
       ) : (
         <div className="mt-40 flex flex-col gap-2 justify-center items-center">
-          <Image
+          <img
             alt="eror404"
             src={"/images/error404.webp"}
-            layout="relative"
+            // layout="relative"
             width={300}
             height={300}
             className="w-[250px] h-[250px]"

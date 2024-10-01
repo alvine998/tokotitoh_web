@@ -172,10 +172,10 @@ export default function Account() {
               }}
             >
               {user?.image ? (
-                <Image
+                <img
                   alt="image"
                   src={user?.image}
-                  layout="relative"
+                  // layout="relative"
                   width={800}
                   height={500}
                   className="h-20 w-20 rounded-full mt-5"
@@ -406,13 +406,13 @@ export default function Account() {
           {modal?.key == "view" ? (
             <Modal open={modal.open} setOpen={() => {}}>
               <div className="px-2">
-                <Image
+                <img
                   alt="userimage"
                   src={modal?.data?.image}
                   width={500}
                   height={500}
                   className="w-full h-auto"
-                  layout="relative"
+                  // layout="relative"
                 />
                 <div className="flex gap-10 justify-end items-center mt-4">
                   <button
