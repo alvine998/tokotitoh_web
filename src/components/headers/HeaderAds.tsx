@@ -150,7 +150,7 @@ export default function HeaderAds(props: Props) {
     try {
       if (data?.value !== "") {
         const result = await axios.get(
-          CONFIG.base_url_api + `/subcategories?category_id=${data?.value}`,
+          CONFIG.base_url_api + `/types?brand_id=${data?.value}`,
           {
             headers: {
               "bearer-token": "tokotitohapi",
@@ -161,6 +161,11 @@ export default function HeaderAds(props: Props) {
         setList({
           ...list,
           types: result.data.items.rows,
+        });
+      } else {
+        setList({
+          ...list,
+          types: [],
         });
       }
     } catch (error) {
@@ -174,7 +179,9 @@ export default function HeaderAds(props: Props) {
     city_id: "",
     district_id: "",
     brand_id: "",
+    brand_name:"",
     type_id: "",
+    type_name:"",
     max: filter?.max || "",
     min: filter?.min || "",
     maxArea: "",
@@ -325,7 +332,9 @@ export default function HeaderAds(props: Props) {
             }}
             placeholder="Cari barangmu disini..."
             onSelect={(item: any) =>
-              router.push(`/category/${item?.subcategory_id}?search=${item?.title}`)
+              router.push(
+                `/category/${item?.subcategory_id}?search=${item?.title}`
+              )
             }
           />
         </div>
@@ -365,11 +374,14 @@ export default function HeaderAds(props: Props) {
                 </div>
               </div>
               {/* Filter Selected */}
-              <div className="w-full overflow-y-auto mt-2 flex">
+              <div className="w-full overflow-y-auto mt-2 gap-2 flex">
                 {Object.entries(selected)
-                  ?.filter(([key, value]: any) => value !== "")
+                  ?.filter(([key, value]: any) => value !== "" && !key?.includes("_id"))
                   ?.map(([key, value]: any) => (
-                    <div key={key} className="flex bg-blue-500 rounded-full py-1 px-2 items-end w-auto">
+                    <div
+                      key={key}
+                      className="flex bg-blue-500 rounded-full py-1 px-2 items-end w-auto"
+                    >
                       <p className="text-white">
                         {key}: {value}
                       </p>
@@ -494,14 +506,14 @@ export default function HeaderAds(props: Props) {
                             })),
                           ]}
                           onChange={(e: any) => {
-                            if (e.value !== "") {
-                              setSelected({
-                                ...selected,
-                                brand: e.label,
-                                tipe: "",
-                              });
-                              getType(e);
-                            }
+                            setSelected({
+                              ...selected,
+                              brand_id: e.value ? e.value : "",
+                              brand_name: e.value ? e.label : "",
+                              type_id: "",
+                              type_name: "",
+                            });
+                            getType(e);
                           }}
                           maxMenuHeight={150}
                           placeholder="Semua Merek"
@@ -526,7 +538,11 @@ export default function HeaderAds(props: Props) {
                               })),
                             ]}
                             onChange={(e: any) => {
-                              setSelected({ ...selected, type_id: e.value });
+                              setSelected({
+                                ...selected,
+                                type_id: e.value ? e.value : "",
+                                type_name: e.value ? e.label : "",
+                              });
                             }}
                             maxMenuHeight={150}
                             placeholder="Semua Model"
