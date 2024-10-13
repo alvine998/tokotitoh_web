@@ -36,6 +36,7 @@ import TextArea from "@/components/TextArea";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/config/firebase";
 import Swal from "sweetalert2";
+import moment from "moment";
 
 const OwlCarousel = dynamic(async () => await import("react-owl-carousel"), {
   ssr: false,
@@ -411,10 +412,9 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                   Bahan Bakar: {ads?.fuel_type}
                   <br />
                   <hr />
-                  {/* Kepemilikan:{" "}
-                  {ads?.ownership == "individual" ? "Pribadi" : "Dealer"}
+                  Tanggal Iklan Dibuat: {moment(ads?.created_on).format("DD-MM-YYYY")}
                   <br />
-                  <hr /> */}
+                  <hr />
                 </p>
               ) : (
                 ""
