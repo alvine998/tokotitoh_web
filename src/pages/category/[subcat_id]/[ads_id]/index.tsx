@@ -412,9 +412,6 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                   Bahan Bakar: {ads?.fuel_type}
                   <br />
                   <hr />
-                  Tanggal Iklan Dibuat: {moment(ads?.created_on).format("DD-MM-YYYY")}
-                  <br />
-                  <hr />
                 </p>
               ) : (
                 ""
@@ -437,7 +434,11 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 Kota: {ads?.district_name}
                 <br />
                 <hr />
-                Kabupata/Kota: {ads?.city_name}
+                Kabupaten/Kota: {ads?.city_name}
+                <br />
+                <hr />
+                Tanggal Iklan Dibuat:{" "}
+                {moment(ads?.created_on).format("DD-MM-YYYY")}
                 <br />
                 <hr />
               </p>
