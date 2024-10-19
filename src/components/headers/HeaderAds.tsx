@@ -26,13 +26,23 @@ interface Props {
   brands?: any;
   types?: any;
   provinces?: any;
-  loading: any;
+  setLoading: any;
   items?: any;
+  subcat_id?: any;
 }
 
 export default function HeaderAds(props: Props) {
-  const { ads, filter, setFilter, brands, types, provinces, loading, items } =
-    props;
+  const {
+    ads,
+    filter,
+    setFilter,
+    brands,
+    types,
+    provinces,
+    setLoading,
+    items,
+    subcat_id,
+  } = props;
   const router = useRouter();
   const [location, setLocation] = useState<any>({
     latitude: null,
@@ -335,7 +345,7 @@ export default function HeaderAds(props: Props) {
 
       <div className="mt-2 flex gap-2">
         <div className="w-full">
-          <ReactSearchAutocomplete
+          {/* <ReactSearchAutocomplete
             items={items?.map((v: any) => ({ ...v, name: `${v?.title}` }))}
             onSearch={(string: string, results: any) => {
               setFilter({ ...filter, q: string });
@@ -346,6 +356,13 @@ export default function HeaderAds(props: Props) {
                 `/category/${item?.subcategory_id}?search=${item?.title}`
               )
             }
+          /> */}
+          <Input
+            placeholder="Cari disini"
+            label=""
+            onChange={(e: any) => {
+              setFilter({ ...filter, search: e.target.value });
+            }}
           />
         </div>
       </div>
@@ -374,9 +391,11 @@ export default function HeaderAds(props: Props) {
                   </button>
                   <button
                     onClick={() => {
-                      setResets(true);
-                      setSelected(initialValue);
-                      setFilter({});
+                      // setResets(true);
+                      // setSelected(initialValue);
+                      setLoading(true);
+                      setModal({ ...modal, open: false });
+                      router.push("/category/" + subcat_id);
                     }}
                     className="text-blue-700 mr-2 border-2 border-black rounded py-1 px-4 mt-1"
                   >
@@ -535,10 +554,10 @@ export default function HeaderAds(props: Props) {
                           placeholder="Semua Merek"
                           className="w-full"
                           defaultValue={{
-                            value: selected?.brand_id,
+                            value: filter?.brand_id,
                             label:
                               brands?.find(
-                                (v: any) => v?.id == selected?.brand_id
+                                (v: any) => v?.id == filter?.brand_id
                               )?.name || "Semua Merek",
                           }}
                         />
@@ -667,7 +686,7 @@ export default function HeaderAds(props: Props) {
                           numericformat
                           label=""
                           placeholder="Dari Harga"
-                          defaultValue={1}
+                          defaultValue={filter?.min || 1}
                           onChange={(e: any) => {
                             // setSelected({
                             //   ...selected,
@@ -683,7 +702,7 @@ export default function HeaderAds(props: Props) {
                           numericformat
                           label=""
                           placeholder="Sampai Harga"
-                          defaultValue={1000000000000000}
+                          defaultValue={filter?.max || 1000000000000000}
                           onChange={(e: any) => {
                             // setSelected({
                             //   ...selected,
@@ -691,7 +710,7 @@ export default function HeaderAds(props: Props) {
                             // });
                             setFilter({
                               ...filter,
-                              min: e.target.value.replaceAll(",", ""),
+                              max: e.target.value.replaceAll(",", ""),
                             });
                           }}
                         />
@@ -1135,9 +1154,8 @@ export default function HeaderAds(props: Props) {
                         //   ...selected,
                         // });
                         setModal({ ...modal, open: false });
-                        setResets(false);
+                        setLoading(true);
                       }}
-                      disabled={loading}
                     >
                       Terapkan
                     </Button>

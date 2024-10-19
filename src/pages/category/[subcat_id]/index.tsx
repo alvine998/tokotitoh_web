@@ -46,7 +46,7 @@ export async function getServerSideProps(context: any) {
       year_start,
       year_end,
       fuel_type,
-      q
+      q,
     } = context.query;
     const { subcat_id } = context.params;
 
@@ -123,10 +123,12 @@ export async function getServerSideProps(context: any) {
       );
     }
     let searchAds: any = [];
-    if(q){
+    if (q) {
       searchAds = await axios.get(
         CONFIG.base_url_api +
-          `/ads?pagination=true&page=${+page || 0}&size=${10}&status=1&search=${q || ""}`,
+          `/ads?pagination=true&page=${+page || 0}&size=${10}&status=1&search=${
+            q || ""
+          }`,
         {
           headers: {
             "bearer-token": "tokotitohapi",
@@ -209,10 +211,16 @@ export default function Ads({
     setLoading(false);
   }, [filter]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, [loading]);
+
   return (
     <div className="pb-20 flex flex-col justify-center items-center">
       <HeaderAds
-        loading={loading}
+        setLoading={setLoading}
         filter={filter}
         setFilter={setFilter}
         ads={ads1}
@@ -220,24 +228,34 @@ export default function Ads({
         types={types}
         provinces={provinces}
         items={searchAds}
+        subcat_id={subcat_id}
       />
 
       {ads?.count > 0 ? (
         <div>
           {/* Kategori */}
           <div className="mt-28 flex lg:flex-col lg:gap-4 gap-0 flex-row flex-wrap justify-center items-center">
-            {ads?.rows?.map((v: any, i: number) => (
-              <div key={i} className="lg:w-[350px] sm:w-[300px] w-[350px]">
-                <AdsProduct
-                  price={v?.price}
-                  thumbnail={JSON.parse(v?.images)[0]}
-                  title={v?.title}
-                  onClick={() => {
-                    addViews(v);
-                  }}
-                />
+            {loading ? (
+              <div className="mt-10">
+                <CircleDotDashedIcon className="animate-spin text-green-500 lg:ml-5" />
+                <p className="text-center">Loading...</p>
               </div>
-            ))}
+            ) : (
+              <>
+                {ads?.rows?.map((v: any, i: number) => (
+                  <div key={i} className="lg:w-[350px] sm:w-[300px] w-[350px]">
+                    <AdsProduct
+                      price={v?.price}
+                      thumbnail={JSON.parse(v?.images)[0]}
+                      title={v?.title}
+                      onClick={() => {
+                        addViews(v);
+                      }}
+                    />
+                  </div>
+                ))}
+              </>
+            )}
           </div>
 
           {filter?.size < ads?.count ? (
@@ -267,17 +285,26 @@ export default function Ads({
         </div>
       ) : (
         <div className="mt-40 flex flex-col gap-2 justify-center items-center">
-          <img
-            alt="eror404"
-            src={"/images/error404.webp"}
-            // layout="relative"
-            width={300}
-            height={300}
-            className="w-[250px] h-[250px]"
-          />
-          <p className="text-center font-semibold text-lg">
-            Item yang anda dicari tidak ditemukan!
-          </p>
+          {loading ? (
+            <div className="mt-10">
+              <CircleDotDashedIcon className="animate-spin text-green-500 lg:ml-5" />
+              <p className="text-center">Loading...</p>
+            </div>
+          ) : (
+            <>
+              <img
+                alt="eror404"
+                src={"/images/error404.webp"}
+                // layout="relative"
+                width={300}
+                height={300}
+                className="w-[250px] h-[250px]"
+              />
+              <p className="text-center font-semibold text-lg">
+                Item yang anda dicari tidak ditemukan!
+              </p>
+            </>
+          )}
         </div>
       )}
 
