@@ -237,7 +237,7 @@ export default function Ads({
           <div className="mt-28 flex lg:flex-col lg:gap-4 gap-0 flex-row flex-wrap justify-center items-center">
             {loading ? (
               <div className="mt-10">
-                <CircleDotDashedIcon className="animate-spin text-green-500 lg:ml-5" />
+                <CircleDotDashedIcon className="animate-spin text-green-500 ml-5" />
                 <p className="text-center">Loading...</p>
               </div>
             ) : (
@@ -287,7 +287,7 @@ export default function Ads({
         <div className="mt-40 flex flex-col gap-2 justify-center items-center">
           {loading ? (
             <div className="mt-10">
-              <CircleDotDashedIcon className="animate-spin text-green-500 lg:ml-5" />
+              <CircleDotDashedIcon className="animate-spin text-green-500 ml-5" />
               <p className="text-center">Loading...</p>
             </div>
           ) : (
