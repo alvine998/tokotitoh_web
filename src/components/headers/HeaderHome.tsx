@@ -12,17 +12,18 @@ interface Props {
   setModal?: any;
   items?: any;
   notif?: any;
+  handleSearch?: any;
 }
 
 export default function HeaderHome(props: Props) {
   const router = useRouter();
-  const { modal, setModal, items, filter, setFilter, notif } = props;
+  const { modal, setModal, items, filter, setFilter, notif, handleSearch } =
+    props;
   const [location, setLocation] = useState<any>({
     latitude: null,
     longitude: null,
   });
   const [textSearch, setTextSearch] = useState<string>("");
-  const [addItems, setAddItems] = useState<any>(items);
   const [adress, setAddress] = useState<any>("Indonesia");
 
   // const geolocation = async () => {
@@ -75,16 +76,15 @@ export default function HeaderHome(props: Props) {
       <div className="mt-2 flex gap-2">
         <div className="w-full">
           <ReactSearchAutocomplete
-            items={addItems?.map((v: any) => ({ ...v, name: `${v?.title}` }))}
+            items={items?.map((v: any) => ({ ...v, name: `${v?.title}` }))}
             onSearch={(string: string, results: any) => {
-              setFilter({ ...filter, search: string });
+              //   setFilter({ ...filter, search: string });
+              handleSearch(string);
             }}
             placeholder="Cari barangmu disini..."
             onSelect={(item: any) =>
               router.push(
-                `/category/${item?.subcategory_id}?search=${
-                  item?.title
-                }&size=6`
+                `/category/${item?.subcategory_id}?search=${item?.title}&size=6`
               )
             }
           />

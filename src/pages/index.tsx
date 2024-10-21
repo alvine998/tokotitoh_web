@@ -5,6 +5,7 @@ import { CONFIG } from "@/config";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import {
+  BellIcon,
   CarFrontIcon,
   CarIcon,
   ChevronLeftCircleIcon,
@@ -17,6 +18,7 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 export async function getServerSideProps(context: any) {
   try {
@@ -49,16 +51,6 @@ export async function getServerSideProps(context: any) {
         }
       );
     }
-    const ads = await axios.get(
-      CONFIG.base_url_api +
-        `/ads?status=1&pagination=true&page=${+page || 0}&size=${+size || 10}`,
-      {
-        headers: {
-          "bearer-token": "tokotitohapi",
-          "x-partner-code": "id.marketplace.tokotitoh",
-        },
-      }
-    );
     let subcategories: any = [];
     if (search) {
       subcategories = await axios.get(
@@ -78,7 +70,6 @@ export async function getServerSideProps(context: any) {
     return {
       props: {
         categories: result?.data?.items?.rows,
-        ads: ads?.data?.items?.rows,
         notif: notif?.data?.items?.rows || [],
         subcategories: subcategories?.data?.items?.rows || [],
       },
@@ -101,7 +92,7 @@ export async function getServerSideProps(context: any) {
   }
 }
 
-export default function Home({ categories, ads, notif, subcategories }: any) {
+export default function Home({ categories, notif, subcategories }: any) {
   const router = useRouter();
   const [modal, setModal] = useState<useModal>();
   const [subcat, setSubcat] = useState<any>([]);
@@ -110,11 +101,31 @@ export default function Home({ categories, ads, notif, subcategories }: any) {
     type: "default",
     data: null,
   });
-  console.log(subcategories,'sss');
+  const [filterAds, setFilterAds] = useState<any>([]);
   useEffect(() => {
     const queryFilter = new URLSearchParams(filter).toString();
     router.push(`?${queryFilter}`);
   }, [filter]);
+
+  const searchAds = async (q: string) => {
+    try {
+      const result = await axios.get(
+        CONFIG.base_url_api +
+          `/ads?status=1&pagination=true&page=${0}&size=${10}&search=${
+            q || ""
+          }`,
+        {
+          headers: {
+            "bearer-token": "tokotitohapi",
+            "x-partner-code": "id.marketplace.tokotitoh",
+          },
+        }
+      );
+      setFilterAds(result?.data?.items?.rows);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getSubCat = async (cat_id: any) => {
     try {
@@ -157,11 +168,12 @@ export default function Home({ categories, ads, notif, subcategories }: any) {
     <div className="pb-20 flex flex-col justify-center items-center">
       <HeaderHome
         notif={notif}
-        items={ads}
+        items={filterAds}
         modal={modal}
         setModal={setModal}
         filter={filter}
         setFilter={setFilter}
+        handleSearch={searchAds}
       />
 
       {/* Kategori */}
