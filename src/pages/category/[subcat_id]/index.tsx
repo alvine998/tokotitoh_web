@@ -93,7 +93,7 @@ export async function getServerSideProps(context: any) {
       }
     );
     const ads1 = result2?.data?.items?.rows?.[0] || {};
-    const [brands, provinces] = await Promise.all([
+    const [brands, provinces, categories] = await Promise.all([
       axios.get(
         CONFIG.base_url_api + `/brands?category_id=${ads1?.category_id}`,
         {
@@ -104,6 +104,12 @@ export async function getServerSideProps(context: any) {
         }
       ),
       axios.get(CONFIG.base_url_api + `/provinces`, {
+        headers: {
+          "bearer-token": "tokotitohapi",
+          "x-partner-code": "id.marketplace.tokotitoh",
+        },
+      }),
+      axios.get(CONFIG.base_url_api + `/categories`, {
         headers: {
           "bearer-token": "tokotitohapi",
           "x-partner-code": "id.marketplace.tokotitoh",
@@ -144,6 +150,7 @@ export async function getServerSideProps(context: any) {
         brands: brands?.data?.items?.rows || [],
         types: types?.data?.items?.rows || [],
         provinces: provinces?.data?.items?.rows || [],
+        categories: categories?.data?.items?.rows || [],
         subcat_id,
         ads1,
       },
@@ -174,6 +181,7 @@ export default function Ads({
   ads1,
   provinces,
   searchAds,
+  categories
 }: any) {
   const router = useRouter();
   const routers = router2();
@@ -229,6 +237,7 @@ export default function Ads({
         provinces={provinces}
         items={searchAds}
         subcat_id={subcat_id}
+        categories={categories}
       />
 
       {ads?.count > 0 ? (

@@ -29,6 +29,7 @@ interface Props {
   setLoading: any;
   items?: any;
   subcat_id?: any;
+  categories: any;
 }
 
 export default function HeaderAds(props: Props) {
@@ -42,6 +43,7 @@ export default function HeaderAds(props: Props) {
     setLoading,
     items,
     subcat_id,
+    categories,
   } = props;
   const router = useRouter();
   const [location, setLocation] = useState<any>({
@@ -51,14 +53,7 @@ export default function HeaderAds(props: Props) {
   const [resets, setResets] = useState<boolean>(false);
   const [adress, setAddress] = useState<any>("Indonesia");
   const [modal, setModal] = useState<useModal>();
-  const [filterName, setFilterName] = useState<any>(
-    (ads?.category_name?.toLowerCase()?.includes("mobil") &&
-      ads?.name?.toLowerCase()?.includes("mobil")) ||
-      (ads?.category_name?.toLowerCase()?.includes("motor") &&
-        ads?.name?.toLowerCase()?.includes("motor"))
-      ? "MEREK/MODEL"
-      : "LOKASI"
-  );
+  const [filterName, setFilterName] = useState<any>("KATEGORI");
 
   // const geolocation = async () => {
   //     try {
@@ -193,6 +188,34 @@ export default function HeaderAds(props: Props) {
     }
   };
 
+  const getSubcategory = async (data: any) => {
+    try {
+      if (data?.value !== "") {
+        const result = await axios.get(
+          CONFIG.base_url_api +
+            `/subcategories?category_id=${data?.value || data?.category_id}`,
+          {
+            headers: {
+              "bearer-token": "tokotitohapi",
+              "x-partner-code": "id.marketplace.tokotitoh",
+            },
+          }
+        );
+        setList({
+          ...list,
+          subcategories: result.data.items.rows,
+        });
+      } else {
+        setList({
+          ...list,
+          subcategories: [],
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   let initialValue: any = {
     size: "",
     province_id: "",
@@ -220,11 +243,14 @@ export default function HeaderAds(props: Props) {
 
   // console.log(router.query, 'testes');
 
-  // useEffect(() => {
-  //     geolocation();
-  // }, [])
+  useEffect(() => {
+    getSubcategory(ads);
+  }, []);
 
   let navsCar = [
+    {
+      name: "KATEGORI",
+    },
     {
       name: "MEREK/MODEL",
     },
@@ -250,6 +276,9 @@ export default function HeaderAds(props: Props) {
 
   let navsProperty = [
     {
+      name: "KATEGORI",
+    },
+    {
       name: "LOKASI",
     },
     {
@@ -268,6 +297,9 @@ export default function HeaderAds(props: Props) {
 
   let navsBusTruck = [
     {
+      name: "KATEGORI",
+    },
+    {
       name: "LOKASI",
     },
     {
@@ -283,6 +315,9 @@ export default function HeaderAds(props: Props) {
 
   let navsFoodPet = [
     {
+      name: "KATEGORI",
+    },
+    {
       name: "LOKASI",
     },
     {
@@ -294,6 +329,9 @@ export default function HeaderAds(props: Props) {
   ];
 
   let navs = [
+    {
+      name: "KATEGORI",
+    },
     {
       name: "LOKASI",
     },
@@ -523,6 +561,88 @@ export default function HeaderAds(props: Props) {
                   )}
                 </div>
                 <div className="w-full">
+                  {filterName == "KATEGORI" ? (
+                    <div>
+                      <div className="flex flex-col gap-2 items-center justify-center pl-2 mt-4">
+                        <ReactSelect
+                          options={[
+                            { value: "", label: "Semua Kategori" },
+                            ...categories?.map((v: any) => ({
+                              ...v,
+                              value: v?.id,
+                              label: v?.name?.toUpperCase(),
+                            })),
+                          ]}
+                          onChange={(e: any) => {
+                            // setSelected({
+                            //   ...selected,
+                            //   brand_id: e.value ? e.value : "",
+                            //   brand_name: e.value ? e.label : "",
+                            //   type_id: "",
+                            //   type_name: "",
+                            // });
+                            setFilter({
+                              ...filter,
+                              category_id: e?.value,
+                              subcategory_id: "",
+                            });
+                            getSubcategory(e);
+                          }}
+                          maxMenuHeight={150}
+                          placeholder="Semua Merek"
+                          className="w-full"
+                          defaultValue={{
+                            value: filter?.category_id || ads?.category_id,
+                            label:
+                              categories?.find(
+                                (v: any) =>
+                                  v?.id ==
+                                  (filter?.category_id || ads?.category_id)
+                              )?.name || "Semua Kategori",
+                          }}
+                        />
+                        {list?.subcategories ? (
+                          <ReactSelect
+                            isDisabled={list?.subcategories?.length < 1}
+                            options={[
+                              { value: "", label: "Semua Subkategori" },
+                              ...list?.subcategories?.map((v: any) => ({
+                                ...v,
+                                value: v?.id,
+                                label: v?.name?.toUpperCase(),
+                              })),
+                            ]}
+                            onChange={(e: any) => {
+                              // setSelected({
+                              //   ...selected,
+                              //   type_id: e.value ? e.value : "",
+                              //   type_name: e.value ? e.label : "",
+                              // });
+                              setFilter({
+                                ...filter,
+                                subcategory_id: e?.value,
+                              });
+                            }}
+                            maxMenuHeight={150}
+                            placeholder="Semua Subkategori"
+                            className="w-full"
+                            defaultValue={{
+                              value: filter?.subcategory_id || ads?.id,
+                              label:
+                                list?.subcategories?.find(
+                                  (v: any) =>
+                                    v?.id == (filter?.subcategory_id || ads?.id)
+                                )?.name || "Semua Subkategori",
+                            }}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                   {filterName == "MEREK/MODEL" ? (
                     <div>
                       <div className="flex flex-col gap-2 items-center justify-center pl-2 mt-4">
@@ -1155,6 +1275,9 @@ export default function HeaderAds(props: Props) {
                         // });
                         setModal({ ...modal, open: false });
                         setLoading(true);
+                        if (filter?.subcategory_id) {
+                          router.push(`/category/${filter?.subcategory_id}`);
+                        }
                       }}
                     >
                       Terapkan
