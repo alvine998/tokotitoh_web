@@ -215,11 +215,9 @@ export default function Ads({
   useEffect(() => {
     setLoading(true);
     const queryFilter = new URLSearchParams(filter).toString();
-    routers.push(`?${queryFilter}`, { scroll: false });
+    routers.push(`${subcat_id}?${queryFilter}`, { scroll: false });
     setLoading(false);
   }, [filter]);
-
-  console.log(ads1?.id, subcat_id);
 
   useEffect(() => {
     setTimeout(() => {

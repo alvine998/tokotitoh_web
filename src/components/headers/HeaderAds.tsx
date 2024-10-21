@@ -18,6 +18,7 @@ import Input from "../Input";
 import { CONFIG } from "@/config";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 
 interface Props {
   ads: any;
@@ -240,9 +241,6 @@ export default function HeaderAds(props: Props) {
   };
 
   const [selected, setSelected] = useState<any>(initialValue);
-
-  // console.log(router.query, 'testes');
-
   useEffect(() => {
     getSubcategory(ads);
   }, []);
@@ -346,6 +344,7 @@ export default function HeaderAds(props: Props) {
     },
   ];
 
+  const params = useParams();
   return (
     <div className="w-full lg:w-1/3 fixed top-0 bg-white p-2">
       <div className="flex justify-between">
@@ -428,12 +427,23 @@ export default function HeaderAds(props: Props) {
                     <XCircleIcon className="w-7" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => {
                       // setResets(true);
                       // setSelected(initialValue);
                       setLoading(true);
+                      setList({ type: [] });
+                      setFilter({ size: 6 });
                       setModal({ ...modal, open: false });
-                      router.push("/category/" + subcat_id);
+                      const id = subcat_id || ads?.id || params?.subcat_id;
+                      console.log(id, "idd");
+                      // if (id) {
+                      //   // Only navigate if the id is valid
+                      //   router.push(`/category/${id}`);
+                      // } else {
+                      //   // Handle the case where id is missing (optional)
+                      //   console.warn("subcat_id or ads.id is missing");
+                      // }
                     }}
                     className="text-blue-700 mr-2 border-2 border-black rounded py-1 px-4 mt-1"
                   >
@@ -1277,6 +1287,7 @@ export default function HeaderAds(props: Props) {
                         setLoading(true);
                         if (filter?.subcategory_id) {
                           router.push(`/category/${filter?.subcategory_id}`);
+                          setFilter("");
                         }
                       }}
                     >
