@@ -181,7 +181,7 @@ export default function Ads({
   ads1,
   provinces,
   searchAds,
-  categories
+  categories,
 }: any) {
   const router = useRouter();
   const routers = router2();
@@ -219,6 +219,8 @@ export default function Ads({
     setLoading(false);
   }, [filter]);
 
+  console.log(ads1?.id, subcat_id);
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -240,81 +242,95 @@ export default function Ads({
         categories={categories}
       />
 
-      {ads?.count > 0 ? (
-        <div>
-          {/* Kategori */}
-          <div className="mt-28 flex lg:flex-col lg:gap-4 gap-0 flex-row flex-wrap justify-center items-center">
-            {loading ? (
-              <div className="mt-10">
-                <CircleDotDashedIcon className="animate-spin text-green-500 ml-5" />
-                <p className="text-center">Loading...</p>
-              </div>
-            ) : (
-              <>
-                {ads?.rows?.map((v: any, i: number) => (
-                  <div key={i} className="lg:w-[350px] sm:w-[300px] w-[350px]">
-                    <AdsProduct
-                      price={v?.price}
-                      thumbnail={JSON.parse(v?.images)[0]}
-                      title={v?.title}
-                      onClick={() => {
-                        addViews(v);
-                      }}
-                    />
-                  </div>
-                ))}
-              </>
-            )}
-          </div>
-
-          {filter?.size < ads?.count ? (
-            <div className="flex items-center justify-center">
-              {spinning ? (
-                <CircleDotDashedIcon className="animate-spin text-green-500" />
-              ) : (
-                <button
-                  onClick={() => {
-                    setSpinning(true);
-                    setTimeout(() => {
-                      setSpinning(false);
-                    }, 3000);
-                    setFilter({ ...filter, size: (+filter.size || 6) + 6 });
-                  }}
-                  type="button"
-                  className="rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center"
-                >
-                  <PlusIcon className="w-6" />
-                  Lihat Lainnya
-                </button>
-              )}
-            </div>
-          ) : (
-            ""
-          )}
+      {ads1?.id !== +subcat_id ? (
+        <div className="mt-10">
+          <CircleDotDashedIcon className="animate-spin text-green-500 ml-5" />
+          <p className="text-center">Loading...</p>
         </div>
       ) : (
-        <div className="mt-40 flex flex-col gap-2 justify-center items-center">
-          {loading ? (
-            <div className="mt-10">
-              <CircleDotDashedIcon className="animate-spin text-green-500 ml-5" />
-              <p className="text-center">Loading...</p>
+        <>
+          {ads?.count > 0 ? (
+            <div>
+              {/* Kategori */}
+              <div className="mt-28 flex lg:flex-col lg:gap-4 gap-0 flex-row flex-wrap justify-center items-center">
+                {loading ? (
+                  <div className="mt-10">
+                    <CircleDotDashedIcon className="animate-spin text-green-500 ml-5" />
+                    <p className="text-center">Loading...</p>
+                  </div>
+                ) : (
+                  <>
+                    {ads?.rows?.map((v: any, i: number) => (
+                      <div
+                        key={i}
+                        className="lg:w-[350px] sm:w-[300px] w-[350px]"
+                      >
+                        <AdsProduct
+                          price={v?.price}
+                          thumbnail={JSON.parse(v?.images)[0]}
+                          title={v?.title}
+                          onClick={() => {
+                            addViews(v);
+                          }}
+                        />
+                      </div>
+                    ))}
+                    {filter?.size < ads?.count ? (
+                      <div className="flex items-center justify-center">
+                        {spinning ? (
+                          <CircleDotDashedIcon className="animate-spin text-green-500" />
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setSpinning(true);
+                              setTimeout(() => {
+                                setSpinning(false);
+                              }, 3000);
+                              setFilter({
+                                ...filter,
+                                size: (+filter.size || 6) + 6,
+                              });
+                            }}
+                            type="button"
+                            className="rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center"
+                          >
+                            <PlusIcon className="w-6" />
+                            Lihat Lainnya
+                          </button>
+                        )}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           ) : (
-            <>
-              <img
-                alt="eror404"
-                src={"/images/error404.webp"}
-                // layout="relative"
-                width={300}
-                height={300}
-                className="w-[250px] h-[250px]"
-              />
-              <p className="text-center font-semibold text-lg">
-                Item yang anda dicari tidak ditemukan!
-              </p>
-            </>
+            <div className="mt-40 flex flex-col gap-2 justify-center items-center">
+              {loading ? (
+                <div className="mt-10">
+                  <CircleDotDashedIcon className="animate-spin text-green-500 ml-5" />
+                  <p className="text-center">Loading...</p>
+                </div>
+              ) : (
+                <>
+                  <img
+                    alt="eror404"
+                    src={"/images/error404.webp"}
+                    // layout="relative"
+                    width={300}
+                    height={300}
+                    className="w-[250px] h-[250px]"
+                  />
+                  <p className="text-center font-semibold text-lg">
+                    Item yang anda dicari tidak ditemukan!
+                  </p>
+                </>
+              )}
+            </div>
           )}
-        </div>
+        </>
       )}
 
       <BottomTabs />
