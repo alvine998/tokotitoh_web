@@ -250,7 +250,7 @@ export default function HeaderAds(props: Props) {
       name: "KATEGORI",
     },
     {
-      name: "MEREK/MODEL",
+      name: "MEREK",
     },
     {
       name: "LOKASI",
@@ -436,14 +436,13 @@ export default function HeaderAds(props: Props) {
                       setFilter({ size: 6 });
                       setModal({ ...modal, open: false });
                       const id = subcat_id || ads?.id || params?.subcat_id;
-                      console.log(id, "idd");
-                      // if (id) {
-                      //   // Only navigate if the id is valid
-                      //   router.push(`/category/${id}`);
-                      // } else {
-                      //   // Handle the case where id is missing (optional)
-                      //   console.warn("subcat_id or ads.id is missing");
-                      // }
+                      if (id) {
+                        // Only navigate if the id is valid
+                        router.push(`/category/${id}`);
+                      } else {
+                        // Handle the case where id is missing (optional)
+                        console.warn("subcat_id or ads.id is missing");
+                      }
                     }}
                     className="text-blue-700 mr-2 border-2 border-black rounded py-1 px-4 mt-1"
                   >
@@ -477,8 +476,8 @@ export default function HeaderAds(props: Props) {
                     </div>
                   ))}
               </div>
-              <div className="flex mt-8">
-                <div className="w-auto flex flex-col gap-2">
+              <div className="flex mt-2">
+                <div className="lg:w-auto w-auto flex flex-col gap-2">
                   {(ads?.category_name?.toLowerCase()?.includes("mobil") &&
                     ads?.name?.toLowerCase()?.includes("mobil")) ||
                   (ads?.category_name?.toLowerCase()?.includes("motor") &&
@@ -490,7 +489,7 @@ export default function HeaderAds(props: Props) {
                           onClick={() => {
                             setFilterName(v?.name);
                           }}
-                          className={`border-2 p-2 rounded text-xs ${
+                          className={`border-2 w-auto p-2 rounded text-xs ${
                             filterName == v?.name ? "bg-gray-300" : ""
                           } hover:bg-gray-300 duration-200 transition-all`}
                         >
