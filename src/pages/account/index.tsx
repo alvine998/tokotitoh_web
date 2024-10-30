@@ -199,7 +199,7 @@ export default function Account() {
           </button>
           <div className="py-2">
             <Link href={"https://play.google.com/"}>
-              <button type="button" className="border p-2 w-full">
+              <button type="button" className="border-b p-2 w-full">
                 Download Aplikasi
               </button>
             </Link>
@@ -208,7 +208,7 @@ export default function Account() {
               onClick={() => {
                 router.push("helps/help-center");
               }}
-              className="border p-2 w-full"
+              className="border-b p-2 w-full"
             >
               Pusat Bantuan
             </button>
@@ -217,7 +217,7 @@ export default function Account() {
               onClick={() => {
                 router.push("helps/call-us");
               }}
-              className="border p-2 w-full"
+              className="border-b p-2 w-full"
             >
               Hubungi Kami
             </button>
@@ -226,7 +226,7 @@ export default function Account() {
               onClick={() => {
                 router.push("helps/about-us");
               }}
-              className="border p-2 w-full"
+              className="border-b p-2 w-full"
             >
               Tentang Kami
             </button>
@@ -235,7 +235,7 @@ export default function Account() {
               onClick={() => {
                 router.push("helps/term-condition");
               }}
-              className="border p-2 w-full"
+              className="border-b p-2 w-full"
             >
               Syarat & Ketentuan
             </button>
@@ -244,9 +244,18 @@ export default function Account() {
               onClick={() => {
                 router.push("helps/privacy-policy");
               }}
-              className="border p-2 w-full"
+              className="border-b p-2 w-full"
             >
               Kebijakan Privasi
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                
+              }}
+              className="border-b p-2 w-full"
+            >
+              Versi Web 1.1.3
             </button>
           </div>
           <button

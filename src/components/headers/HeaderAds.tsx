@@ -30,7 +30,7 @@ interface Props {
   setLoading: any;
   items?: any;
   subcat_id?: any;
-  categories: any;
+  categories: any[];
 }
 
 export default function HeaderAds(props: Props) {
@@ -51,34 +51,10 @@ export default function HeaderAds(props: Props) {
     latitude: null,
     longitude: null,
   });
-  const [resets, setResets] = useState<boolean>(false);
+  const [category, setCategory] = useState<any>();
   const [adress, setAddress] = useState<any>("Indonesia");
   const [modal, setModal] = useState<useModal>();
-  const [filterName, setFilterName] = useState<any>("KATEGORI");
-
-  // const geolocation = async () => {
-  //     try {
-  //         if (navigator.geolocation) {
-  //             navigator.geolocation.getCurrentPosition(
-  //                 (position) => {
-  //                     setLocation({
-  //                         latitude: position.coords.latitude,
-  //                         longitude: position.coords.longitude,
-  //                     });
-  //                     const result = axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`).then((data) => {
-  //                         const address = data.data.address
-  //                         setAddress(`${address?.village || ""}, ${address?.county || ""}`)
-  //                     }).catch((err: any) => {
-  //                         console.log(err);
-  //                         setAddress('Indonesia')
-  //                     })
-  //                 }
-  //             );
-  //         }
-  //     } catch (error) {
-  //         console.log(error);
-  //     }
-  // }
+  const [filterName, setFilterName] = useState<any>("MEREK");
 
   const [list, setList] = useState<any>({
     cities: [],
@@ -191,10 +167,9 @@ export default function HeaderAds(props: Props) {
 
   const getSubcategory = async (data: any) => {
     try {
-      if (data?.value !== "") {
+      if (data?.id !== 0) {
         const result = await axios.get(
-          CONFIG.base_url_api +
-            `/subcategories?category_id=${data?.value || data?.category_id}`,
+          CONFIG.base_url_api + `/subcategories?category_id=${data?.id}`,
           {
             headers: {
               "bearer-token": "tokotitohapi",
@@ -204,7 +179,10 @@ export default function HeaderAds(props: Props) {
         );
         setList({
           ...list,
-          subcategories: result.data.items.rows,
+          subcategories: [
+            { id: 0, name: "Kembali" },
+            ...result.data.items.rows,
+          ],
         });
       } else {
         setList({
@@ -241,14 +219,8 @@ export default function HeaderAds(props: Props) {
   };
 
   const [selected, setSelected] = useState<any>(initialValue);
-  useEffect(() => {
-    getSubcategory(ads);
-  }, []);
 
   let navsCar = [
-    {
-      name: "KATEGORI",
-    },
     {
       name: "MEREK",
     },
@@ -274,9 +246,6 @@ export default function HeaderAds(props: Props) {
 
   let navsProperty = [
     {
-      name: "KATEGORI",
-    },
-    {
       name: "LOKASI",
     },
     {
@@ -295,9 +264,6 @@ export default function HeaderAds(props: Props) {
 
   let navsBusTruck = [
     {
-      name: "KATEGORI",
-    },
-    {
       name: "LOKASI",
     },
     {
@@ -312,9 +278,6 @@ export default function HeaderAds(props: Props) {
   ];
 
   let navsFoodPet = [
-    {
-      name: "KATEGORI",
-    },
     {
       name: "LOKASI",
     },
@@ -397,6 +360,7 @@ export default function HeaderAds(props: Props) {
           <Input
             placeholder="Cari disini"
             label=""
+            defaultValue={filter?.search}
             onChange={(e: any) => {
               setFilter({ ...filter, search: e.target.value });
             }}
@@ -478,6 +442,14 @@ export default function HeaderAds(props: Props) {
               </div>
               <div className="flex mt-2">
                 <div className="lg:w-auto w-auto flex flex-col gap-2">
+                  <button
+                    onClick={() => {
+                      setFilterName("KATEGORI");
+                    }}
+                    className={`border-2 w-auto p-2 rounded text-xs hover:bg-gray-300 duration-200 transition-all`}
+                  >
+                    KATEGORI
+                  </button>
                   {(ads?.category_name?.toLowerCase()?.includes("mobil") &&
                     ads?.name?.toLowerCase()?.includes("mobil")) ||
                   (ads?.category_name?.toLowerCase()?.includes("motor") &&
@@ -571,88 +543,50 @@ export default function HeaderAds(props: Props) {
                 </div>
                 <div className="w-full">
                   {filterName == "KATEGORI" ? (
-                    <div>
-                      <div className="flex flex-col gap-2 items-center justify-center pl-2 mt-4">
-                        <ReactSelect
-                          options={[
-                            { value: "", label: "Semua Kategori" },
-                            ...categories?.map((v: any) => ({
-                              ...v,
-                              value: v?.id,
-                              label: v?.name?.toUpperCase(),
-                            })),
-                          ]}
-                          onChange={(e: any) => {
-                            // setSelected({
-                            //   ...selected,
-                            //   brand_id: e.value ? e.value : "",
-                            //   brand_name: e.value ? e.label : "",
-                            //   type_id: "",
-                            //   type_name: "",
-                            // });
-                            setFilter({
-                              ...filter,
-                              category_id: e?.value,
-                              subcategory_id: "",
-                            });
-                            getSubcategory(e);
-                          }}
-                          maxMenuHeight={150}
-                          placeholder="Semua Merek"
-                          className="w-full"
-                          defaultValue={{
-                            value: filter?.category_id || ads?.category_id,
-                            label:
-                              categories?.find(
-                                (v: any) =>
-                                  v?.id ==
-                                  (filter?.category_id || ads?.category_id)
-                              )?.name || "Semua Kategori",
-                          }}
-                        />
-                        {list?.subcategories ? (
-                          <ReactSelect
-                            isDisabled={list?.subcategories?.length < 1}
-                            options={[
-                              { value: "", label: "Semua Subkategori" },
-                              ...list?.subcategories?.map((v: any) => ({
-                                ...v,
-                                value: v?.id,
-                                label: v?.name?.toUpperCase(),
-                              })),
-                            ]}
-                            onChange={(e: any) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   type_id: e.value ? e.value : "",
-                              //   type_name: e.value ? e.label : "",
-                              // });
-                              setFilter({
-                                ...filter,
-                                subcategory_id: e?.value,
-                              });
-                            }}
-                            maxMenuHeight={150}
-                            placeholder="Semua Subkategori"
-                            className="w-full"
-                            defaultValue={{
-                              value: filter?.subcategory_id || ads?.id,
-                              label:
-                                list?.subcategories?.find(
-                                  (v: any) =>
-                                    v?.id == (filter?.subcategory_id || ads?.id)
-                                )?.name || "Semua Subkategori",
-                            }}
-                          />
+                    <div className="lg:h-[45vh] h-[60vh] overflow-auto">
+                      <div className="flex flex-col gap-2 pl-2 mt-4">
+                        {list?.subcategories?.length > 0 ? (
+                          <>
+                            {list?.subcategories?.map((v: any, i: number) => (
+                              <button
+                                key={i}
+                                className="w-full px-2 py-1 text-xs text-left border-b"
+                                onClick={() => {
+                                  if (v?.id !== 0) {
+                                    router.push(`/category/${v?.id}`);
+                                    setFilter("");
+                                    setModal({ ...modal, open: false });
+                                    setList({ ...list, subcategories: [] });
+                                  } else {
+                                    setList({ ...list, subcategories: [] });
+                                  }
+                                }}
+                              >
+                                {v?.name}
+                              </button>
+                            ))}
+                          </>
                         ) : (
-                          ""
+                          <>
+                            {categories?.map((v: any, i: number) => (
+                              <button
+                                key={i}
+                                className="w-full px-2 py-1 text-xs text-left border-b"
+                                onClick={() => {
+                                  getSubcategory(v);
+                                }}
+                              >
+                                {v?.name}
+                              </button>
+                            ))}
+                          </>
                         )}
                       </div>
                     </div>
                   ) : (
                     ""
                   )}
-                  {filterName == "MEREK/MODEL" ? (
+                  {filterName == "MEREK" ? (
                     <div>
                       <div className="flex flex-col gap-2 items-center justify-center pl-2 mt-4">
                         <ReactSelect
@@ -1275,23 +1209,27 @@ export default function HeaderAds(props: Props) {
                     ""
                   )}
                   <div className="flex flex-col gap-2 items-center justify-center pl-2">
-                    <Button
-                      color="info"
-                      onClick={() => {
-                        // setFilter({
-                        //   subcat_id: filter?.subcat_id,
-                        //   ...selected,
-                        // });
-                        setModal({ ...modal, open: false });
-                        setLoading(true);
-                        if (filter?.subcategory_id) {
-                          router.push(`/category/${filter?.subcategory_id}`);
-                          setFilter("");
-                        }
-                      }}
-                    >
-                      Terapkan
-                    </Button>
+                    {filterName !== "KATEGORI" ? (
+                      <Button
+                        color="info"
+                        onClick={() => {
+                          // setFilter({
+                          //   subcat_id: filter?.subcat_id,
+                          //   ...selected,
+                          // });
+                          setModal({ ...modal, open: false });
+                          setLoading(true);
+                          if (filter?.subcategory_id) {
+                            router.push(`/category/${filter?.subcategory_id}`);
+                            setFilter("");
+                          }
+                        }}
+                      >
+                        Terapkan
+                      </Button>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>
