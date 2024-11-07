@@ -588,7 +588,20 @@ export default function HeaderAds(props: Props) {
                   )}
                   {filterName == "MEREK" ? (
                     <div>
-                      <div className="flex flex-col gap-2 items-center justify-center pl-2 mt-4">
+                      <div className="flex flex-row gap-2 justify-start items-center flex-wrap pl-2">
+                        {brands
+                          ?.filter((v: any) => v.image !== null)
+                          ?.map((val: any) => (
+                            <button className="border border-gray-200 rounded p-2">
+                              <img
+                                src={val?.image}
+                                alt="logo-car"
+                                className="w-[50px] h-[50px]"
+                              />
+                            </button>
+                          ))}
+                      </div>
+                      {/* <div className="flex flex-col gap-2 items-center justify-center pl-2 mt-4">
                         <ReactSelect
                           options={[
                             { value: "", label: "Semua Merek" },
@@ -657,6 +670,51 @@ export default function HeaderAds(props: Props) {
                         ) : (
                           ""
                         )}
+                      </div> */}
+                      <div className="lg:h-[45vh] h-[60vh] overflow-auto">
+                        <div className="flex flex-col gap-2 pl-2 mt-4">
+                          {list?.types?.length > 0 ? (
+                            <>
+                              {list?.types?.map((v: any, i: number) => (
+                                <button
+                                  key={i}
+                                  className="w-full px-2 py-1 text-xs text-left border-b"
+                                  onClick={() => {
+                                    if (v?.id !== 0) {
+                                      router.push(`/category/${v?.id}`);
+                                      setFilter("");
+                                      setModal({ ...modal, open: false });
+                                      setList({ ...list, types: [] });
+                                    } else {
+                                      setList({ ...list, types: [] });
+                                    }
+                                  }}
+                                >
+                                  {v?.name}
+                                </button>
+                              ))}
+                            </>
+                          ) : (
+                            <>
+                              {brands?.map((v: any, i: number) => (
+                                <button
+                                  key={i}
+                                  className="w-full px-2 py-1 text-xs text-left border-b"
+                                  onClick={() => {
+                                    setFilter({
+                                      ...filter,
+                                      brand_id: v?.id,
+                                      type_id: "",
+                                    });
+                                    getType(v);
+                                  }}
+                                >
+                                  {v?.name}
+                                </button>
+                              ))}
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ) : (
