@@ -47,7 +47,7 @@ export default function TermCondition() {
                     height={250}
                     className="w-[150px] h-[150px]"
                 />
-                <div className="mt-5 w-full px-8">
+                <div className="mt-5 w-full lg:px-8 px-4">
                     <h2 className="font-bold text-center text-lg">Syarat & Ketentuan</h2>
                     <h5 className="text-center font-bold mt-4">
                         Syarat Dan Ketentuan Umum

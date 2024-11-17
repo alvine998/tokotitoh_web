@@ -140,9 +140,9 @@ export default function HeaderAds(props: Props) {
 
   const getType = async (data: any) => {
     try {
-      if (data?.value !== "") {
+      if ((data?.value || data?.id) !== "") {
         const result = await axios.get(
-          CONFIG.base_url_api + `/types?brand_id=${data?.value}`,
+          CONFIG.base_url_api + `/types?brand_id=${(data?.value || data?.id)}`,
           {
             headers: {
               "bearer-token": "tokotitohapi",
@@ -375,7 +375,7 @@ export default function HeaderAds(props: Props) {
       </div>
 
       {modal?.key == "filter" ? (
-        <Modal open={modal.open} setOpen={() => {}} type="filters">
+        <Modal open={modal.open} setOpen={() => { }} type="filters">
           <div className="h-screen">
             <div className="p-2">
               <div className="flex justify-between items-start">
@@ -452,8 +452,8 @@ export default function HeaderAds(props: Props) {
                   </button>
                   {(ads?.category_name?.toLowerCase()?.includes("mobil") &&
                     ads?.name?.toLowerCase()?.includes("mobil")) ||
-                  (ads?.category_name?.toLowerCase()?.includes("motor") &&
-                    ads?.name?.toLowerCase()?.includes("motor")) ? (
+                    (ads?.category_name?.toLowerCase()?.includes("motor") &&
+                      ads?.name?.toLowerCase()?.includes("motor")) ? (
                     <>
                       {navsCar?.map((v: any, i: number) => (
                         <button
@@ -461,17 +461,16 @@ export default function HeaderAds(props: Props) {
                           onClick={() => {
                             setFilterName(v?.name);
                           }}
-                          className={`border-2 w-auto p-2 rounded text-xs ${
-                            filterName == v?.name ? "bg-gray-300" : ""
-                          } hover:bg-gray-300 duration-200 transition-all`}
+                          className={`border-2 w-auto p-2 rounded text-xs ${filterName == v?.name ? "bg-gray-300" : ""
+                            } hover:bg-gray-300 duration-200 transition-all`}
                         >
                           {v?.name}
                         </button>
                       ))}
                     </>
                   ) : ads?.category_name
-                      ?.toLowerCase()
-                      ?.includes("properti") ? (
+                    ?.toLowerCase()
+                    ?.includes("properti") ? (
                     <>
                       {navsProperty?.map((v: any, i: number) => (
                         <button
@@ -479,9 +478,8 @@ export default function HeaderAds(props: Props) {
                           onClick={() => {
                             setFilterName(v?.name);
                           }}
-                          className={`border-2 p-2 rounded text-xs ${
-                            filterName == v?.name ? "bg-gray-300" : ""
-                          } hover:bg-gray-300 duration-200 transition-all`}
+                          className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? "bg-gray-300" : ""
+                            } hover:bg-gray-300 duration-200 transition-all`}
                         >
                           {v?.name}
                         </button>
@@ -498,9 +496,8 @@ export default function HeaderAds(props: Props) {
                           onClick={() => {
                             setFilterName(v?.name);
                           }}
-                          className={`border-2 p-2 rounded text-xs ${
-                            filterName == v?.name ? "bg-gray-300" : ""
-                          } hover:bg-gray-300 duration-200 transition-all`}
+                          className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? "bg-gray-300" : ""
+                            } hover:bg-gray-300 duration-200 transition-all`}
                         >
                           {v?.name}
                         </button>
@@ -515,9 +512,8 @@ export default function HeaderAds(props: Props) {
                           onClick={() => {
                             setFilterName(v?.name);
                           }}
-                          className={`border-2 p-2 rounded text-xs ${
-                            filterName == v?.name ? "bg-gray-300" : ""
-                          } hover:bg-gray-300 duration-200 transition-all`}
+                          className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? "bg-gray-300" : ""
+                            } hover:bg-gray-300 duration-200 transition-all`}
                         >
                           {v?.name}
                         </button>
@@ -531,9 +527,8 @@ export default function HeaderAds(props: Props) {
                           onClick={() => {
                             setFilterName(v?.name);
                           }}
-                          className={`border-2 p-2 rounded text-xs ${
-                            filterName == v?.name ? "bg-gray-300" : ""
-                          } hover:bg-gray-300 duration-200 transition-all`}
+                          className={`border-2 p-2 rounded text-xs ${filterName == v?.name ? "bg-gray-300" : ""
+                            } hover:bg-gray-300 duration-200 transition-all`}
                         >
                           {v?.name}
                         </button>
@@ -592,7 +587,14 @@ export default function HeaderAds(props: Props) {
                         {brands
                           ?.filter((v: any) => v.image !== null)
                           ?.map((val: any) => (
-                            <button key={val?.id} className="border border-gray-200 rounded p-2">
+                            <button key={val?.id} onClick={() => {
+                              setFilter({
+                                ...filter,
+                                brand_id: val?.id,
+                                type_id: "",
+                              });
+                              getType(val);
+                            }} className={`border rounded p-2 ${val?.id == filter?.brand_id ? "border-blue-500" : "border-gray-200"}`}>
                               <img
                                 src={val?.image}
                                 alt="logo-car"
@@ -681,12 +683,11 @@ export default function HeaderAds(props: Props) {
                                   className="w-full px-2 py-1 text-xs text-left border-b"
                                   onClick={() => {
                                     if (v?.id !== 0) {
-                                      router.push(`/category/${v?.id}`);
-                                      setFilter("");
+                                      setFilter({
+                                        ...filter,
+                                        type_id: v?.id,
+                                      });
                                       setModal({ ...modal, open: false });
-                                      setList({ ...list, types: [] });
-                                    } else {
-                                      setList({ ...list, types: [] });
                                     }
                                   }}
                                 >
@@ -1223,11 +1224,10 @@ export default function HeaderAds(props: Props) {
                           // setSelected({ ...selected, sort: "newest" });
                           setFilter({ ...filter, sort: "newest" });
                         }}
-                        className={`border-2 w-full p-2 rounded text-xs ${
-                          filter?.sort == "newest" || !filter?.sort
-                            ? "bg-gray-300"
-                            : ""
-                        } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
+                        className={`border-2 w-full p-2 rounded text-xs ${filter?.sort == "newest" || !filter?.sort
+                          ? "bg-gray-300"
+                          : ""
+                          } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
                       >
                         {(filter?.sort == "newest" || !filter?.sort) && (
                           <CheckIcon className="w-4 text-green-700" />
@@ -1239,9 +1239,8 @@ export default function HeaderAds(props: Props) {
                           // setSelected({ ...selected, sort: "minprice" });
                           setFilter({ ...filter, sort: "minprice" });
                         }}
-                        className={`border-2 w-full p-2 rounded text-xs ${
-                          filter?.sort == "minprice" ? "bg-gray-300" : ""
-                        } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
+                        className={`border-2 w-full p-2 rounded text-xs ${filter?.sort == "minprice" ? "bg-gray-300" : ""
+                          } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
                       >
                         {filter?.sort == "minprice" && (
                           <CheckIcon className="w-4 text-green-700" />
@@ -1253,9 +1252,8 @@ export default function HeaderAds(props: Props) {
                           // setSelected({ ...selected, sort: "maxprice" });
                           setFilter({ ...filter, sort: "maxprice" });
                         }}
-                        className={`border-2 w-full p-2 rounded text-xs ${
-                          filter?.sort == "maxprice" ? "bg-gray-300" : ""
-                        } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
+                        className={`border-2 w-full p-2 rounded text-xs ${filter?.sort == "maxprice" ? "bg-gray-300" : ""
+                          } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
                       >
                         {filter?.sort == "maxprice" && (
                           <CheckIcon className="w-4 text-green-700" />
