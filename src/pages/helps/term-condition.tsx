@@ -52,7 +52,7 @@ export default function TermCondition() {
                     <h5 className="text-center font-bold mt-4">
                         Syarat Dan Ketentuan Umum
                     </h5>
-                    <p className="mt-3 text-justify">
+                    <p className="mt-3 text-left">
                         PT LOKOH TITOH INTIATOH adalah suatu perseroan terbatas yang
                         didirikan menurut hukum Indonesia yang menjalankan kegiatan usaha
                         jasa website portal www.tokotitoh.co.id dan / atau aplikasi

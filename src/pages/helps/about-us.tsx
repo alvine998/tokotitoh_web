@@ -44,7 +44,7 @@ export default function AboutUs() {
                 />
                 <div className="mt-5 w-full px-8">
                     <h2 className="font-bold text-center text-lg">Tentang Kami</h2>
-                    <p className="mt-3 text-justify">
+                    <p className="mt-3 text-left">
                         Tokotitoh adalah merupakan layanan online untuk masyarakat khususnya
                         pengguna di Indonesia dalam transaksi jual beli barang atau jasa.
                         Tototitoh berusaha sebaik mungkin membangun transaksi di antara para

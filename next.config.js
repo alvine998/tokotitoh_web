@@ -23,7 +23,7 @@ const nextConfig = {
     ],
   },
   env: {
-    BASE_URL_API_TOKOTITOH: 'https://api-tokotitoh.vercel.app'
+    BASE_URL_API_TOKOTITOH: 'https://api.tokotitoh.co.id'
   }
 }
 

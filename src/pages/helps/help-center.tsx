@@ -49,7 +49,7 @@ export default function HelpCenter() {
         />
         <div className="mt-5 w-full px-8">
           <h2 className="font-bold text-center text-lg">Pusat Bantuan</h2>
-          <p className="mt-3 text-justify">
+          <p className="mt-3 text-left">
             <strong>Cara Mendaftar Akun Tokotitoh</strong>
             <br />
             Anda memiliki 2 pilihan:

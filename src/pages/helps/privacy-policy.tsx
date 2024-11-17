@@ -49,7 +49,7 @@ export default function PrivacyPolicy() {
         />
         <div className="mt-5 w-full px-8">
           <h2 className="font-bold text-center text-lg">Kebijakan Privasi</h2>
-          <p className="mt-3 text-justify">
+          <p className="mt-3 text-left">
             TOKOTITOH sangat menghargai privasi Anda, Kebijakan Privasi ini
             merupakan komitmen dari PT LOKOH TITOH INTIATOH untuk menghargai dan
             melindungi setiap informasi pribadi Pengguna situs
