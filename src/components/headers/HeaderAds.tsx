@@ -592,7 +592,7 @@ export default function HeaderAds(props: Props) {
                         {brands
                           ?.filter((v: any) => v.image !== null)
                           ?.map((val: any) => (
-                            <button className="border border-gray-200 rounded p-2">
+                            <button key={val?.id} className="border border-gray-200 rounded p-2">
                               <img
                                 src={val?.image}
                                 alt="logo-car"
