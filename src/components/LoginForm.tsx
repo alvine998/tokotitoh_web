@@ -80,7 +80,7 @@ export default function LoginForm() {
         router.reload();
       } else {
         setModal({ ...modal, open: true, key: "term" });
-        setGooglePayload(user)
+        setGooglePayload(user);
         setLoading(false);
       }
     } catch (error) {
@@ -90,7 +90,7 @@ export default function LoginForm() {
   };
 
   const registByGoogle = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const result2 = await axios.post(
         CONFIG.base_url_api + `/user/login/by/google`,
@@ -117,10 +117,10 @@ export default function LoginForm() {
       });
       router.reload();
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       console.log(error);
     }
-  }
+  };
 
   const onSubmit = async () => {
     setLoading(true);
@@ -218,7 +218,7 @@ export default function LoginForm() {
   return (
     <div className="w-full lg:w-1/4">
       {type == "login" ? (
-        <div className="flex-col flex justify-center items-center mt-20">
+        <div className="flex-col flex justify-center items-center mt-10">
           <Image
             alt="logo"
             src={"/images/tokotitoh.png"}
@@ -292,6 +292,14 @@ export default function LoginForm() {
               {loading ? "Memproses..." : "Login Dengan Google"}
             </Button>
           </div>
+
+          <div className="px-6 mt-2">
+            <p className="text-xs text-center">
+              Dengan mendaftar atau login anda meyetujui{" "}
+              <a className="text-blue-600" href='/helps/privacy-policy' target="_blank">syarat & ketentuan</a> dan{" "}
+              <a className="text-blue-600" href="/helps/term-condition" target="_blank">kebijakan privasi tokotitoh</a>
+            </p>
+          </div>
         </div>
       ) : type == "register" ? (
         <div className="flex-col flex justify-center items-center mt-10">
@@ -357,6 +365,14 @@ export default function LoginForm() {
             <Button color="warning" onClick={() => setType("login")}>
               Login
             </Button>
+          </div>
+
+          <div>
+            <p>
+              Dengan mendaftar atau login anda meyetujui{" "}
+              <button>syarat & ketentuan</button> dan{" "}
+              <button>kebijakan privasi tokotitoh</button>
+            </p>
           </div>
         </div>
       ) : (

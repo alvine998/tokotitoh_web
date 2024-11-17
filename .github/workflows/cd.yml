@@ -26,4 +26,4 @@ jobs:
           git pull
           npm install
           npm run build
-          pm2 reload tokotitohweb
+          pm2 reload web
