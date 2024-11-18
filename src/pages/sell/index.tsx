@@ -154,36 +154,45 @@ export default function Sell({
       maxWidthOrHeight: 1000, // Max width or height (maintains aspect ratio)
       useWebWorker: true, // Use multi-threading for compression
     };
-    if (e.target.files) {
-      const file = e.target.files[0];
-      const compressedFile = await imageCompression(file, options);
-      if (file?.size <= 50000000) {
-        const storageRef = ref(storage, `images/ads/${compressedFile?.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, compressedFile);
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress = Math.round(
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      const imagesUpload = fileArray?.map(async (file: any) => {
+        const compressedFile = await imageCompression(file, options);
+        if (file?.size <= 50000000) {
+          const storageRef = ref(storage, `images/ads/${compressedFile?.name}`);
+          const uploadTask = uploadBytesResumable(storageRef, compressedFile);
+          return new Promise<string>((resolve, reject) => {
+            uploadTask.on(
+              "state_changed",
+              (snapshot) => {
+                const progress = Math.round(
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+              },
+              (error) => {
+                reject(error)
+                console.log(error);
+              },
+              () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                  // imagesUpload.push(downloadURL)
+                  resolve(downloadURL)
+                  setProgress(false);
+                });
+              }
             );
-          },
-          (error) => {
-            console.log(error);
-          },
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              setImages([...images, downloadURL]);
-              setProgress(false);
-            });
-          }
-        );
-      } else {
-        setProgress(false);
-        return Swal.fire({
-          icon: "error",
-          text: "Ukuran Gambar Tidak Boleh Lebih Dari 2mb",
-        });
-      }
+          })
+        } else {
+          setProgress(false);
+          return Swal.fire({
+            icon: "error",
+            text: "Ukuran Gambar Tidak Boleh Lebih Dari 2mb",
+          });
+        }
+      })
+      const uploadFiles = await Promise.all(imagesUpload)
+      setImages([...images, ...uploadFiles]);
     }
   };
   const [isMoved, setIsMoved] = useState<number>(filter?.account_id ? 2 : 0);
@@ -616,7 +625,7 @@ export default function Sell({
 
         {/* Form Data */}
         {isMoved == 2 ? (
-          <div className="mt-20">
+          <div className="mt-20 px-2">
             {filter?.id && filter?.account_id ? (
               ""
             ) : (
@@ -642,7 +651,7 @@ export default function Sell({
                 }}
               />
               {selected?.subcategory_name?.toLowerCase()?.includes("mobil") ||
-              selected?.subcategory_name?.toLowerCase()?.includes("motor") ? (
+                selected?.subcategory_name?.toLowerCase()?.includes("motor") ? (
                 <div>
                   <div>
                     <label className="text-gray-500" htmlFor="brand">
@@ -696,27 +705,27 @@ export default function Sell({
               {selected?.subcategory_name
                 ?.toLowerCase()
                 ?.includes("sparepart") ||
-              selected?.subcategory_name
-                ?.toLowerCase()
-                ?.includes("aksesoris") ||
-              selected?.subcategory_name?.toLowerCase()?.includes("bengkel") ||
-              selected?.subcategory_name?.toLowerCase()?.includes("velg") ||
-              selected?.subcategory_name?.toLowerCase()?.includes("karoseri") ||
-              selected?.category_name?.toLowerCase()?.includes("elektronik") ||
-              selected?.category_name?.toLowerCase()?.includes("hp") ||
-              selected?.category_name?.toLowerCase()?.includes("hobi") ||
-              selected?.category_name
-                ?.toLowerCase()
-                ?.includes("keperluan pribadi") ||
-              selected?.category_name
-                ?.toLowerCase()
-                ?.includes("bahan bangunan") ||
-              selected?.category_name
-                ?.toLowerCase()
-                ?.includes("kantor & industri") ||
-              selected?.category_name
-                ?.toLowerCase()
-                ?.includes("perlengkapan rumah") ? (
+                selected?.subcategory_name
+                  ?.toLowerCase()
+                  ?.includes("aksesoris") ||
+                selected?.subcategory_name?.toLowerCase()?.includes("bengkel") ||
+                selected?.subcategory_name?.toLowerCase()?.includes("velg") ||
+                selected?.subcategory_name?.toLowerCase()?.includes("karoseri") ||
+                selected?.category_name?.toLowerCase()?.includes("elektronik") ||
+                selected?.category_name?.toLowerCase()?.includes("hp") ||
+                selected?.category_name?.toLowerCase()?.includes("hobi") ||
+                selected?.category_name
+                  ?.toLowerCase()
+                  ?.includes("keperluan pribadi") ||
+                selected?.category_name
+                  ?.toLowerCase()
+                  ?.includes("bahan bangunan") ||
+                selected?.category_name
+                  ?.toLowerCase()
+                  ?.includes("kantor & industri") ||
+                selected?.category_name
+                  ?.toLowerCase()
+                  ?.includes("perlengkapan rumah") ? (
                 <div className="mt-2">
                   <label className="text-gray-500" htmlFor="condition">
                     Kondisi
@@ -835,11 +844,11 @@ export default function Sell({
 
               {selected?.subcategory_name?.toLowerCase() ==
                 "bus dan truk dijual" ||
-              selected?.subcategory_name?.toLowerCase() ==
+                selected?.subcategory_name?.toLowerCase() ==
                 "bus dan truk di sewakan" ||
-              selected?.subcategory_name?.toLowerCase() ==
+                selected?.subcategory_name?.toLowerCase() ==
                 "alat berat di jual" ||
-              selected?.subcategory_name?.toLowerCase() ==
+                selected?.subcategory_name?.toLowerCase() ==
                 "alat berat di sewakan" ? (
                 <Input
                   label="Tahun"
@@ -856,10 +865,10 @@ export default function Sell({
 
               {(selected?.category_name?.toLowerCase()?.includes("mobil") &&
                 selected?.subcategory_name?.toLowerCase()?.includes("mobil")) ||
-              (selected?.category_name?.toLowerCase()?.includes("motor") &&
-                selected?.subcategory_name
-                  ?.toLowerCase()
-                  ?.includes("motor")) ? (
+                (selected?.category_name?.toLowerCase()?.includes("motor") &&
+                  selected?.subcategory_name
+                    ?.toLowerCase()
+                    ?.includes("motor")) ? (
                 <div>
                   {/* <Input
                     label="Trip KM"
@@ -961,7 +970,7 @@ export default function Sell({
 
         {/* Select Location */}
         {isMoved == 3 ? (
-          <div className="mt-20">
+          <div className="mt-20 px-2">
             <button
               className="text-blue-700"
               type="button"
@@ -1043,7 +1052,7 @@ export default function Sell({
 
         {/* Image */}
         {isMoved == 4 ? (
-          <div className="mt-20">
+          <div className="mt-20 px-2">
             <button
               className="text-blue-700"
               type="button"
@@ -1062,6 +1071,7 @@ export default function Sell({
                 ref={fileInputRef}
                 onChange={handleImage}
                 accept="image/*"
+                multiple
               />
               <button
                 disabled={images?.length == 10}
