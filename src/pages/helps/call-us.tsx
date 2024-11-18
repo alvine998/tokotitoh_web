@@ -44,7 +44,7 @@ export default function AboutUs() {
                 />
                 <div className="mt-5 w-full px-8">
                     <h2 className="font-bold text-center text-lg">Hubungi Kami</h2>
-                    <p className="mt-3 text-left">
+                    <p className="mt-3 text-justify">
                         Jika Anda menemukan kendala dalam penggunaan aplikasi kami. Silahkan hubungi customer service kami melalui :<br/><br/>
                         Email: <strong>cs@tokotitoh.co.id</strong><br/>
                         Whatsapp: <strong>(+62) 852-1302-6262</strong><br/><br/>

@@ -52,7 +52,7 @@ export default function TermCondition() {
                     <h5 className="text-center font-bold mt-4">
                         Syarat Dan Ketentuan Umum
                     </h5>
-                    <p className="mt-3 text-left">
+                    <p className="mt-3 text-justify">
                         PT LOKOH TITOH INTIATOH adalah suatu perseroan terbatas yang
                         didirikan menurut hukum Indonesia yang menjalankan kegiatan usaha
                         jasa website portal www.tokotitoh.co.id dan / atau aplikasi
@@ -282,7 +282,7 @@ export default function TermCondition() {
                         atas dasar agama, jenis kelamin, orientasi seksual, ras, etnis,
                         usia, atau cacat tubuh.
                         <br />
-                        Iklan yang menganjurkan/membenarkan kekerasan atau membuat ancaman
+                        Iklan yang menganjurkan /membenarkan kekerasan atau membuat ancaman
                         bahaya terhadap individu atau kelompok.
                         <br />
                         Iklan yang menghasut atau mempromosikan kebencian terhadap kelompok
@@ -344,7 +344,7 @@ export default function TermCondition() {
                         Obat-obatan yang berkhasiat untuk menyembuhkan penyakit kanker,
                         tuberkulosis, poliomyelitis, penyakit kelamin, impotensi, tipus,
                         kolera, tekanan darah tinggi, diabetes, liver dan penyakit lain yang
-                        ditetapkan oleh Keputusan Menteri Kesehatan RI 386/MENKES/SK/IV/1994
+                        ditetapkan oleh Keputusan Menteri Kesehatan RI 386 /MENKES /SK /IV /1994
                         tentang pedoman periklanan : obat bebas, obat tradisional, alat
                         kesehatan, kosmetika, perbekalan kesehatan rumah tangga dan
                         makanan-minuman.
@@ -430,7 +430,7 @@ export default function TermCondition() {
                         SNI
                         <br />
                         Tanaman & binatang yang dilindungi oleh Negara berdasarkan Undang
-                        Undang NOMOR P.26/MENLHK/SETJEN/KUM.1/7/2018 Tentang Konservasi
+                        Undang NOMOR P.26 /MENLHK /SETJEN /KUM.1 /7 /2018 Tentang Konservasi
                         Sumberdaya Alam Hayati dan Ekosistemnya. Termasuk bagian tubuh dari
                         tanaman & binatang tersebut, seperti taring, cakar, kulit, hasil
                         awetan, dll.
