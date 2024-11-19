@@ -673,21 +673,22 @@ export default function HeaderAds(props: Props) {
                           ""
                         )}
                       </div> */}
-                      <div className="lg:h-[45vh] h-[60vh] overflow-auto">
+                      <div className="lg:h-[45vh] h-[30vh] overflow-auto">
                         <div className="flex flex-col gap-2 pl-2 mt-4">
                           {list?.types?.length > 0 ? (
                             <>
-                              {list?.types?.map((v: any, i: number) => (
+                              {[{id: "", name: "Kembali"}, ...list?.types]?.map((v: any, i: number) => (
                                 <button
                                   key={i}
-                                  className="w-full px-2 py-1 text-xs text-left border-b"
+                                  className={`${v?.id == filter?.type_id ? "border-blue-500 border rounded" : ""} w-full px-2 py-1 text-xs text-left border-b`}
                                   onClick={() => {
-                                    if (v?.id !== 0) {
+                                    if (v?.id !== "") {
                                       setFilter({
                                         ...filter,
                                         type_id: v?.id,
                                       });
-                                      setModal({ ...modal, open: false });
+                                    } else {
+                                      setList({...list, types: []})
                                     }
                                   }}
                                 >
