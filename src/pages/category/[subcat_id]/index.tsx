@@ -70,8 +70,8 @@ export async function getServerSideProps(context: any) {
       minBuilding: minBuilding || "",
       maxBuilding: maxBuilding || "",
       sort: sort || "",
-      year_start: year_start || "1945",
-      year_end: year_end || new Date().getFullYear(),
+      year_start: year_start || "",
+      year_end: year_end || "",
       fuel_type: fuel_type || "",
     };
     const result = await axios.get(
