@@ -200,10 +200,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
       );
       setCookie("account", {
         ...account,
-        save_ads: [
-          ...account.save_ads,
-          existUser?.data?.items?.rows?.[0]?.save_ads,
-        ],
+        save_ads: existUser?.data?.items?.rows?.[0]?.save_ads,
       });
       Swal.fire({
         icon: "success",
