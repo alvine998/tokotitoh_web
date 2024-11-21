@@ -169,7 +169,8 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
       console.log(error);
     }
   };
-  const saveAds = async () => {
+  const saveAds = async (e: any) => {
+    e.preventDefault();
     try {
       const result = await axios.patch(
         CONFIG.base_url_api + `/user`,
@@ -199,7 +200,10 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
       );
       setCookie("account", {
         ...account,
-        save_ads: existUser?.data?.items?.rows?.[0]?.save_ads,
+        save_ads: [
+          ...account.save_ads,
+          existUser?.data?.items?.rows?.[0]?.save_ads,
+        ],
       });
       Swal.fire({
         icon: "success",
@@ -355,9 +359,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                     : "opacity-100"
                 }`}
                 type="button"
-                onClick={() => {
-                  saveAds();
-                }}
+                onClick={saveAds}
                 disabled={account?.save_ads?.includes(ads?.id)}
               >
                 {account?.save_ads?.includes(ads?.id)
@@ -376,7 +378,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               ads?.subcategory_name?.toLowerCase() == "bus dan truk dijual" ||
               ads?.subcategory_name?.toLowerCase() ==
                 "bus dan truk di sewakan" ? (
-                <p className="mt-3">
+                <p className="mt-3 text-xs">
                   Tahun: {ads?.year}
                   <br />
                   <hr />
@@ -388,7 +390,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 ads?.subcategory_name?.toLowerCase().includes("dijual")) ||
               (ads?.category_name?.toLowerCase().includes("motor") &&
                 ads?.subcategory_name?.toLowerCase().includes("dijual")) ? (
-                <p className="mt-3">
+                <p className="mt-3 text-xs">
                   <strong className="text-lg">Detail</strong> <br />
                   <hr />
                   Merek: {ads?.brand_name}
@@ -417,7 +419,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 ""
               )}
               {ads?.category_name?.toLowerCase().includes("properti") ? (
-                <p className="mt-3">
+                <p className="mt-3 text-xs">
                   Detail <br />
                   <hr />
                   Luas Tanah: {ads?.area || 0} m2
@@ -430,7 +432,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               ) : (
                 ""
               )}
-              <p>
+              <p className="text-xs">
                 Kota: {ads?.district_name}
                 <br />
                 <hr />
@@ -443,7 +445,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <hr />
               </p>
             </div>
-            <p className="border-2 rounded p-3 mt-2 text-sm whitespace-pre-line">
+            <p className="mt-2 text-md whitespace-pre-line">
               <strong className="text-lg">Deskripsi:</strong> <br />
               {ads?.description}
             </p>

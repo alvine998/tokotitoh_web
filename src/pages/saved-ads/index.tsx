@@ -23,7 +23,7 @@ export async function getServerSideProps(context: any) {
         let result: any = []
         if (user) {
             user = JSON.parse(user)
-            result = await axios.get(CONFIG.base_url_api + `/ads?id=${user?.save_ads}&pagination=true&page=${+page || 0}&size=${+size || 10}&search=${(user?.save_ads !== null && user?.save_ads?.length > 0) ? (search || "") : "!!!"}`, {
+            result = await axios.get(CONFIG.base_url_api + `/ads?id=${user?.save_ads}&pagination=true&page=${+page || 0}&size=${+size || 999999}&search=${(user?.save_ads !== null && user?.save_ads?.length > 0) ? (search || "") : "!!!"}`, {
                 headers: {
                     "bearer-token": "tokotitohapi",
                     "x-partner-code": user?.partner_code
@@ -84,7 +84,7 @@ export default function MyAds({ ads, user }: any) {
                                                     <AdsProduct
                                                         status={v?.status}
                                                         price={v?.price}
-                                                        thumbnail={v?.images[0]}
+                                                        thumbnail={JSON.parse(v?.images)[0]}
                                                         title={v?.title}
                                                         onClick={() => onRoute(v)}
                                                         views={v?.views}
