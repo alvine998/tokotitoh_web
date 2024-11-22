@@ -58,7 +58,6 @@ export default function HeaderHome(props: Props) {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
-      console.log(searchString, "slsls");
       router.push(`/category/0?search=${searchString}&size=6`);
     }
   };

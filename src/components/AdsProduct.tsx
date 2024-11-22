@@ -41,7 +41,6 @@ export default function AdsProduct(props: Props) {
     category_id,
     account,
   } = props;
-  console.log(account);
   const router = useRouter();
   const onDelete = async (id: any) => {
     try {

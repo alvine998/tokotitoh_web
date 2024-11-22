@@ -79,8 +79,6 @@ export default function MyAds({ ads, detailBuyer }: any) {
   const [modal, setModal] = useState<useModal>();
   const [filter, setFilter] = useState<any>(router.query);
 
-  console.log(detailBuyer);
-
   useEffect(() => {
     const queryFilter = new URLSearchParams(filter).toString();
     router.push(`?${queryFilter}`);

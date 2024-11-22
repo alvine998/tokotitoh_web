@@ -92,7 +92,6 @@ export default function MyAds({ ads, user, adscount }: any) {
     await localStorage.setItem("from", "myads");
     router.push(`/category/${v?.subcategory_id}/${v?.id}`);
   };
-  console.log(filter?.size, adscount);
   return (
     <div className="pb-20 flex flex-col justify-center items-center">
       {user ? (
