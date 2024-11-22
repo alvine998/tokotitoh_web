@@ -51,7 +51,7 @@ export async function getServerSideProps(context: any) {
     const { subcat_id } = context.params;
 
     const filters = {
-      subcategory_id: subcat_id,
+      subcategory_id: subcat_id == 0 ? "" : subcat_id,
       status: "1",
       search: search || "",
       pagination: true,
@@ -240,7 +240,7 @@ export default function Ads({
         categories={categories}
       />
 
-      {ads1?.id !== +subcat_id ? (
+      {(ads1?.id !== +subcat_id && +subcat_id !== 0) ? (
         <div className="mt-10">
           <CircleDotDashedIcon className="animate-spin text-green-500 ml-5" />
           <p className="text-center">Loading...</p>

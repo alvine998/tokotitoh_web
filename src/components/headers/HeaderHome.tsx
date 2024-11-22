@@ -54,6 +54,15 @@ export default function HeaderHome(props: Props) {
   //     geolocation();
   // }, [])
 
+  const [searchString, setSearchString] = useState("");
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") {
+      console.log(searchString, "slsls");
+      router.push(`/category/0?search=${searchString}&size=6`);
+    }
+  };
+
   return (
     <div className="w-full fixed top-0 bg-white p-2 lg:w-1/4">
       <div className="flex justify-end">
@@ -74,11 +83,12 @@ export default function HeaderHome(props: Props) {
       </div>
 
       <div className="mt-2 flex gap-2">
-        <div className="w-full">
+        <div className="w-full" onKeyDown={handleKeyPress}>
           <ReactSearchAutocomplete
             items={items?.map((v: any) => ({ ...v, name: `${v?.title}` }))}
             onSearch={(string: string, results: any) => {
               //   setFilter({ ...filter, search: string });
+              setSearchString(string);
               handleSearch(string);
             }}
             placeholder="Cari barangmu disini..."

@@ -291,9 +291,6 @@ export default function HeaderAds(props: Props) {
 
   let navs = [
     {
-      name: "KATEGORI",
-    },
-    {
       name: "LOKASI",
     },
     {
@@ -370,7 +367,7 @@ export default function HeaderAds(props: Props) {
 
       <div className="mt-2">
         <p>
-          {ads?.category_name} {">"} {ads?.name}
+          {ads?.category_name || "Semua Kategori"} {">"} {ads?.name || "Semua Sub Kategori"}
         </p>
       </div>
 
