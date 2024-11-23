@@ -314,7 +314,7 @@ export default function HeaderAds(props: Props) {
       setLoading(true)
       // console.log(subcat_id);
       setFilter({...filter, search: searchString})
-      router.push(`/category/0?search=${searchString}&size=6`);
+      router.push(`/category/${subcat_id}?search=${searchString}&size=6`);
     }
   };
 
