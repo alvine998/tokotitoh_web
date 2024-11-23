@@ -19,6 +19,7 @@ import { CONFIG } from "@/config";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
+import { createQueryString } from "@/utils";
 
 interface Props {
   ads: any;
@@ -306,12 +307,13 @@ export default function HeaderAds(props: Props) {
     },
   ];
 
-  const [searchString, setSearchString] = useState("");
+  const [searchString, setSearchString] = useState(filter?.search);
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
       setLoading(true)
-      router.push(`/category/0?search=${searchString}&size=6`);
+      // console.log(subcat_id);
+      router.push(`/category/${subcat_id}?search=${searchString}&size=6&${createQueryString(filter)}`);
     }
   };
 
@@ -1312,10 +1314,6 @@ export default function HeaderAds(props: Props) {
                           // });
                           setModal({ ...modal, open: false });
                           setLoading(true);
-                          if (filter?.subcategory_id) {
-                            router.push(`/category/${filter?.subcategory_id}`);
-                            setFilter("");
-                          }
                         }}
                       >
                         Terapkan

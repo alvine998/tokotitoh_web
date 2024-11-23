@@ -4,6 +4,7 @@ import Image from "next/image";
 import axios from "axios";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useRouter } from "next/router";
+import Input from "../Input";
 
 interface Props {
   filter: any;
@@ -83,7 +84,7 @@ export default function HeaderHome(props: Props) {
 
       <div className="mt-2 flex gap-2">
         <div className="w-full" onKeyDown={handleKeyPress}>
-          <ReactSearchAutocomplete
+          {/* <ReactSearchAutocomplete
             items={items?.map((v: any) => ({ ...v, name: `${v?.title}` }))}
             onSearch={(string: string, results: any) => {
               //   setFilter({ ...filter, search: string });
@@ -96,6 +97,16 @@ export default function HeaderHome(props: Props) {
                 `/category/${item?.subcategory_id}?search=${item?.title}&size=6`
               )
             }
+          /> */}
+          <Input
+            placeholder="Cari disini"
+            label=""
+            value={searchString}
+            onChange={(e: any) => {
+              // setFilter({ ...filter, search: e.target.value });
+              setSearchString(e.target.value);
+            }}
+            onKeyDown={handleKeyPress}
           />
         </div>
         <button
