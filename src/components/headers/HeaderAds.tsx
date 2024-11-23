@@ -310,6 +310,7 @@ export default function HeaderAds(props: Props) {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
+      setLoading(true)
       router.push(`/category/0?search=${searchString}&size=6`);
     }
   };
@@ -351,8 +352,8 @@ export default function HeaderAds(props: Props) {
       </div>
 
       <div className="mt-2 flex gap-2">
-        <div className="w-full" onKeyDown={handleKeyPress}>
-          <ReactSearchAutocomplete
+        <div className="w-full">
+          {/* <ReactSearchAutocomplete
             items={items?.map((v: any) => ({ ...v, name: `${v?.title}` }))}
             onSearch={(string: string, results: any) => {
               //   setFilter({ ...filter, search: string });
@@ -365,15 +366,17 @@ export default function HeaderAds(props: Props) {
                 `/category/${item?.subcategory_id}?search=${item?.title}&size=6`
               )
             }
-          />
-          {/* <Input
+          /> */}
+          <Input
             placeholder="Cari disini"
             label=""
-            defaultValue={filter?.search}
+            value={searchString}
             onChange={(e: any) => {
-              setFilter({ ...filter, search: e.target.value });
+              // setFilter({ ...filter, search: e.target.value });
+              setSearchString(e.target.value)
             }}
-          /> */}
+            onKeyDown={handleKeyPress}
+          />
         </div>
       </div>
 

@@ -9,6 +9,7 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
   onChange?: any;
   defaultValue?: any;
   isPassword?: boolean;
+  onEnter?: any;
 };
 
 export default function Input(props: Props) {
@@ -19,6 +20,7 @@ export default function Input(props: Props) {
     onChange,
     defaultValue,
     isPassword,
+    onEnter
   } = props;
   const [show, setShow] = useState<boolean>(false);
   return (
@@ -39,7 +41,7 @@ export default function Input(props: Props) {
           decimalSeparator=","
         />
       ) : isPassword ? (
-        <div className="flex gap-2 w-full rounded-md border-0 py-1.5 pl-4 pr-2 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-500">
+        <div className="flex gap-2 w-full rounded-md border-0 py-1.5 pl-4 pr-2 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-500" onKeyDown={onEnter}>
           <input
             id={label}
             {...props}
