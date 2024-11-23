@@ -180,7 +180,6 @@ export default function Ads({
   types,
   ads1,
   provinces,
-  searchAds,
   categories,
 }: any) {
   const router = useRouter();
@@ -190,6 +189,7 @@ export default function Ads({
   const [filter, setFilter] = useState<any>({ ...router?.query, size: 6 });
   const [loading, setLoading] = useState<any>(false);
   let user: any = getCookie("account");
+  const [filterAds, setFilterAds] = useState<any>([]);
 
   const addViews = async (data: any) => {
     try {
@@ -207,6 +207,26 @@ export default function Ads({
       }
       localStorage.setItem("from", "subcat");
       router.push(`/category/${subcat_id}/${data?.id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const searchAds = async (q: string) => {
+    try {
+      const result = await axios.get(
+        CONFIG.base_url_api +
+          `/ads?status=1&pagination=true&page=${0}&size=${10}&search=${
+            q || ""
+          }`,
+        {
+          headers: {
+            "bearer-token": "tokotitohapi",
+            "x-partner-code": "id.marketplace.tokotitoh",
+          },
+        }
+      );
+      setFilterAds(result?.data?.items?.rows);
     } catch (error) {
       console.log(error);
     }
@@ -235,9 +255,10 @@ export default function Ads({
         brands={brands}
         types={types}
         provinces={provinces}
-        items={searchAds}
+        items={filterAds}
         subcat_id={subcat_id}
         categories={categories}
+        handleSearch={searchAds}
       />
 
       {(ads1?.id !== +subcat_id && +subcat_id !== 0) ? (
