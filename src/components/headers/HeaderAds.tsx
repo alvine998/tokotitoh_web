@@ -313,7 +313,7 @@ export default function HeaderAds(props: Props) {
     if (event.key === "Enter") {
       setLoading(true)
       // console.log(subcat_id);
-      setFilter({...filter, search: searchString})
+      setFilter({...filter, search: searchString, size: 6})
       router.push(`/category/${subcat_id}?search=${searchString}&size=6`);
     }
   };
@@ -570,7 +570,7 @@ export default function HeaderAds(props: Props) {
                                 onClick={() => {
                                   if (v?.id !== 0) {
                                     router.push(`/category/${v?.id}`);
-                                    setFilter("");
+                                    setFilter({size: 6, search: filter?.search || ""});
                                     setModal({ ...modal, open: false });
                                     setList({ ...list, subcategories: [] });
                                   } else {
