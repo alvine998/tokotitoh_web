@@ -313,6 +313,7 @@ export default function HeaderAds(props: Props) {
     if (event.key === "Enter") {
       setLoading(true)
       // console.log(subcat_id);
+      setFilter({...filter, search: searchString})
       router.push(`/category/0?search=${searchString}&size=6`);
     }
   };
