@@ -313,7 +313,7 @@ export default function HeaderAds(props: Props) {
     if (event.key === "Enter") {
       setLoading(true)
       // console.log(subcat_id);
-      router.push(`/category/${subcat_id}?search=${searchString}&size=6&${createQueryString(filter)}`);
+      router.push(`/category/0?search=${searchString}&size=6`);
     }
   };
 
