@@ -309,7 +309,7 @@ export default function Ads({
                                 ...filter,
                                 size: (+filter.size || 6) + 6,
                                 subcat_id: subcat_id == 0 ? "" : subcat_id,
-                                search: filter?.search
+                                search: filter?.search || ""
                               });
                             }}
                             type="button"
