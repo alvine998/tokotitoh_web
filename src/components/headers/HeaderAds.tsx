@@ -20,7 +20,6 @@ import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
 import { createQueryString } from "@/utils";
-import Link from "next/link";
 
 interface Props {
   ads: any;
@@ -48,7 +47,7 @@ export default function HeaderAds(props: Props) {
     items,
     subcat_id,
     categories,
-    handleSearch,
+    handleSearch
   } = props;
   const router = useRouter();
   const [location, setLocation] = useState<any>({
@@ -312,9 +311,9 @@ export default function HeaderAds(props: Props) {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
-      setLoading(true);
+      setLoading(true)
       // console.log(subcat_id);
-      setFilter({ ...filter, search: searchString, size: 6 });
+      setFilter({...filter, search: searchString, size: 6})
       router.push(`/category/${subcat_id}?search=${searchString}&size=6`);
     }
   };
@@ -377,7 +376,7 @@ export default function HeaderAds(props: Props) {
             value={searchString}
             onChange={(e: any) => {
               // setFilter({ ...filter, search: e.target.value });
-              setSearchString(e.target.value);
+              setSearchString(e.target.value)
             }}
             onKeyDown={handleKeyPress}
           />
@@ -397,8 +396,7 @@ export default function HeaderAds(props: Props) {
             <div className="p-2">
               <div className="flex justify-between items-start">
                 <p>
-                  Filter: {ads?.category_name || "Semua Kategori"} {">"}{" "}
-                  {ads?.name || "Semua Sub Kategori"}
+                  Filter: {ads?.category_name || "Semua Kategori"} {">"} {ads?.name || "Semua Sub Kategori"}
                 </p>
                 <div className="flex flex-col">
                   <button
@@ -417,7 +415,7 @@ export default function HeaderAds(props: Props) {
                       setList({ type: [] });
                       setFilter({ size: 6, search: "" });
                       setModal({ ...modal, open: false });
-                      setSearchString("");
+                      setSearchString("")
                       const id = subcat_id || ads?.id || params?.subcat_id;
                       if (id) {
                         // Only navigate if the id is valid
@@ -567,26 +565,22 @@ export default function HeaderAds(props: Props) {
                         {list?.subcategories?.length > 0 ? (
                           <>
                             {list?.subcategories?.map((v: any, i: number) => (
-                              <Link key={i} href={v !== 0 ? `/category/${v?.id}?size=6&search=${searchString}` : '#'}>
-                                <button
-                                  
-                                  className="w-full px-2 py-1 text-xs text-left border-b"
-                                  onClick={() => {
-                                    if (v?.id !== 0) {
-                                      // setFilter({
-                                      //   size: 6,
-                                      //   search: searchString,
-                                      // });
-                                      setModal({ ...modal, open: false });
-                                      setList({ ...list, subcategories: [] });
-                                    } else {
-                                      setList({ ...list, subcategories: [] });
-                                    }
-                                  }}
-                                >
-                                  {v?.name}
-                                </button>
-                              </Link>
+                              <button
+                                key={i}
+                                className="w-full px-2 py-1 text-xs text-left border-b"
+                                onClick={() => {
+                                  if (v?.id !== 0) {
+                                    // setFilter({size: 6, search: searchString});
+                                    setModal({ ...modal, open: false });
+                                    setList({ ...list, subcategories: [] });
+                                    router.push(`/category/${v?.id}?size=6&search=${searchString}`);
+                                  } else {
+                                    setList({ ...list, subcategories: [] });
+                                  }
+                                }}
+                              >
+                                {v?.name}
+                              </button>
                             ))}
                           </>
                         ) : (
