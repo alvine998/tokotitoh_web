@@ -567,9 +567,9 @@ export default function HeaderAds(props: Props) {
                         {list?.subcategories?.length > 0 ? (
                           <>
                             {list?.subcategories?.map((v: any, i: number) => (
-                              <Link href={v !== 0 ? `/category/${v?.id}?size=6&search=${searchString}` : '#'}>
+                              <Link key={i} href={v !== 0 ? `/category/${v?.id}?size=6&search=${searchString}` : '#'}>
                                 <button
-                                  key={i}
+                                  
                                   className="w-full px-2 py-1 text-xs text-left border-b"
                                   onClick={() => {
                                     if (v?.id !== 0) {
