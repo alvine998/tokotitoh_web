@@ -605,7 +605,7 @@ export default function HeaderAds(props: Props) {
                   )}
                   {filterName == "MEREK" ? (
                     <div>
-                      <div className="flex flex-row gap-2 justify-start items-center flex-wrap pl-2">
+                      <div className="flex flex-row gap-2 justify-center items-center flex-wrap pl-2">
                         {brands
                           ?.filter((v: any) => v.image !== null)
                           ?.map((val: any) => (
@@ -628,7 +628,7 @@ export default function HeaderAds(props: Props) {
                               <img
                                 src={val?.image}
                                 alt="logo-car"
-                                className="w-[50px] h-[50px]"
+                                className="lg:w-[50px] lg:h-[40px] md:w-[120px] md:h-[100px] w-[50px] h-[40px]"
                               />
                             </button>
                           ))}
