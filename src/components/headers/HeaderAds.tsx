@@ -57,7 +57,7 @@ export default function HeaderAds(props: Props) {
   const [category, setCategory] = useState<any>();
   const [adress, setAddress] = useState<any>("Indonesia");
   const [modal, setModal] = useState<useModal>();
-  const [filterName, setFilterName] = useState<any>("MEREK");
+  const [filterName, setFilterName] = useState<any>("KATEGORI");
 
   const [list, setList] = useState<any>({
     cities: [],
@@ -396,7 +396,7 @@ export default function HeaderAds(props: Props) {
             <div className="p-2">
               <div className="flex justify-between items-start">
                 <p>
-                  Filter: {ads?.category_name} {">"} {ads?.name}
+                  Filter: {ads?.category_name || "Semua Kategori"} {">"} {ads?.name || "Semua Sub Kategori"}
                 </p>
                 <div className="flex flex-col">
                   <button
@@ -413,8 +413,9 @@ export default function HeaderAds(props: Props) {
                       // setSelected(initialValue);
                       setLoading(true);
                       setList({ type: [] });
-                      setFilter({ size: 6 });
+                      setFilter({ size: 6, search: "" });
                       setModal({ ...modal, open: false });
+                      setSearchString("")
                       const id = subcat_id || ads?.id || params?.subcat_id;
                       if (id) {
                         // Only navigate if the id is valid
