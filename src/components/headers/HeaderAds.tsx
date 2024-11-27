@@ -569,9 +569,9 @@ export default function HeaderAds(props: Props) {
                                 key={i}
                                 className="w-full px-2 py-1 text-xs text-left border-b"
                                 onClick={() => {
+                                  router.push(`/category/${v?.id}?size=6&search=${searchString}`);
                                   if (v?.id !== 0) {
-                                    router.push(`/category/${v?.id}`);
-                                    setFilter({size: 6, search: filter?.search || ""});
+                                    setFilter({size: 6, search: searchString});
                                     setModal({ ...modal, open: false });
                                     setList({ ...list, subcategories: [] });
                                   } else {
