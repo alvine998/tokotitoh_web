@@ -328,14 +328,14 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
             </OwlCarousel>
             <div className="flex justify-between gap-2 items-center">
               <a
-                className="bg-blue-600 p-2 w-full rounded text-white text-xs text-center"
+                className="bg-gray-700 p-2 w-full rounded text-white text-xs text-center"
                 target="_blank"
                 href={`https://api.whatsapp.com/send?text=https://tokotitoh.co.id/category/${router.query?.subcat_id}/${router.query?.ads_id}`}
               >
                 Bagikan Iklan
               </a>
               <button
-                className="bg-red-600 p-2 w-full rounded text-white text-xs text-center"
+                className="bg-gray-700 p-2 w-full rounded text-white text-xs text-center"
                 type="button"
                 onClick={() => {
                   setModal({
@@ -350,7 +350,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 Laporkan
               </button>
               <button
-                className={`bg-green-600 p-2 w-full rounded text-white text-xs text-center ${
+                className={`bg-gray-700 p-2 w-full rounded text-white text-xs text-center ${
                   account?.save_ads?.includes(ads?.id)
                     ? "opacity-80"
                     : "opacity-100"
