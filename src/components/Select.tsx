@@ -35,7 +35,7 @@ export default function Select(props: Props) {
       <select onChange={onChange} defaultValue={defaultValue} {...props} className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:outline-none sm:text-sm sm:leading-6">
         <option value="">Pilih {label}</option>
         {options?.map((val: any, idx: number) => (
-          <option value={val?.value}>{val?.label}</option>
+          <option key={idx} value={val?.value}>{val?.label}</option>
         ))}
       </select>
     </div>
