@@ -375,14 +375,14 @@ export default function Sell({
         if (!data[val] || data[val] == "") {
           Swal.fire({
             icon: "warning",
-            text: `Harap lengkapi semua kolom!`,
+            text: `Harap lengkapi kolom ${val}`,
           });
           next = false;
         }
       });
       if (next) {
-        setFilled([...filled, 4]);
-        setIsMoved(3);
+        setFilled([...filled, 5]);
+        setIsMoved(4);
         return;
       }
     } else if (data?.category_name?.toLowerCase()?.includes("properti")) {
@@ -398,8 +398,8 @@ export default function Sell({
         }
       );
       if (next) {
-        setFilled([...filled, 4]);
-        setIsMoved(3);
+        setFilled([...filled, 5]);
+        setIsMoved(4);
         return;
       }
     } else {
@@ -413,8 +413,8 @@ export default function Sell({
         }
       });
       if (next) {
-        setFilled([...filled, 4]);
-        setIsMoved(3);
+        setFilled([...filled, 5]);
+        setIsMoved(4);
         return;
       }
     }
@@ -431,8 +431,6 @@ export default function Sell({
       }
     });
     if (next) {
-      setFilled([...filled, 5]);
-      setIsMoved(4);
       return;
     }
   };
@@ -445,6 +443,7 @@ export default function Sell({
 
   const onSubmit = async () => {
     try {
+      handleGeolocation(selected);
       if (images?.length < 1) {
         return Swal.fire({
           icon: "warning",
@@ -624,8 +623,94 @@ export default function Sell({
           ""
         )}
 
-        {/* Form Data */}
+        {/* Image */}
         {isMoved == 2 ? (
+          <div className="mt-20 px-2">
+            <button
+              className="text-blue-700"
+              type="button"
+              onClick={handlePreviousButtonClick}
+            >
+              <ArrowLeft />
+            </button>
+            {/* <div className='bg-green-300 p-2 w-full rounded'>
+                                <p className='text-center'>Pastikan ukuran gambar tidak lebih dari 2mb</p>
+                            </div> */}
+            <p className="m-2">Pilih Gambar:</p>
+            <div className="mt-5">
+              <input
+                type="file"
+                className="hidden"
+                ref={fileInputRef}
+                onChange={handleImage}
+                accept="image/*"
+                multiple
+              />
+              <button
+                disabled={images?.length == 10}
+                type="button"
+                onClick={handleButtonClick}
+                className="border rounded p-2 w-full flex gap-2 items-center justify-center"
+              >
+                <PlusIcon className="w-4" />
+                Tambah
+              </button>
+              {progress ? (
+                <p className={progress ? "block" : "hidden"}>
+                  Loading Upload....
+                </p>
+              ) : (
+                ""
+              )}
+              <div className="flex flex-wrap mt-5">
+                {images?.map((v: any) => (
+                  <button
+                    key={v}
+                    onClick={() => {
+                      setImages(images.filter((val: any) => val !== v));
+                    }}
+                    className="relative group w-1/3"
+                  >
+                    <img
+                      alt="images"
+                      src={v}
+                      // layout="relative"
+                      width={300}
+                      height={300}
+                      className="w-full h-[100px]"
+                    />
+                    <div className="absolute inset-0 bg-red-700 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-50 transition-opacity duration-300">
+                      <TrashIcon className="text-white" />{" "}
+                      <p className="text-white">Hapus</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+              <Button
+                color="info"
+                type="button"
+                onClick={() => {
+                  if (images?.length < 1) {
+                    Swal.fire({
+                      icon: "warning",
+                      text: `Harap lengkapi gambar!`,
+                    });
+                    return
+                  }
+                  setFilled([...filled, 4]);
+                  setIsMoved(3);
+                }}
+              >
+                Selanjutnya
+              </Button>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
+        {/* Form Data */}
+        {isMoved == 3 ? (
           <div className="mt-20 px-2">
             {filter?.id && filter?.account_id ? (
               ""
@@ -923,7 +1008,7 @@ export default function Sell({
                       label="Jenis Bahan Bakar"
                       onChange={(e: any) => {
                         FUELTYPES?.map((v: any) => {
-                          if (e.target.value == v?.id) {
+                          if (e.target.value == v?.value) {
                             setSelected({ ...selected, fuel_type: v.value });
                           }
                         });
@@ -952,7 +1037,7 @@ export default function Sell({
                       label="Jenis Transmisi"
                       onChange={(e: any) => {
                         TRANSMISSIONTYPES?.map((v: any) => {
-                          if (e.target.value == v?.id) {
+                          if (e.target.value == v?.value) {
                             setSelected({ ...selected, transmission: v.value });
                           }
                         });
@@ -1028,7 +1113,7 @@ export default function Sell({
         )}
 
         {/* Select Location */}
-        {isMoved == 3 ? (
+        {isMoved == 4 ? (
           <div className="mt-20 px-2">
             <button
               className="text-blue-700"
@@ -1093,84 +1178,6 @@ export default function Sell({
                     label: detail?.district_name || "Pilih Kecamatan",
                   }}
                 />
-              </div>
-              <Button
-                color="info"
-                type="button"
-                onClick={() => {
-                  handleGeolocation(selected);
-                }}
-              >
-                Selanjutnya
-              </Button>
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
-
-        {/* Image */}
-        {isMoved == 4 ? (
-          <div className="mt-20 px-2">
-            <button
-              className="text-blue-700"
-              type="button"
-              onClick={handlePreviousButtonClick}
-            >
-              <ArrowLeft />
-            </button>
-            {/* <div className='bg-green-300 p-2 w-full rounded'>
-                                <p className='text-center'>Pastikan ukuran gambar tidak lebih dari 2mb</p>
-                            </div> */}
-            <p className="m-2">Pilih Gambar:</p>
-            <div className="mt-5">
-              <input
-                type="file"
-                className="hidden"
-                ref={fileInputRef}
-                onChange={handleImage}
-                accept="image/*"
-                multiple
-              />
-              <button
-                disabled={images?.length == 10}
-                type="button"
-                onClick={handleButtonClick}
-                className="border rounded p-2 w-full flex gap-2 items-center justify-center"
-              >
-                <PlusIcon className="w-4" />
-                Tambah
-              </button>
-              {progress ? (
-                <p className={progress ? "block" : "hidden"}>
-                  Loading Upload....
-                </p>
-              ) : (
-                ""
-              )}
-              <div className="flex flex-wrap mt-5">
-                {images?.map((v: any) => (
-                  <button
-                    key={v}
-                    onClick={() => {
-                      setImages(images.filter((val: any) => val !== v));
-                    }}
-                    className="relative group w-1/3"
-                  >
-                    <img
-                      alt="images"
-                      src={v}
-                      // layout="relative"
-                      width={300}
-                      height={300}
-                      className="w-full h-[100px]"
-                    />
-                    <div className="absolute inset-0 bg-red-700 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-50 transition-opacity duration-300">
-                      <TrashIcon className="text-white" />{" "}
-                      <p className="text-white">Hapus</p>
-                    </div>
-                  </button>
-                ))}
               </div>
               <Button color="info" className={"mt-4"} onClick={onSubmit}>
                 Selesai
