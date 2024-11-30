@@ -255,7 +255,7 @@ export default function Account() {
               }}
               className="border-b p-2 w-full"
             >
-              Versi Web 1.1.3
+              Versi Web 1.1.5
             </button>
           </div>
           <button

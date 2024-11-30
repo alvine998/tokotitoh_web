@@ -2,6 +2,7 @@ import BottomTabs from "@/components/BottomTabs";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Modal, { useModal } from "@/components/Modal";
+import Select from "@/components/Select";
 import TextArea from "@/components/TextArea";
 import HeaderHome from "@/components/headers/HeaderHome";
 import { CONFIG } from "@/config";
@@ -171,18 +172,18 @@ export default function Sell({
                 );
               },
               (error) => {
-                reject(error)
+                reject(error);
                 console.log(error);
               },
               () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                   // imagesUpload.push(downloadURL)
-                  resolve(downloadURL)
+                  resolve(downloadURL);
                   setProgress(false);
                 });
               }
             );
-          })
+          });
         } else {
           setProgress(false);
           return Swal.fire({
@@ -190,8 +191,8 @@ export default function Sell({
             text: "Ukuran Gambar Tidak Boleh Lebih Dari 2mb",
           });
         }
-      })
-      const uploadFiles = await Promise.all(imagesUpload)
+      });
+      const uploadFiles = await Promise.all(imagesUpload);
       setImages([...images, ...uploadFiles]);
     }
   };
@@ -651,13 +652,30 @@ export default function Sell({
                 }}
               />
               {selected?.subcategory_name?.toLowerCase()?.includes("mobil") ||
-                selected?.subcategory_name?.toLowerCase()?.includes("motor") ? (
+              selected?.subcategory_name?.toLowerCase()?.includes("motor") ? (
                 <div>
                   <div>
-                    <label className="text-gray-500" htmlFor="brand">
+                    <Select
+                      options={BRANDS}
+                      label="Merek"
+                      defaultValue={selected?.brand_id}
+                      onChange={(e: any) => {
+                        BRANDS?.map((v: any) => {
+                          if (e.target.value == v?.id) {
+                            setFilter({ ...filter, brand_id: v?.value }),
+                              setSelected({
+                                ...selected,
+                                brand_id: v?.value,
+                                brand_name: v?.label,
+                              });
+                          }
+                        });
+                      }}
+                    />
+                    {/* <label className="text-gray-500" htmlFor="brand">
                       Merek
-                    </label>
-                    <ReactSelect
+                    </label> */}
+                    {/* <ReactSelect
                       options={BRANDS}
                       placeholder="Pilih Merek"
                       onChange={(e: any) => {
@@ -673,10 +691,27 @@ export default function Sell({
                         (v: any) => v?.id == detail?.brand_id
                       )}
                       id="brand"
-                    />
+                    /> */}
                   </div>
                   <div className="mt-2">
-                    <label className="text-gray-500" htmlFor="type">
+                    <Select
+                      disabled={types?.length < 1}
+                      options={TYPES}
+                      defaultValue={selected?.type_id}
+                      label="Tipe"
+                      onChange={(e: any) => {
+                        TYPES?.map((v: any) => {
+                          if (e.target.value == v?.id) {
+                            setSelected({
+                              ...selected,
+                              type_id: v?.value,
+                              type_name: v?.label,
+                            });
+                          }
+                        });
+                      }}
+                    />
+                    {/* <label className="text-gray-500" htmlFor="type">
                       Tipe
                     </label>
                     <ReactSelect
@@ -695,7 +730,7 @@ export default function Sell({
                         (v: any) => v?.id == selected?.type_id
                       )}
                       id="type"
-                    />
+                    /> */}
                   </div>
                 </div>
               ) : (
@@ -705,27 +740,27 @@ export default function Sell({
               {selected?.subcategory_name
                 ?.toLowerCase()
                 ?.includes("sparepart") ||
-                selected?.subcategory_name
-                  ?.toLowerCase()
-                  ?.includes("aksesoris") ||
-                selected?.subcategory_name?.toLowerCase()?.includes("bengkel") ||
-                selected?.subcategory_name?.toLowerCase()?.includes("velg") ||
-                selected?.subcategory_name?.toLowerCase()?.includes("karoseri") ||
-                selected?.category_name?.toLowerCase()?.includes("elektronik") ||
-                selected?.category_name?.toLowerCase()?.includes("hp") ||
-                selected?.category_name?.toLowerCase()?.includes("hobi") ||
-                selected?.category_name
-                  ?.toLowerCase()
-                  ?.includes("keperluan pribadi") ||
-                selected?.category_name
-                  ?.toLowerCase()
-                  ?.includes("bahan bangunan") ||
-                selected?.category_name
-                  ?.toLowerCase()
-                  ?.includes("kantor & industri") ||
-                selected?.category_name
-                  ?.toLowerCase()
-                  ?.includes("perlengkapan rumah") ? (
+              selected?.subcategory_name
+                ?.toLowerCase()
+                ?.includes("aksesoris") ||
+              selected?.subcategory_name?.toLowerCase()?.includes("bengkel") ||
+              selected?.subcategory_name?.toLowerCase()?.includes("velg") ||
+              selected?.subcategory_name?.toLowerCase()?.includes("karoseri") ||
+              selected?.category_name?.toLowerCase()?.includes("elektronik") ||
+              selected?.category_name?.toLowerCase()?.includes("hp") ||
+              selected?.category_name?.toLowerCase()?.includes("hobi") ||
+              selected?.category_name
+                ?.toLowerCase()
+                ?.includes("keperluan pribadi") ||
+              selected?.category_name
+                ?.toLowerCase()
+                ?.includes("bahan bangunan") ||
+              selected?.category_name
+                ?.toLowerCase()
+                ?.includes("kantor & industri") ||
+              selected?.category_name
+                ?.toLowerCase()
+                ?.includes("perlengkapan rumah") ? (
                 <div className="mt-2">
                   <label className="text-gray-500" htmlFor="condition">
                     Kondisi
@@ -844,11 +879,11 @@ export default function Sell({
 
               {selected?.subcategory_name?.toLowerCase() ==
                 "bus dan truk dijual" ||
-                selected?.subcategory_name?.toLowerCase() ==
+              selected?.subcategory_name?.toLowerCase() ==
                 "bus dan truk di sewakan" ||
-                selected?.subcategory_name?.toLowerCase() ==
+              selected?.subcategory_name?.toLowerCase() ==
                 "alat berat di jual" ||
-                selected?.subcategory_name?.toLowerCase() ==
+              selected?.subcategory_name?.toLowerCase() ==
                 "alat berat di sewakan" ? (
                 <Input
                   label="Tahun"
@@ -865,10 +900,10 @@ export default function Sell({
 
               {(selected?.category_name?.toLowerCase()?.includes("mobil") &&
                 selected?.subcategory_name?.toLowerCase()?.includes("mobil")) ||
-                (selected?.category_name?.toLowerCase()?.includes("motor") &&
-                  selected?.subcategory_name
-                    ?.toLowerCase()
-                    ?.includes("motor")) ? (
+              (selected?.category_name?.toLowerCase()?.includes("motor") &&
+                selected?.subcategory_name
+                  ?.toLowerCase()
+                  ?.includes("motor")) ? (
                 <div>
                   {/* <Input
                     label="Trip KM"
@@ -883,7 +918,19 @@ export default function Sell({
                     }}
                   /> */}
                   <div className="mt-2">
-                    <label className="text-gray-500" htmlFor="fuel_type">
+                    <Select
+                      options={FUELTYPES}
+                      label="Jenis Bahan Bakar"
+                      onChange={(e: any) => {
+                        FUELTYPES?.map((v: any) => {
+                          if (e.target.value == v?.id) {
+                            setSelected({ ...selected, fuel_type: v.value });
+                          }
+                        });
+                      }}
+                      defaultValue={selected?.fuel_type}
+                    />
+                    {/* <label className="text-gray-500" htmlFor="fuel_type">
                       Jenis Bahan Bakar
                     </label>
                     <ReactSelect
@@ -897,10 +944,22 @@ export default function Sell({
                       defaultValue={FUELTYPES?.find(
                         (v: any) => v?.value == selected?.fuel_type
                       )}
-                    />
+                    /> */}
                   </div>
                   <div className="mt-2">
-                    <label className="text-gray-500" htmlFor="transmission">
+                    <Select
+                      options={TRANSMISSIONTYPES}
+                      label="Jenis Transmisi"
+                      onChange={(e: any) => {
+                        TRANSMISSIONTYPES?.map((v: any) => {
+                          if (e.target.value == v?.id) {
+                            setSelected({ ...selected, transmission: v.value });
+                          }
+                        });
+                      }}
+                      defaultValue={selected?.transmission}
+                    />
+                    {/* <label className="text-gray-500" htmlFor="transmission">
                       Jenis Transmisi
                     </label>
                     <ReactSelect
@@ -914,7 +973,7 @@ export default function Sell({
                       defaultValue={TRANSMISSIONTYPES?.find(
                         (v: any) => v?.value == selected?.transmission
                       )}
-                    />
+                    /> */}
                   </div>
                   {/* <div className="mt-2">
                     <label className="text-gray-500" htmlFor="ownership">
