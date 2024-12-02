@@ -47,7 +47,7 @@ export default function HeaderAds(props: Props) {
     items,
     subcat_id,
     categories,
-    handleSearch
+    handleSearch,
   } = props;
   const router = useRouter();
   const [location, setLocation] = useState<any>({
@@ -63,6 +63,7 @@ export default function HeaderAds(props: Props) {
     cities: [],
     districts: [],
     villages: [],
+    types: [],
   });
 
   const getCity = async (data: any) => {
@@ -141,11 +142,12 @@ export default function HeaderAds(props: Props) {
     }
   };
 
-  const getType = async (data: any) => {
+  const getType = async (brand_id: any) => {
     try {
-      if ((data?.value || data?.id) !== "") {
+      if (brand_id !== "") {
+        let listtypes = list.types || [];
         const result = await axios.get(
-          CONFIG.base_url_api + `/types?brand_id=${data?.value || data?.id}`,
+          CONFIG.base_url_api + `/types?brand_id=${brand_id}`,
           {
             headers: {
               "bearer-token": "tokotitohapi",
@@ -153,9 +155,12 @@ export default function HeaderAds(props: Props) {
             },
           }
         );
+        listtypes.push(...result.data.items.rows);
         setList({
           ...list,
-          types: result.data.items.rows,
+          types: listtypes?.sort((a: any, b: any) =>
+            a.name.localeCompare(b.name)
+          ),
         });
       } else {
         setList({
@@ -311,9 +316,9 @@ export default function HeaderAds(props: Props) {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
-      setLoading(true)
+      setLoading(true);
       // console.log(subcat_id);
-      setFilter({...filter, search: searchString, size: 6})
+      setFilter({ ...filter, search: searchString, size: 6 });
       router.push(`/category/${subcat_id}?search=${searchString}&size=6`);
     }
   };
@@ -376,7 +381,7 @@ export default function HeaderAds(props: Props) {
             value={searchString}
             onChange={(e: any) => {
               // setFilter({ ...filter, search: e.target.value });
-              setSearchString(e.target.value)
+              setSearchString(e.target.value);
             }}
             onKeyDown={handleKeyPress}
           />
@@ -396,7 +401,8 @@ export default function HeaderAds(props: Props) {
             <div className="p-2">
               <div className="flex justify-between items-start">
                 <p>
-                  Filter: {ads?.category_name || "Semua Kategori"} {">"} {ads?.name || "Semua Sub Kategori"}
+                  Filter: {ads?.category_name || "Semua Kategori"} {">"}{" "}
+                  {ads?.name || "Semua Sub Kategori"}
                 </p>
                 <div className="flex flex-col">
                   <button
@@ -415,7 +421,7 @@ export default function HeaderAds(props: Props) {
                       setList({ type: [] });
                       setFilter({ size: 6, search: "" });
                       setModal({ ...modal, open: false });
-                      setSearchString("")
+                      setSearchString("");
                       const id = subcat_id || ads?.id || params?.subcat_id;
                       if (id) {
                         // Only navigate if the id is valid
@@ -573,7 +579,9 @@ export default function HeaderAds(props: Props) {
                                     // setFilter({size: 6, search: searchString});
                                     setModal({ ...modal, open: false });
                                     setList({ ...list, subcategories: [] });
-                                    router.push(`/category/${v?.id}?size=6&search=${searchString}`);
+                                    router.push(
+                                      `/category/${v?.id}?size=6&search=${searchString}`
+                                    );
                                   } else {
                                     setList({ ...list, subcategories: [] });
                                   }
@@ -612,15 +620,39 @@ export default function HeaderAds(props: Props) {
                             <button
                               key={val?.id}
                               onClick={() => {
-                                setFilter({
-                                  ...filter,
-                                  brand_id: val?.id,
-                                  type_id: "",
-                                });
-                                getType(val);
+                                let brands = filter?.brand_id || [];
+                                if (!brands?.includes(val?.id)) {
+                                  brands.push(val?.id);
+                                  getType(val?.id);
+                                  setFilter({ ...filter, brand_id: brands });
+                                  return;
+                                } else {
+                                  brands = brands?.filter(
+                                    (v: any) => v !== val?.id
+                                  );
+                                  setFilter({
+                                    ...filter,
+                                    brand_id: brands,
+                                    type_id: filter?.type_id
+                                      ? filter?.type_id?.filter(
+                                          (val: any) =>
+                                            val !==
+                                            list?.types?.find(
+                                              (value: any) => value?.id == val
+                                            )?.id
+                                        )
+                                      : "",
+                                  });
+                                  setList({
+                                    ...list,
+                                    types: list.types?.filter(
+                                      (v: any) => v?.brand_id !== val?.id
+                                    ),
+                                  });
+                                }
                               }}
                               className={`border rounded p-2 ${
-                                val?.id == filter?.brand_id
+                                filter?.brand_id?.includes(val?.id)
                                   ? "border-blue-500"
                                   : "border-gray-200"
                               }`}
@@ -633,128 +665,104 @@ export default function HeaderAds(props: Props) {
                             </button>
                           ))}
                       </div>
-                      {/* <div className="flex flex-col gap-2 items-center justify-center pl-2 mt-4">
-                        <ReactSelect
-                          options={[
-                            { value: "", label: "Semua Merek" },
-                            ...brands?.map((v: any) => ({
-                              ...v,
-                              value: v?.id,
-                              label: v?.name?.toUpperCase(),
-                            })),
-                          ]}
-                          onChange={(e: any) => {
-                            // setSelected({
-                            //   ...selected,
-                            //   brand_id: e.value ? e.value : "",
-                            //   brand_name: e.value ? e.label : "",
-                            //   type_id: "",
-                            //   type_name: "",
-                            // });
-                            setFilter({
-                              ...filter,
-                              brand_id: e?.value,
-                              type_id: "",
-                            });
-                            getType(e);
-                          }}
-                          maxMenuHeight={150}
-                          placeholder="Semua Merek"
-                          className="w-full"
-                          defaultValue={{
-                            value: filter?.brand_id,
-                            label:
-                              brands?.find(
-                                (v: any) => v?.id == filter?.brand_id
-                              )?.name || "Semua Merek",
-                          }}
-                        />
-                        {list?.types ? (
-                          <ReactSelect
-                            isDisabled={list?.types?.length < 1}
-                            options={[
-                              { value: "", label: "Semua Model" },
-                              ...list?.types?.map((v: any) => ({
-                                ...v,
-                                value: v?.id,
-                                label: v?.name?.toUpperCase(),
-                              })),
-                            ]}
-                            onChange={(e: any) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   type_id: e.value ? e.value : "",
-                              //   type_name: e.value ? e.label : "",
-                              // });
-                              setFilter({ ...filter, type_id: e?.value });
-                            }}
-                            maxMenuHeight={150}
-                            placeholder="Semua Model"
-                            className="w-full"
-                            defaultValue={{
-                              value: filter?.type_id,
-                              label:
-                                list?.types?.find(
-                                  (v: any) => v?.id == filter?.type_id
-                                )?.name || "Semua Model",
-                            }}
-                          />
-                        ) : (
-                          ""
-                        )}
-                      </div> */}
-                      <div className="lg:h-[45vh] h-[30vh] overflow-auto">
-                        <div className="flex flex-col gap-2 pl-2 mt-4">
-                          {list?.types?.length > 0 ? (
-                            <>
-                              {[
-                                { id: "", name: "Kembali" },
-                                ...list?.types,
-                              ]?.map((v: any, i: number) => (
-                                <button
-                                  key={i}
-                                  className={`${
-                                    v?.id == filter?.type_id
-                                      ? "border-blue-500 border rounded"
-                                      : ""
-                                  } w-full px-2 py-1 text-xs text-left border-b`}
-                                  onClick={() => {
-                                    if (v?.id !== "") {
-                                      setFilter({
-                                        ...filter,
-                                        type_id: v?.id,
-                                      });
-                                    } else {
-                                      setList({ ...list, types: [] });
-                                    }
-                                  }}
-                                >
-                                  {v?.name}
-                                </button>
-                              ))}
-                            </>
-                          ) : (
-                            <>
-                              {brands?.map((v: any, i: number) => (
-                                <button
-                                  key={i}
-                                  className="w-full px-2 py-1 text-xs text-left border-b"
-                                  onClick={() => {
+                      <div className="lg:h-[25vh] h-[20vh] overflow-auto mt-4">
+                        <label htmlFor="brand" className="ml-2">
+                          Merek
+                        </label>
+                        <div className="flex flex-col gap-2 pl-2 mt-2">
+                          {brands?.map((v: any, i: number) => (
+                            <div key={i}>
+                              <input
+                                type="checkbox"
+                                defaultChecked={
+                                  filter?.brand_id
+                                    ? filter?.brand_id?.includes(`${v?.id}`)
+                                    : ""
+                                }
+                                value={v?.id}
+                                onChange={(e) => {
+                                  let brands = filter?.brand_id || [];
+                                  if (e.target.checked) {
+                                    brands.push(e.target.value);
+                                    getType(e.target.value);
+                                    setFilter({ ...filter, brand_id: brands });
+                                    return;
+                                  } else {
+                                    brands = brands?.filter(
+                                      (val: any) => val !== e.target.value
+                                    );
+
                                     setFilter({
                                       ...filter,
-                                      brand_id: v?.id,
-                                      type_id: "",
+                                      brand_id: brands,
+                                      type_id: filter?.type_id
+                                        ? filter?.type_id?.filter(
+                                            (val: any) =>
+                                              val !==
+                                              list?.types?.find(
+                                                (value: any) => value?.id == val
+                                              )?.id
+                                          )
+                                        : "",
                                     });
-                                    getType(v);
-                                  }}
-                                >
-                                  {v?.name}
-                                </button>
-                              ))}
-                            </>
-                          )}
+                                    setList({
+                                      ...list,
+                                      types: list.types?.filter(
+                                        (val: any) => val?.brand_id !== v?.id
+                                      ),
+                                    });
+                                  }
+                                }}
+                              />
+                              <span className="ml-2">{v?.name}</span>
+                            </div>
+                          ))}
                         </div>
                       </div>
+                      {list?.types?.length > 0 ? (
+                        <div className="lg:h-[25vh] h-[20vh] overflow-auto mt-4">
+                          <label htmlFor="type" className="ml-2">
+                            Tipe
+                          </label>
+                          <div className="flex flex-col gap-2 pl-2 mt-2">
+                            {list?.types?.map((v: any, i: number) => (
+                              <div key={i}>
+                                <input
+                                  type="checkbox"
+                                  defaultChecked={
+                                    filter?.type_id
+                                      ? filter?.type_id?.includes(v?.id)
+                                      : ""
+                                  }
+                                  value={v?.id}
+                                  onChange={(e) => {
+                                    let type_ids = filter?.type_id || [];
+                                    if (e.target.checked) {
+                                      type_ids.push(e.target.value);
+                                      setFilter({
+                                        ...filter,
+                                        type_id: type_ids,
+                                      });
+                                      return;
+                                    }
+                                    type_ids = type_ids?.filter(
+                                      (val: any) => val !== e.target.value
+                                    );
+
+                                    setFilter({
+                                      ...filter,
+                                      type_id: type_ids,
+                                    });
+                                  }}
+                                />
+                                <span className="ml-2">{v?.name}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   ) : (
                     ""
