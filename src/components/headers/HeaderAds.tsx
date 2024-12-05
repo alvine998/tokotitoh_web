@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   BellIcon,
   CheckIcon,
@@ -6,6 +6,8 @@ import {
   MenuIcon,
   SearchIcon,
   Settings2Icon,
+  Square,
+  SquareCheck,
   XCircleIcon,
   XIcon,
 } from "lucide-react";
@@ -311,6 +313,14 @@ export default function HeaderAds(props: Props) {
       name: "URUTKAN",
     },
   ];
+
+  const checkboxRef = useRef<HTMLInputElement>(null);
+
+  const handleButtonClick = () => {
+    if (checkboxRef.current) {
+      checkboxRef.current.checked = true;
+    }
+  };
 
   const [searchString, setSearchString] = useState(filter?.search);
 
@@ -671,51 +681,51 @@ export default function HeaderAds(props: Props) {
                         </label>
                         <div className="flex flex-col gap-2 pl-2 mt-2">
                           {brands?.map((v: any, i: number) => (
-                            <div key={i}>
-                              <input
-                                type="checkbox"
-                                defaultChecked={
-                                  filter?.brand_id
-                                    ? filter?.brand_id?.includes(`${v?.id}`)
-                                    : ""
+                            <button
+                              key={i}
+                              onClick={() => {
+                                let brands = filter?.brand_id || [];
+                                if (!brands?.includes(v?.id)) {
+                                  brands.push(v?.id);
+                                  getType(v?.id);
+                                  setFilter({ ...filter, brand_id: brands });
+                                  return;
+                                } else {
+                                  brands = brands?.filter(
+                                    (val: any) => val !== v?.id
+                                  );
+                                  setFilter({
+                                    ...filter,
+                                    brand_id: brands,
+                                    type_id: filter?.type_id
+                                      ? filter?.type_id?.filter(
+                                          (val: any) =>
+                                            val !==
+                                            list?.types?.find(
+                                              (value: any) => value?.id == val
+                                            )?.id
+                                        )
+                                      : "",
+                                  });
+                                  setList({
+                                    ...list,
+                                    types: list.types?.filter(
+                                      (val: any) => val?.brand_id !== v?.id
+                                    ),
+                                  });
                                 }
-                                value={v?.id}
-                                onChange={(e) => {
-                                  let brands = filter?.brand_id || [];
-                                  if (e.target.checked) {
-                                    brands.push(e.target.value);
-                                    getType(e.target.value);
-                                    setFilter({ ...filter, brand_id: brands });
-                                    return;
-                                  } else {
-                                    brands = brands?.filter(
-                                      (val: any) => val !== e.target.value
-                                    );
-
-                                    setFilter({
-                                      ...filter,
-                                      brand_id: brands,
-                                      type_id: filter?.type_id
-                                        ? filter?.type_id?.filter(
-                                            (val: any) =>
-                                              val !==
-                                              list?.types?.find(
-                                                (value: any) => value?.id == val
-                                              )?.id
-                                          )
-                                        : "",
-                                    });
-                                    setList({
-                                      ...list,
-                                      types: list.types?.filter(
-                                        (val: any) => val?.brand_id !== v?.id
-                                      ),
-                                    });
-                                  }
-                                }}
-                              />
+                              }}
+                              type="button"
+                              className="flex items-center justify-start"
+                            >
+                              {filter?.brand_id &&
+                              filter?.brand_id?.includes(v?.id) ? (
+                                <SquareCheck className="text-green-600" />
+                              ) : (
+                                <Square />
+                              )}
                               <span className="ml-2">{v?.name}</span>
-                            </div>
+                            </button>
                           ))}
                         </div>
                       </div>
@@ -727,35 +737,38 @@ export default function HeaderAds(props: Props) {
                           <div className="flex flex-col gap-2 pl-2 mt-2">
                             {list?.types?.map((v: any, i: number) => (
                               <div key={i}>
-                                <input
-                                  type="checkbox"
-                                  defaultChecked={
-                                    filter?.type_id
-                                      ? filter?.type_id?.includes(v?.id)
-                                      : ""
-                                  }
-                                  value={v?.id}
-                                  onChange={(e) => {
+                                <button
+                                  key={i}
+                                  onClick={() => {
                                     let type_ids = filter?.type_id || [];
-                                    if (e.target.checked) {
-                                      type_ids.push(e.target.value);
+                                    if (!type_ids?.includes(v?.id)) {
+                                      type_ids.push(v?.id);
                                       setFilter({
                                         ...filter,
                                         type_id: type_ids,
                                       });
                                       return;
+                                    } else {
+                                      type_ids = type_ids?.filter(
+                                        (val: any) => val !== v?.id
+                                      );
+                                      setFilter({
+                                        ...filter,
+                                        type_id: type_ids,
+                                      });
                                     }
-                                    type_ids = type_ids?.filter(
-                                      (val: any) => val !== e.target.value
-                                    );
-
-                                    setFilter({
-                                      ...filter,
-                                      type_id: type_ids,
-                                    });
                                   }}
-                                />
-                                <span className="ml-2">{v?.name}</span>
+                                  type="button"
+                                  className="flex items-center justify-start"
+                                >
+                                  {filter?.type_id &&
+                                  filter?.type_id?.includes(v?.id) ? (
+                                    <SquareCheck className="text-green-600" />
+                                  ) : (
+                                    <Square />
+                                  )}
+                                  <span className="ml-2">{v?.name}</span>
+                                </button>
                               </div>
                             ))}
                           </div>
