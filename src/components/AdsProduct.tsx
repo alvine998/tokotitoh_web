@@ -153,9 +153,12 @@ export default function AdsProduct(props: Props) {
         className="shadow border p-2 rounded lg:h-auto w-full lg:w-full"
         onClick={onClick}
       >
-        <div className="bg-white w-full h-[200px] overflow-hidden">
-          <img src={thumbnail} alt="thumbnail" className="h-auto w-full object-cover rounded" />
-          <p>{thumbnail}</p>
+        <div className="bg-white w-full h-[200px] overflow-hidden flex justify-center items-center">
+          <img
+            src={thumbnail}
+            alt="thumbnail"
+            className="max-w-full max-h-full object-cover rounded"
+          />
         </div>
         {/* <Image
           alt="thumbnail"
