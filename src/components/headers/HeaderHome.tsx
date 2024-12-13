@@ -118,7 +118,7 @@ export default function HeaderHome(props: Props) {
         >
           <BellIcon className="w-7 h-7" />
           {notif?.find((v: any) => v?.status == 0) ? (
-            <div className="absolute top-1 right-0 w-4 bg-red-700 p-2 rounded-full"></div>
+            <div className="absolute top-1 right-0 w-4 bg-blue-700 p-2 rounded-full"></div>
           ) : (
             ""
           )}

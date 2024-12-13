@@ -320,8 +320,8 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                     <img
                       src={v}
                       alt="thumbnail"
-                      className="h-auto w-full object-cover rounded"
-                    />
+                      className="absolute top-1/2 left-1/2 h-auto w-auto transform -translate-x-1/2 -translate-y-1/2 rounded"
+                      />
                   </div>
                 </button>
               ))}
@@ -338,13 +338,18 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 className="bg-gray-700 p-2 w-full rounded text-white text-xs text-center"
                 type="button"
                 onClick={() => {
-                  setModal({
+                  if(account?.user_id){
+                    setModal({
                     ...modal,
                     open: true,
                     data: ads,
                     key: "report",
                   });
                   setImages([]);
+                  } else {
+                    router.push("/account");
+                  }
+                  
                 }}
               >
                 Laporkan
