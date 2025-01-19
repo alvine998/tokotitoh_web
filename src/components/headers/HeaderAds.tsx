@@ -670,7 +670,7 @@ export default function HeaderAds(props: Props) {
                               <img
                                 src={val?.image}
                                 alt="logo-car"
-                                className="lg:w-[50px] lg:h-[40px] md:w-[120px] md:h-[100px] w-[50px] h-[40px]"
+                                className="lg:h-[40px] md:h-[100px] w-auto h-[40px]"
                               />
                             </button>
                           ))}

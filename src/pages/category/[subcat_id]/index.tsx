@@ -261,7 +261,7 @@ export default function Ads({
         handleSearch={searchAds}
       />
 
-      {(ads1?.id !== +subcat_id && +subcat_id !== 0) ? (
+      {ads1?.id !== +subcat_id && +subcat_id !== 0 ? (
         <div className="mt-10">
           <CircleDotDashedIcon className="animate-spin text-green-500 ml-5" />
           <p className="text-center">Loading...</p>
@@ -269,7 +269,7 @@ export default function Ads({
       ) : (
         <>
           {ads?.count > 0 ? (
-            <div>
+            <div className="lg:px-0 md:px-40 px-0">
               {/* Kategori */}
               <div className="mt-28 flex lg:flex-col lg:gap-4 gap-0 flex-row flex-wrap justify-center items-center">
                 {loading ? (
@@ -282,7 +282,7 @@ export default function Ads({
                     {ads?.rows?.map((v: any, i: number) => (
                       <div
                         key={i}
-                        className="lg:w-[350px] sm:w-[300px] w-[350px]"
+                        className="lg:w-[350px] sm:w-[350px] w-[350px]"
                       >
                         <AdsProduct
                           price={v?.price}
@@ -294,38 +294,38 @@ export default function Ads({
                         />
                       </div>
                     ))}
-                    {filter?.size < ads?.count ? (
-                      <div className="flex items-center justify-center">
-                        {spinning ? (
-                          <CircleDotDashedIcon className="animate-spin text-green-500" />
-                        ) : (
-                          <button
-                            onClick={() => {
-                              setSpinning(true);
-                              setTimeout(() => {
-                                setSpinning(false);
-                              }, 3000);
-                              setFilter({
-                                ...filter,
-                                size: (+filter.size || 6) + 6,
-                                subcat_id: subcat_id == 0 ? "" : subcat_id,
-                                search: filter?.search || ""
-                              });
-                            }}
-                            type="button"
-                            className="rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center"
-                          >
-                            <PlusIcon className="w-6" />
-                            Lihat Lainnya
-                          </button>
-                        )}
-                      </div>
-                    ) : (
-                      ""
-                    )}
                   </>
                 )}
               </div>
+              {filter?.size < ads?.count ? (
+                <div className="flex items-center justify-center">
+                  {spinning ? (
+                    <CircleDotDashedIcon className="animate-spin text-green-500" />
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setSpinning(true);
+                        setTimeout(() => {
+                          setSpinning(false);
+                        }, 3000);
+                        setFilter({
+                          ...filter,
+                          size: (+filter.size || 6) + 6,
+                          subcat_id: subcat_id == 0 ? "" : subcat_id,
+                          search: filter?.search || "",
+                        });
+                      }}
+                      type="button"
+                      className="rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center"
+                    >
+                      <PlusIcon className="w-6" />
+                      Lihat Lainnya
+                    </button>
+                  )}
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           ) : (
             <div className="mt-40 flex flex-col gap-2 justify-center items-center">
