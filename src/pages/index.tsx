@@ -282,6 +282,8 @@ export default function Home({ categories, notif, subcategories }: any) {
               - Periksa surat-surat dan kelengkapan barang
               <br />- Untuk pembelian properti cek surat-surat dan kondisi
               situasi tanah dengan teliti sesuai dengan ketentuan yang berlaku
+              <br />- Usahakan membeli langsung dari pemilik barang, agar
+              menghindari penipuan segitiga
             </p>
           </div>
         </Modal>
