@@ -283,7 +283,7 @@ export default function Home({ categories, notif, subcategories }: any) {
               <br />- Untuk pembelian properti cek surat-surat dan kondisi
               situasi tanah dengan teliti sesuai dengan ketentuan yang berlaku
               <br />- Usahakan membeli langsung dari pemilik barang, agar
-              menghindari penipuan segitiga
+              terhindar dari penipuan segitiga
             </p>
           </div>
         </Modal>
