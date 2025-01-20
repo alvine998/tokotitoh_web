@@ -64,7 +64,7 @@ export default function HeaderHome(props: Props) {
   };
 
   return (
-    <div className="w-full fixed top-0 bg-white p-2 lg:w-1/4">
+    <div className="w-full md:max-w-sm fixed top-0 bg-white p-2 lg:w-1/4">
       <div className="flex justify-end">
         {/* <button type='button' className='flex gap-2 items-center'>
                     <MapPinIcon className='w-4 h-4' />

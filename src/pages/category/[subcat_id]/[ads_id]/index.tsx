@@ -179,7 +179,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
           email: account?.email,
           save_ads:
             account?.save_ads !== null
-              ? [...account?.save_ads, ads?.id]
+              ? [...JSON.parse(account?.save_ads), ads?.id]
               : [ads?.id],
         },
         {
@@ -321,7 +321,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                       src={v}
                       alt="thumbnail"
                       className="absolute top-1/2 left-1/2 h-auto w-auto transform -translate-x-1/2 -translate-y-1/2 rounded"
-                      />
+                    />
                   </div>
                 </button>
               ))}
@@ -338,18 +338,17 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 className="bg-gray-700 p-2 w-full rounded text-white text-xs text-center"
                 type="button"
                 onClick={() => {
-                  if(account?.user_id){
+                  if (account?.user_id) {
                     setModal({
-                    ...modal,
-                    open: true,
-                    data: ads,
-                    key: "report",
-                  });
-                  setImages([]);
+                      ...modal,
+                      open: true,
+                      data: ads,
+                      key: "report",
+                    });
+                    setImages([]);
                   } else {
                     router.push("/account");
                   }
-                  
                 }}
               >
                 Laporkan
@@ -602,7 +601,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
             ""
           )}
 
-          <div className="pb-20 -ml-20">
+          <div className="pb-2 -ml-10">
             <button
               className="flex gap-3 items-start pt-3 justify-start"
               type="button"
@@ -624,14 +623,21 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               )}
               <div>
                 <p className="text-left">Pengiklan</p>
-                <h5 className="font-bold text-lg text-left">
+                <h5 className="font-bold text-md text-left">
                   {user?.name?.toUpperCase()}
                 </h5>
-                <p className="text-left">
+                <p className="text-left text-sm">
                   Bergabung sejak {new Date(user?.created_on)?.getFullYear()}
                 </p>
               </div>
             </button>
+          </div>
+
+          <div className="pb-20 w-full px-4">
+            <div className="flex gap-2 items-center">
+              <p className="text-left font-bold">ID Iklan</p>
+              <p className="text-left font-bold">{ads?.id}</p>
+            </div>
           </div>
         </>
       ) : (
