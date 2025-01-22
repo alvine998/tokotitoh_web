@@ -24,6 +24,10 @@ import React, { useEffect, useState } from "react";
 import { createQueryString } from "@/utils";
 import { getCookie } from "cookies-next";
 
+const safeParseInt = (value: string | undefined, fallback: number): number => {
+  return value ? parseInt(value, 10) || fallback : fallback;
+};
+
 export async function getServerSideProps(context: any) {
   try {
     const {
@@ -55,8 +59,8 @@ export async function getServerSideProps(context: any) {
       status: "1",
       search: search || "",
       pagination: true,
-      page: +page || 0,
-      size: +size || 6,
+      page: safeParseInt(page, 0),
+      size: safeParseInt(size, 6),
       brand_id: brand_id || "",
       type_id: type_id || "",
       province_id: province_id || "",
@@ -184,12 +188,24 @@ export default function Ads({
 }: any) {
   const router = useRouter();
   const routers = router2();
-  const [modal, setModal] = useState<useModal>();
   const [spinning, setSpinning] = useState<boolean>(false);
-  const [filter, setFilter] = useState<any>({ ...router?.query, size: 6 });
+  const [filter, setFilter] = useState<any>({ ...router?.query, size: router?.query?.size || 6 });
   const [loading, setLoading] = useState<any>(false);
   let user: any = getCookie("account");
   const [filterAds, setFilterAds] = useState<any>([]);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const handleScroll = () => {
+      const position = window.pageYOffset;
+      setScrollPosition(position);
+  };
+  
+  useEffect(() => {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+  
+      return () => {
+          window.removeEventListener('scroll', handleScroll);
+      };
+  }, []);
 
   const addViews = async (data: any) => {
     try {
@@ -231,10 +247,10 @@ export default function Ads({
       console.log(error);
     }
   };
+  const queryFilter = new URLSearchParams(filter).toString();
 
   useEffect(() => {
     setLoading(true);
-    const queryFilter = new URLSearchParams(filter).toString();
     routers.push(`${subcat_id}?${queryFilter}`, { scroll: false });
     setLoading(false);
   }, [filter]);
@@ -290,6 +306,7 @@ export default function Ads({
                           title={v?.title}
                           onClick={() => {
                             addViews(v);
+                            localStorage.setItem("linkBefore", `/category/${subcat_id}?${queryFilter}`)
                           }}
                         />
                       </div>

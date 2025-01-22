@@ -105,6 +105,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
   const [modal, setModal] = useState<useModal>();
   const [show, setShow] = useState<boolean>(false);
   const [from, setFrom] = useState<string>("");
+  const [prevLink, setPrevLink] = useState<string>("");
   useEffect(() => {
     if (typeof window !== "undefined") {
       setShow(true);
@@ -113,7 +114,9 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
 
   useEffect(() => {
     const from: any = localStorage.getItem("from");
+    const linkBefore: any = localStorage.getItem("linkBefore");
     setFrom(from);
+    setPrevLink(linkBefore);
   }, []);
 
   const [images, setImages] = useState<any>([]);
@@ -265,7 +268,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 onClick={() => {
                   from == "myads"
                     ? router.push(`/myads`)
-                    : router.push(`/category/${subcat_id}`);
+                    : router.push(prevLink);
                 }}
                 className="flex gap-2 font-bold"
               >
@@ -631,12 +634,12 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 </p>
               </div>
             </button>
-          </div>
 
-          <div className="pb-20 w-full px-4">
-            <div className="flex gap-2 items-center">
-              <p className="text-left font-bold">ID Iklan</p>
-              <p className="text-left font-bold">{ads?.id}</p>
+            <div className="pb-20 w-full px-4">
+              <div className="flex gap-2 items-center">
+                <p className="text-left font-bold">ID Iklan</p>
+                <p className="text-left font-bold">{ads?.id}</p>
+              </div>
             </div>
           </div>
         </>

@@ -1,12 +1,16 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
-import Head from 'next/head'
+import ScrollPositionManager from "@/components/ScrollManager";
+import "@/styles/globals.css";
+import type { AppProps } from "next/app";
+import Head from "next/head";
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <>
-    <Head>
-      <title>Tokotitoh.co.id</title>
-    </Head>
-    <Component {...pageProps} />
-  </>
+  return (
+    <>
+      <Head>
+        <title>Tokotitoh.co.id</title>
+      </Head>
+      <ScrollPositionManager/>
+      <Component {...pageProps} />
+    </>
+  );
 }
