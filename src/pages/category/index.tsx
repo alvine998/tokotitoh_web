@@ -96,7 +96,7 @@ export default function Category({ categories }: any) {
                 setModal({ ...modal, open: true, key: "subcat", data: v });
               }}
               key={i}
-              className="flex flex-col items-center justify-center w-[100px] text-xs pt-2 font-bold"
+              className="flex flex-col items-center justify-center w-auto text-xs pt-2 font-bold"
             >
               <img
                 src={v?.icon}
