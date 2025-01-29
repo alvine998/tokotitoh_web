@@ -34,16 +34,15 @@ export async function getServerSideProps(context: any) {
     let result: any = [];
     if (user) {
       user = JSON.parse(user);
-      const filters = {
+      const filters: any = {
         user_id: user?.id || 0,
         pagination: true,
         page: +page || 0,
         size: +size || 3,
-        search: search || ""
-    }
+        search: search || "",
+      };
       result = await axios.get(
-        CONFIG.base_url_api +
-          `/ads?${createQueryString(filters)}`,
+        CONFIG.base_url_api + `/ads?${createQueryString(filters)}`,
         {
           headers: {
             "bearer-token": "tokotitohapi",
@@ -52,11 +51,12 @@ export async function getServerSideProps(context: any) {
         }
       );
     }
+
     return {
       props: {
         ads: result?.data?.items?.rows || [],
         user: user || null,
-        adscount: result?.data?.items?.count
+        adscount: result?.data?.items?.count || 0,
       },
     };
   } catch (error: any) {
@@ -77,16 +77,25 @@ export async function getServerSideProps(context: any) {
   }
 }
 
-export default function MyAds({ ads, user, adscount }: any) {
+export default function MyAds({ ads, adscount }: any) {
   const router = useRouter();
   const [modal, setModal] = useState<useModal>();
-  const [filter, setFilter] = useState<any>({...router.query, size: 3});
+  const [filter, setFilter] = useState<any>({ ...router.query });
   const [spinning, setSpinning] = useState<boolean>(false);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     const queryFilter = new URLSearchParams(filter).toString();
     router.push(`?${queryFilter}`);
   }, [filter]);
+
+  useEffect(() => {
+    let user: any = getCookie("account");
+    if (user) {
+      user = JSON.parse(user);
+      setUser(user);
+    }
+  }, []);
 
   const onRoute = async (v: any) => {
     await localStorage.setItem("from", "myads");

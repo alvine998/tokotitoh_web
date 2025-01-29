@@ -164,6 +164,27 @@ export default function Home({ categories, notif, subcategories }: any) {
     }
   };
 
+  const [filteredItems, setFilteredItems] = useState(categories);
+  const [filteredItems2, setFilteredItems2] = useState(categories);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 768 && screenWidth < 1024) {
+        setFilteredItems(categories.slice(0, 5)); // Apply slice only on tablet (768px - 1023px)
+        setFilteredItems2(categories.slice(6, 12));
+      } else {
+        setFilteredItems(categories.slice(0, 2));
+        setFilteredItems2(categories.slice(2, 5));
+      }
+    };
+
+    handleResize(); // Run once on mount
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div className="pb-20 flex flex-col justify-center items-center">
       <HeaderHome
@@ -178,8 +199,8 @@ export default function Home({ categories, notif, subcategories }: any) {
 
       {/* Kategori */}
       <div className="p-2 mt-28">
-        <div className="grid grid-cols-3 gap-5 items-center justify-center">
-          {categories?.slice(0, 2)?.map((v: any, i: number) => (
+        <div className="grid lg:grid-cols-3 grid-cols-3 md:grid-cols-6 gap-4 items-center justify-center">
+          {filteredItems?.map((v: any, i: number) => (
             <button
               key={i}
               onClick={() => {
@@ -208,8 +229,8 @@ export default function Home({ categories, notif, subcategories }: any) {
             Lihat Semua Kategori
           </button>
         </div>
-        <div className="flex flex-wrap gap-5 items-center justify-center mt-4">
-          {categories?.slice(2, 5)?.map((v: any, i: number) => (
+        <div className="grid lg:grid-cols-3 grid-cols-3 md:grid-cols-6 gap-4 items-center justify-center mt-4">
+          {filteredItems2?.map((v: any, i: number) => (
             <button
               key={i}
               onClick={() => {
@@ -233,7 +254,7 @@ export default function Home({ categories, notif, subcategories }: any) {
       </div>
 
       {/* Tips */}
-      <div className="p-2 mt-5">
+      <div className="p-2 mt-5 md:w-full w-auto lg:w-auto md:px-10 px-2">
         <div className="flex gap-2">
           <button
             onClick={() => {

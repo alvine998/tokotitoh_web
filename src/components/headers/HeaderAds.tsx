@@ -335,7 +335,7 @@ export default function HeaderAds(props: Props) {
 
   const params = useParams();
   return (
-    <div className="w-full lg:w-1/3 md:max-w-sm fixed top-0 bg-white p-2">
+    <div className="w-full lg:w-1/3 lg:max-w-sm md:max-w-full max-w-sm fixed top-0 bg-white p-2">
       <div className="flex justify-between">
         <div className="flex gap-2">
           <button
