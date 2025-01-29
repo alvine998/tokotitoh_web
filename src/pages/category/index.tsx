@@ -88,7 +88,7 @@ export default function Category({ categories }: any) {
           Kembali
         </button>
         <h2 className="text-center font-semibold text-xl">Kategori</h2>
-        <div className="flex flex-wrap gap-5 items-center justify-center mt-5">
+        <div className="grid grid-cols-3 gap-5 items-center justify-center mt-5">
           {categories?.map((v: any, i: number) => (
             <button
               onClick={() => {
@@ -101,9 +101,9 @@ export default function Category({ categories }: any) {
               <img
                 src={v?.icon}
                 width={100}
-                height={100}
+                height={80}
                 alt="icon"
-                className="w-20 h-20"
+                className="w-[100px] h-[80px]"
               />
               {v?.name}
             </button>
