@@ -178,7 +178,7 @@ export default function Home({ categories, notif, subcategories }: any) {
 
       {/* Kategori */}
       <div className="p-2 mt-28">
-        <div className="flex flex-wrap gap-5 items-center justify-center">
+        <div className="grid grid-cols-3 gap-5 items-center justify-center">
           {categories?.slice(0, 2)?.map((v: any, i: number) => (
             <button
               key={i}
@@ -186,15 +186,15 @@ export default function Home({ categories, notif, subcategories }: any) {
                 getSubCat(v?.id);
                 setModal({ ...modal, open: true, data: v, key: "subcat" });
               }}
-              className="flex flex-col items-center justify-center w-[100px]"
+              className="flex flex-col items-center justify-center w-auto"
             >
               <img
                 src={v?.icon}
                 // layout="relative"
                 width={100}
-                height={100}
+                height={80}
                 alt="icon"
-                className="w-16 h-16"
+                className="w-[100px] h-[80px]"
               />
               {v?.name}
             </button>

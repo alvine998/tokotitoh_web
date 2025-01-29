@@ -5,7 +5,7 @@ import React from 'react'
 export default function BottomTabs() {
     const router = useRouter();
     return (
-        <div className='fixed bottom-0 w-full lg:w-1/4 md:max-w-sm h-[50px] bg-white border-t border-t-gray-300 flex justify-center gap-2 items-center px-2'>
+        <div className='fixed bottom-0 w-full lg:w-1/4 max-w-sm h-[50px] bg-white border-t border-t-gray-300 flex justify-center gap-2 items-center px-2'>
             <button onClick={() => { router.push('/') }} type='button' className={`${router.pathname == "/" ? "font-bold" : ""} flex flex-col items-center justify-center w-[150px] hover:font-bold`}>
                 <HomeIcon className='w-5 h-5' />
                 <p>Home</p>
