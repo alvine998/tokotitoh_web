@@ -170,7 +170,7 @@ export default function Home({ categories, notif, subcategories }: any) {
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
-      if (screenWidth >= 768 && screenWidth < 1024) {
+      if (screenWidth >= 500 && screenWidth < 1024) {
         setFilteredItems(categories.slice(0, 5)); // Apply slice only on tablet (768px - 1023px)
         setFilteredItems2(categories.slice(6, 12));
       } else {
@@ -199,7 +199,7 @@ export default function Home({ categories, notif, subcategories }: any) {
 
       {/* Kategori */}
       <div className="p-2 mt-28">
-        <div className="grid lg:grid-cols-3 grid-cols-3 md:grid-cols-6 gap-4 items-center justify-center">
+        <div className="grid lg:grid-cols-3 grid-cols-3 md:grid-cols-6 sm:grid-cols-6 gap-4 items-center justify-center">
           {filteredItems?.map((v: any, i: number) => (
             <button
               key={i}
@@ -229,7 +229,7 @@ export default function Home({ categories, notif, subcategories }: any) {
             Lihat Semua Kategori
           </button>
         </div>
-        <div className="grid lg:grid-cols-3 grid-cols-3 md:grid-cols-6 gap-4 items-center justify-center mt-4">
+        <div className="grid lg:grid-cols-3 grid-cols-3 md:grid-cols-6 sm:grid-cols-6 gap-4 items-center justify-center mt-4">
           {filteredItems2?.map((v: any, i: number) => (
             <button
               key={i}

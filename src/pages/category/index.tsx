@@ -77,7 +77,7 @@ export default function Category({ categories }: any) {
   return (
     <div className="pb-20  flex flex-col justify-center items-center">
       {/* Kategori */}
-      <div className="p-2 mt-5 lg:max-w-sm md:max-w-full max-w-sm w-full">
+      <div className="p-2 mt-5 lg:max-w-sm md:max-w-full sm:max-w-full max-w-sm w-full">
         <button
           className="flex gap-3 items-center"
           onClick={() => {
@@ -88,7 +88,7 @@ export default function Category({ categories }: any) {
           Kembali
         </button>
         <h2 className="text-center font-semibold text-xl">Kategori</h2>
-        <div className="grid lg:grid-cols-3 grid-cols-3 md:grid-cols-6 gap-5 items-center justify-center mt-5">
+        <div className="grid lg:grid-cols-3 grid-cols-3 md:grid-cols-6 sm:grid-cols-6 gap-5 items-center justify-center mt-5">
           {categories?.map((v: any, i: number) => (
             <button
               onClick={() => {
