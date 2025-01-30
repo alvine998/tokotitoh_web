@@ -30,6 +30,8 @@ export default function LoginForm() {
     setPayload({ ...payload, [name]: value });
   };
 
+  const provider = new GoogleAuthProvider();
+
   const loginByGoogle = async () => {
     setLoading(true);
     try {
@@ -39,12 +41,14 @@ export default function LoginForm() {
       const token = credential?.accessToken;
       const user = result.user;
 
-      const payloads = {
-        ...user,
-      };
+      const payloads = { ...user };
 
+      // ✅ Ensure checkEmail is properly defined
+      let checkEmail = "unchecked";
+
+      // ✅ Check if user exists in DB
       const checking = await axios.get(
-        CONFIG.base_url_api + `/users?search=${user?.email}`,
+        `${CONFIG.base_url_api}/users?search=${user?.email}`,
         {
           headers: {
             "bearer-token": "tokotitohapi",
@@ -53,9 +57,9 @@ export default function LoginForm() {
         }
       );
 
-      if (checking?.data?.items?.rows?.length > 0 || checkEmail == "checked") {
+      if (checking?.data?.items?.rows?.length > 0 || checkEmail === "checked") {
         const result2 = await axios.post(
-          CONFIG.base_url_api + `/user/login/by/google`,
+          `${CONFIG.base_url_api}/user/login/by/google`,
           payloads,
           {
             headers: {
@@ -64,12 +68,16 @@ export default function LoginForm() {
             },
           }
         );
+
         setLoading(false);
         Swal.fire({
           icon: "success",
-          text: "Selamat Datang " + result2?.data?.user?.name,
+          text: `Selamat Datang ${result2?.data?.user?.name}`,
         });
+
         setPayload({});
+
+        // ✅ Store user data in localStorage & cookies
         localStorage.setItem(
           "usertokotitoh",
           JSON.stringify(result2?.data?.user)
@@ -77,6 +85,8 @@ export default function LoginForm() {
         setCookie("account", JSON.stringify(result2?.data?.user), {
           secure: true,
         });
+
+        // ✅ Reload the page after login
         router.reload();
       } else {
         setModal({ ...modal, open: true, key: "term" });
@@ -85,7 +95,7 @@ export default function LoginForm() {
       }
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      console.error("Google Login Error:", error);
     }
   };
 
@@ -296,8 +306,21 @@ export default function LoginForm() {
           <div className="px-6 mt-2">
             <p className="text-xs text-center">
               Dengan mendaftar atau login anda meyetujui{" "}
-              <a className="text-blue-600" href='/helps/privacy-policy' target="_blank">syarat & ketentuan</a> dan{" "}
-              <a className="text-blue-600" href="/helps/term-condition" target="_blank">kebijakan privasi tokotitoh</a>
+              <a
+                className="text-blue-600"
+                href="/helps/privacy-policy"
+                target="_blank"
+              >
+                syarat & ketentuan
+              </a>{" "}
+              dan{" "}
+              <a
+                className="text-blue-600"
+                href="/helps/term-condition"
+                target="_blank"
+              >
+                kebijakan privasi tokotitoh
+              </a>
             </p>
           </div>
         </div>
