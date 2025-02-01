@@ -43,9 +43,6 @@ export default function LoginForm() {
 
       const payloads = { ...user };
 
-      // ✅ Ensure checkEmail is properly defined
-      let checkEmail = "unchecked";
-
       // ✅ Check if user exists in DB
       const checking = await axios.get(
         `${CONFIG.base_url_api}/users?search=${user?.email}`,
@@ -57,7 +54,9 @@ export default function LoginForm() {
         }
       );
 
-      if (checking?.data?.items?.rows?.length > 0 || checkEmail === "checked") {
+      let checkEmail = checking?.data?.items?.rows?.length > 0 ? "checked" : "unchecked";
+
+      if (checkEmail == "checked") {
         const result2 = await axios.post(
           `${CONFIG.base_url_api}/user/login/by/google`,
           payloads,
@@ -93,9 +92,14 @@ export default function LoginForm() {
         setGooglePayload(user);
         setLoading(false);
       }
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
       console.error("Google Login Error:", error);
+      Swal.fire({
+        icon: "error",
+        text: `Login gagal: ${error.message}`,
+      });
+      return
     }
   };
 
