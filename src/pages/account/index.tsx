@@ -27,6 +27,44 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
+export async function getServerSideProps(context: any) {
+  try {
+    const { page, size, search } = context.query;
+    const { req, res } = context;
+    let user: any = getCookie("account", { req, res }) || null;
+    if (!user) {
+      return {
+        redirect: {
+          destination: "/account/login",
+          permanent: false,
+        },
+      };
+    }
+    user = JSON.parse(user);
+
+    return {
+      props: {
+        user: user || null,
+      },
+    };
+  } catch (error: any) {
+    console.log(error);
+    if (error?.response?.status == 401) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
+    return {
+      props: {
+        error: error?.response?.data?.message,
+      },
+    };
+  }
+}
+
 export default function Account() {
   const router = useRouter();
   const [modal, setModal] = useState<useModal>();
@@ -89,12 +127,15 @@ export default function Account() {
     e?.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target));
     try {
-      const result = await axios.delete(CONFIG.base_url_api + `/user?id=${formData?.id}`, {
-        headers: {
-          "bearer-token": "tokotitohapi",
-          "x-partner-code": "id.marketplace.tokotitoh",
-        },
-      });
+      const result = await axios.delete(
+        CONFIG.base_url_api + `/user?id=${formData?.id}`,
+        {
+          headers: {
+            "bearer-token": "tokotitohapi",
+            "x-partner-code": "id.marketplace.tokotitoh",
+          },
+        }
+      );
       Swal.fire({
         icon: "success",
         text: "Akun Berhasil Dihapus",
@@ -161,198 +202,225 @@ export default function Account() {
   }, []);
   return (
     <div className="pb-20 flex flex-col justify-center items-center">
-      {user == null ? (
-        <LoginForm />
-      ) : (
-        <div className="px-4 pt-10 lg:max-w-sm max-w-full">
-          <div className="flex gap-3 items-center">
-            <button
-              onClick={() => {
-                setModal({ ...modal, open: true, key: "view", data: user });
-              }}
-            >
-              {user?.image ? (
-                <img
-                  alt="image"
-                  src={user?.image}
-                  // layout="relative"
-                  width={800}
-                  height={500}
-                  className="h-20 w-20 rounded-full mt-5"
-                />
-              ) : (
-                <UserCircleIcon className="w-20 h-20" />
-              )}
-            </button>
-            <div>
-              <h5 className="font-bold text-lg">{user?.name}</h5>
-              <h5 className="text-lg">{user?.email || user?.phone}</h5>
-            </div>
+      <div className="px-4 pt-10 lg:max-w-sm max-w-full">
+        <div className="flex gap-3 items-center">
+          <button
+            onClick={() => {
+              setModal({ ...modal, open: true, key: "view", data: user });
+            }}
+          >
+            {user?.image ? (
+              <img
+                alt="image"
+                src={user?.image}
+                // layout="relative"
+                width={800}
+                height={500}
+                className="h-20 w-20 rounded-full mt-5"
+              />
+            ) : (
+              <UserCircleIcon className="w-20 h-20" />
+            )}
+          </button>
+          <div>
+            <h5 className="font-bold text-lg">{user?.name}</h5>
+            <h5 className="text-lg">{user?.email || user?.phone}</h5>
           </div>
+        </div>
+        <button
+          onClick={() => {
+            setModal({ ...modal, open: true, key: "edit", data: null });
+          }}
+          className="w-full bg-blue-500 p-2 rounded text-white mt-4"
+        >
+          Edit Akun
+        </button>
+        <div className="py-2">
+          <Link href={"https://play.google.com/"}>
+            <button type="button" className="border-b p-2 w-full">
+              Download Aplikasi
+            </button>
+          </Link>
           <button
+            type="button"
             onClick={() => {
-              setModal({ ...modal, open: true, key: "edit", data: null });
+              router.push("helps/help-center");
             }}
-            className="w-full bg-blue-500 p-2 rounded text-white mt-4"
+            className="border-b p-2 w-full"
           >
-            Edit Akun
-          </button>
-          <div className="py-2">
-            <Link href={"https://play.google.com/"}>
-              <button type="button" className="border-b p-2 w-full">
-                Download Aplikasi
-              </button>
-            </Link>
-            <button
-              type="button"
-              onClick={() => {
-                router.push("helps/help-center");
-              }}
-              className="border-b p-2 w-full"
-            >
-              Pusat Bantuan
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                router.push("helps/call-us");
-              }}
-              className="border-b p-2 w-full"
-            >
-              Hubungi Kami
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                router.push("helps/about-us");
-              }}
-              className="border-b p-2 w-full"
-            >
-              Tentang Kami
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                router.push("helps/term-condition");
-              }}
-              className="border-b p-2 w-full"
-            >
-              Syarat & Ketentuan
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                router.push("helps/privacy-policy");
-              }}
-              className="border-b p-2 w-full"
-            >
-              Kebijakan Privasi
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                
-              }}
-              className="border-b p-2 w-full"
-            >
-              Versi Web 1.1.5
-            </button>
-          </div>
-          <button
-            onClick={() => {
-              setModal({ ...modal, open: true, data: null, key: "remove" });
-            }}
-            className="w-full bg-orange-500 p-2 rounded text-white mt-2"
-          >
-            Hapus Akun
+            Pusat Bantuan
           </button>
           <button
+            type="button"
             onClick={() => {
-              setModal({ ...modal, open: true, data: null, key: "logout" });
+              router.push("helps/call-us");
             }}
-            className="w-full bg-red-500 p-2 rounded text-white mt-2"
+            className="border-b p-2 w-full"
           >
-            Logout
+            Hubungi Kami
           </button>
+          <button
+            type="button"
+            onClick={() => {
+              router.push("helps/about-us");
+            }}
+            className="border-b p-2 w-full"
+          >
+            Tentang Kami
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              router.push("helps/term-condition");
+            }}
+            className="border-b p-2 w-full"
+          >
+            Syarat & Ketentuan
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              router.push("helps/privacy-policy");
+            }}
+            className="border-b p-2 w-full"
+          >
+            Kebijakan Privasi
+          </button>
+          <button
+            type="button"
+            onClick={() => {}}
+            className="border-b p-2 w-full"
+          >
+            Versi Web 1.1.5
+          </button>
+        </div>
+        <button
+          onClick={() => {
+            setModal({ ...modal, open: true, data: null, key: "remove" });
+          }}
+          className="w-full bg-orange-500 p-2 rounded text-white mt-2"
+        >
+          Hapus Akun
+        </button>
+        <button
+          onClick={() => {
+            setModal({ ...modal, open: true, data: null, key: "logout" });
+          }}
+          className="w-full bg-red-500 p-2 rounded text-white mt-2"
+        >
+          Logout
+        </button>
 
-          {modal?.key == "edit" ? (
-            <Modal open={modal.open} setOpen={() => {}}>
-              <form onSubmit={update}>
-                <h2 className="text-xl font-semibold text-center">
-                  Ubah Profil
-                </h2>
-                <div>
-                  <Input
-                    label="Foto"
-                    name="image"
-                    type="file"
-                    onChange={(e: any) => {
-                      handleImage(e);
-                    }}
-                    accept="image/*"
-                  />
-                  <Input
-                    placeholder="Masukkan Nama"
-                    label="Nama"
-                    defaultValue={user?.name || ""}
-                    name="name"
-                    required
-                  />
-                  <Input
-                    placeholder="Masukkan Email"
-                    label="Email"
-                    defaultValue={user?.email || ""}
-                    name="email"
-                    type="email"
-                  />
-                  <Input
-                    placeholder="Masukkan No Telepon"
-                    label="No Telepon"
-                    defaultValue={user?.phone || ""}
-                    name="phone"
-                    type="number"
-                  />
-                  <Input
-                    placeholder="********"
-                    minLength={8}
-                    label="Password"
-                    defaultValue={""}
-                    name="password"
-                    isPassword
-                  />
-                  <Input
-                    placeholder="********"
-                    minLength={8}
-                    label="Konfirmasi Password"
-                    defaultValue={""}
-                    name="password_confirm"
-                    isPassword
-                  />
-                  <input type="hidden" name="id" value={user?.id} />
-                </div>
-                <Button type="submit">Simpan</Button>
-                <Button
+        {modal?.key == "edit" ? (
+          <Modal open={modal.open} setOpen={() => {}}>
+            <form onSubmit={update}>
+              <h2 className="text-xl font-semibold text-center">Ubah Profil</h2>
+              <div>
+                <Input
+                  label="Foto"
+                  name="image"
+                  type="file"
+                  onChange={(e: any) => {
+                    handleImage(e);
+                  }}
+                  accept="image/*"
+                />
+                <Input
+                  placeholder="Masukkan Nama"
+                  label="Nama"
+                  defaultValue={user?.name || ""}
+                  name="name"
+                  required
+                />
+                <Input
+                  placeholder="Masukkan Email"
+                  label="Email"
+                  defaultValue={user?.email || ""}
+                  name="email"
+                  type="email"
+                />
+                <Input
+                  placeholder="Masukkan No Telepon"
+                  label="No Telepon"
+                  defaultValue={user?.phone || ""}
+                  name="phone"
+                  type="number"
+                />
+                <Input
+                  placeholder="********"
+                  minLength={8}
+                  label="Password"
+                  defaultValue={""}
+                  name="password"
+                  isPassword
+                />
+                <Input
+                  placeholder="********"
+                  minLength={8}
+                  label="Konfirmasi Password"
+                  defaultValue={""}
+                  name="password_confirm"
+                  isPassword
+                />
+                <input type="hidden" name="id" value={user?.id} />
+              </div>
+              <Button type="submit">Simpan</Button>
+              <Button
+                type="button"
+                onClick={() => {
+                  setModal({ ...modal, open: false });
+                }}
+                color="white"
+              >
+                Kembali
+              </Button>
+            </form>
+          </Modal>
+        ) : (
+          ""
+        )}
+        {modal?.key == "logout" ? (
+          <Modal open={modal.open} setOpen={() => {}}>
+            <div className="px-2">
+              <h2 className="text-xl font-semibold">Logout</h2>
+              <div className="mt-2">
+                <p>
+                  Apakah anda yakin akan logout dari tokotitoh ? Pastikan anda
+                  ingat email/no telepon dan password anda untuk login kembali
+                </p>
+              </div>
+              <div className="flex gap-10 justify-end items-center mt-4">
+                <button
                   type="button"
                   onClick={() => {
                     setModal({ ...modal, open: false });
                   }}
-                  color="white"
+                  className="font-semibold text-blue-700"
                 >
-                  Kembali
-                </Button>
-              </form>
-            </Modal>
-          ) : (
-            ""
-          )}
-          {modal?.key == "logout" ? (
-            <Modal open={modal.open} setOpen={() => {}}>
-              <div className="px-2">
-                <h2 className="text-xl font-semibold">Logout</h2>
+                  Batalkan
+                </button>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="font-semibold text-blue-700"
+                >
+                  Ya
+                </button>
+              </div>
+            </div>
+          </Modal>
+        ) : (
+          ""
+        )}
+        {modal?.key == "remove" ? (
+          <Modal open={modal.open} setOpen={() => {}}>
+            <div className="px-2">
+              <form onSubmit={remove}>
+                <h2 className="text-xl font-semibold">Hapus Akun</h2>
+                <input type="hidden" name="id" value={user?.id} />
                 <div className="mt-2">
                   <p>
-                    Apakah anda yakin akan logout dari tokotitoh ? Pastikan anda
-                    ingat email/no telepon dan password anda untuk login kembali
+                    Apakah anda yakin ingin menghapus akun ini dari tokotitoh ?
                   </p>
                 </div>
                 <div className="flex gap-10 justify-end items-center mt-4">
@@ -365,82 +433,44 @@ export default function Account() {
                   >
                     Batalkan
                   </button>
-                  <button
-                    type="button"
-                    onClick={logout}
-                    className="font-semibold text-blue-700"
-                  >
-                    Ya
+                  <button type="submit" className="font-semibold text-red-700">
+                    Hapus
                   </button>
                 </div>
+              </form>
+            </div>
+          </Modal>
+        ) : (
+          ""
+        )}
+        {modal?.key == "view" ? (
+          <Modal open={modal.open} setOpen={() => {}}>
+            <div className="px-2">
+              <img
+                alt="userimage"
+                src={modal?.data?.image}
+                width={500}
+                height={500}
+                className="w-full h-auto"
+                // layout="relative"
+              />
+              <div className="flex gap-10 justify-end items-center mt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setModal({ ...modal, open: false });
+                  }}
+                  className="font-semibold text-blue-700"
+                >
+                  Tutup
+                </button>
               </div>
-            </Modal>
-          ) : (
-            ""
-          )}
-          {modal?.key == "remove" ? (
-            <Modal open={modal.open} setOpen={() => {}}>
-              <div className="px-2">
-                <form onSubmit={remove}>
-                  <h2 className="text-xl font-semibold">Hapus Akun</h2>
-                  <input type="hidden" name="id" value={user?.id} />
-                  <div className="mt-2">
-                    <p>
-                      Apakah anda yakin ingin menghapus akun ini dari tokotitoh ?
-                    </p>
-                  </div>
-                  <div className="flex gap-10 justify-end items-center mt-4">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setModal({ ...modal, open: false });
-                      }}
-                      className="font-semibold text-blue-700"
-                    >
-                      Batalkan
-                    </button>
-                    <button
-                      type="submit"
-                      className="font-semibold text-red-700"
-                    >
-                      Hapus
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </Modal>
-          ) : (
-            ""
-          )}
-          {modal?.key == "view" ? (
-            <Modal open={modal.open} setOpen={() => {}}>
-              <div className="px-2">
-                <img
-                  alt="userimage"
-                  src={modal?.data?.image}
-                  width={500}
-                  height={500}
-                  className="w-full h-auto"
-                  // layout="relative"
-                />
-                <div className="flex gap-10 justify-end items-center mt-4">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setModal({ ...modal, open: false });
-                    }}
-                    className="font-semibold text-blue-700"
-                  >
-                    Tutup
-                  </button>
-                </div>
-              </div>
-            </Modal>
-          ) : (
-            ""
-          )}
-        </div>
-      )}
+            </div>
+          </Modal>
+        ) : (
+          ""
+        )}
+      </div>
       <BottomTabs />
     </div>
   );

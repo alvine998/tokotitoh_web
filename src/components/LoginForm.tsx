@@ -86,7 +86,7 @@ export default function LoginForm() {
         });
 
         // ✅ Reload the page after login
-        router.reload();
+        router.push("/account")
       } else {
         setModal({ ...modal, open: true, key: "term" });
         setGooglePayload(user);
@@ -129,7 +129,7 @@ export default function LoginForm() {
       setCookie("account", JSON.stringify(result2?.data?.user), {
         secure: true,
       });
-      router.reload();
+      router.push("/account")
     } catch (error) {
       setLoading(false);
       console.log(error);
