@@ -54,7 +54,8 @@ export default function LoginForm() {
         }
       );
 
-      let checkEmail = checking?.data?.items?.rows?.length > 0 ? "checked" : "unchecked";
+      let checkEmail =
+        checking?.data?.items?.rows?.length > 0 ? "checked" : "unchecked";
 
       if (checkEmail == "checked") {
         const result2 = await axios.post(
@@ -68,14 +69,6 @@ export default function LoginForm() {
           }
         );
 
-        setLoading(false);
-        Swal.fire({
-          icon: "success",
-          text: `Selamat Datang ${result2?.data?.user?.name}`,
-        });
-
-        setPayload({});
-
         // ✅ Store user data in localStorage & cookies
         localStorage.setItem(
           "usertokotitoh",
@@ -84,6 +77,14 @@ export default function LoginForm() {
         setCookie("account", JSON.stringify(result2?.data?.user), {
           secure: true,
         });
+
+        setLoading(false);
+        Swal.fire({
+          icon: "success",
+          text: `Selamat Datang ${result2?.data?.user?.name}`,
+        });
+
+        setPayload({});
 
         // ✅ Reload the page after login
         setTimeout(() => {
@@ -105,7 +106,7 @@ export default function LoginForm() {
         icon: "error",
         text: `Login gagal: ${error.message}`,
       });
-      return
+      return;
     }
   };
 
@@ -135,7 +136,7 @@ export default function LoginForm() {
       setCookie("account", JSON.stringify(result2?.data?.user), {
         secure: true,
       });
-      router.push("/account")
+      router.push("/account");
     } catch (error) {
       setLoading(false);
       console.log(error);
