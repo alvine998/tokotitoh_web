@@ -303,8 +303,26 @@ export default function Home({ categories, notif, subcategories }: any) {
               - Periksa surat-surat dan kelengkapan barang
               <br />- Untuk pembelian properti cek surat-surat dan kondisi
               situasi tanah dengan teliti sesuai dengan ketentuan yang berlaku
-              <br />- Usahakan membeli langsung dari pemilik barang, agar
-              terhindar dari penipuan segitiga
+              <br />
+              <br />
+              <strong>Awas Waspada Penipuan Segitiga</strong><br/> adalah penipuan di mana si pelaku
+              penipuan tidak pernah bertemu dengan korban nya si penipu
+              menawarkan barang / bisa berupa kendaraan atau lainnya dengan
+              harga murah dimana penipu berpura pura sebagai pemilik atau calo
+              yg menawarkan barang yg dijual oleh seseorang di internet dan
+              penipuan mengiklankan sendiri barang orang penjual dengan harga
+              murah dan si penjual diatur untuk mengikuti permainan nya
+              sedemikian rupa dan calon pembeli ketika bertemu penjual dan
+              merasa cocok dengan barang tersebut kemudian pembeli disuruh
+              transfer ke rekening penipu yg hanya dihubungi oleh whatsapp atau
+              telepon dan jika pembeli mentransfer uang ke rekening penipu maka
+              uang nya akan hilang diambil penipu Jadi untuk menghindari
+              penipuan jenis ini maka pembeli harus menegaskan dan
+              mengkonfirmasi kepada orang yang kita temui secara langsung untuk
+              masalah pembayaran ke rekening yg harus disetujui oleh orang yg
+              kita temui secara langsung karena orang yg kita temui secara
+              langsung adalah orang yg diberi / mempunyai kuasa atas barang
+              kendaraan tersebut.
             </p>
           </div>
         </Modal>
