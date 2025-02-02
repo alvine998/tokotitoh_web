@@ -86,7 +86,13 @@ export default function LoginForm() {
         });
 
         // ✅ Reload the page after login
-        router.push("/account")
+        setTimeout(() => {
+          try {
+            router.push("/account");
+          } catch (error) {
+            window.location.href = "/account"; // Force reload if push fails
+          }
+        }, 500);
       } else {
         setModal({ ...modal, open: true, key: "term" });
         setGooglePayload(user);
