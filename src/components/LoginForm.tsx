@@ -30,8 +30,6 @@ export default function LoginForm() {
     setPayload({ ...payload, [name]: value });
   };
 
-  const provider = new GoogleAuthProvider();
-
   const loginByGoogle = async () => {
     setLoading(true);
     try {
