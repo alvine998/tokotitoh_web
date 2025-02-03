@@ -22,6 +22,7 @@ import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
 import { createQueryString } from "@/utils";
+import ModalFilter from "../ModalFilter";
 
 interface Props {
   ads: any;
@@ -406,946 +407,958 @@ export default function HeaderAds(props: Props) {
       </div>
 
       {modal?.key == "filter" ? (
-        <Modal open={modal.open} setOpen={() => {}} type="filters">
-          <div className="h-full">
-            <div className="p-2">
-              <div className="flex justify-between items-start">
-                <p>
-                  Filter: {ads?.category_name || "Semua Kategori"} {">"}{" "}
-                  {ads?.name || "Semua Sub Kategori"}
-                </p>
-                <div className="flex flex-col">
-                  <button
-                    type="button"
-                    onClick={() => setModal({ ...modal, open: false })}
-                    className="justify-end items-end flex"
-                  >
-                    <XCircleIcon className="w-7" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      // setResets(true);
-                      // setSelected(initialValue);
-                      setLoading(true);
-                      setList({ type: [] });
-                      setFilter({ size: 6, search: "" });
-                      setModal({ ...modal, open: false });
-                      setSearchString("");
-                      const id = subcat_id || ads?.id || params?.subcat_id;
-                      if (id) {
-                        // Only navigate if the id is valid
-                        router.push(`/category/${id}`);
-                      } else {
-                        // Handle the case where id is missing (optional)
-                        console.warn("subcat_id or ads.id is missing");
-                      }
-                    }}
-                    className="text-blue-700 mr-2 border-2 border-black rounded py-1 px-4 mt-1"
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
-              {/* Filter Selected */}
-              <div className="w-full overflow-y-auto mt-2 gap-2 flex">
-                {Object.entries(selected)
-                  ?.filter(
-                    ([key, value]: any) => value !== "" && !key?.includes("_id")
-                  )
-                  ?.map(([key, value]: any) => (
-                    <div
-                      key={key}
-                      className="flex bg-blue-500 rounded-full py-1 px-2 items-end w-auto"
+        <div>
+          <ModalFilter open={modal.open} setOpen={() => {}} type="filters">
+            <div className="h-[100vh]">
+              <div className="p-2">
+                <div className="flex justify-between items-start">
+                  <p>
+                    Filter: {ads?.category_name || "Semua Kategori"} {">"}{" "}
+                    {ads?.name || "Semua Sub Kategori"}
+                  </p>
+                  <div className="flex flex-col">
+                    <button
+                      type="button"
+                      onClick={() => setModal({ ...modal, open: false })}
+                      className="justify-end items-end flex"
                     >
-                      <p className="text-white">{value}</p>
-                      <button
-                        className="ml-2"
-                        onClick={() => {
-                          setSelected({
-                            ...selected,
-                            [key]: "",
-                          });
-                        }}
-                      >
-                        <XIcon className="text-white w-4" />
-                      </button>
-                    </div>
-                  ))}
-              </div>
-              <div className="flex mt-2">
-                <div className="lg:w-auto w-auto flex flex-col gap-2">
-                  <button
-                    onClick={() => {
-                      setFilterName("KATEGORI");
-                    }}
-                    className={`border-2 w-auto p-2 rounded text-xs hover:bg-gray-300 duration-200 transition-all`}
-                  >
-                    KATEGORI
-                  </button>
-                  {(ads?.category_name?.toLowerCase()?.includes("mobil") &&
-                    ads?.name?.toLowerCase()?.includes("mobil")) ||
-                  (ads?.category_name?.toLowerCase()?.includes("motor") &&
-                    ads?.name?.toLowerCase()?.includes("motor")) ? (
-                    <>
-                      {navsCar?.map((v: any, i: number) => (
-                        <button
-                          key={i}
-                          onClick={() => {
-                            setFilterName(v?.name);
-                          }}
-                          className={`border-2 w-auto p-2 rounded text-xs ${
-                            filterName == v?.name ? "bg-gray-300" : ""
-                          } hover:bg-gray-300 duration-200 transition-all`}
-                        >
-                          {v?.name}
-                        </button>
-                      ))}
-                    </>
-                  ) : ads?.category_name
-                      ?.toLowerCase()
-                      ?.includes("properti") ? (
-                    <>
-                      {navsProperty?.map((v: any, i: number) => (
-                        <button
-                          key={i}
-                          onClick={() => {
-                            setFilterName(v?.name);
-                          }}
-                          className={`border-2 p-2 rounded text-xs ${
-                            filterName == v?.name ? "bg-gray-300" : ""
-                          } hover:bg-gray-300 duration-200 transition-all`}
-                        >
-                          {v?.name}
-                        </button>
-                      ))}
-                    </>
-                  ) : ads?.name?.toLowerCase() == "alat berat di sewakan" ||
-                    ads?.name?.toLowerCase() == "alat berat di jual" ||
-                    ads?.name?.toLowerCase() == "bus dan truk dijual" ||
-                    ads?.name?.toLowerCase() == "bus dan truk di sewakan" ? (
-                    <>
-                      {navsBusTruck?.map((v: any, i: number) => (
-                        <button
-                          key={i}
-                          onClick={() => {
-                            setFilterName(v?.name);
-                          }}
-                          className={`border-2 p-2 rounded text-xs ${
-                            filterName == v?.name ? "bg-gray-300" : ""
-                          } hover:bg-gray-300 duration-200 transition-all`}
-                        >
-                          {v?.name}
-                        </button>
-                      ))}
-                    </>
-                  ) : ads?.category_name?.toLowerCase()?.includes("makanan") ||
-                    ads?.category_name?.toLowerCase()?.includes("hewan") ? (
-                    <>
-                      {navsFoodPet?.map((v: any, i: number) => (
-                        <button
-                          key={i}
-                          onClick={() => {
-                            setFilterName(v?.name);
-                          }}
-                          className={`border-2 p-2 rounded text-xs ${
-                            filterName == v?.name ? "bg-gray-300" : ""
-                          } hover:bg-gray-300 duration-200 transition-all`}
-                        >
-                          {v?.name}
-                        </button>
-                      ))}
-                    </>
-                  ) : (
-                    <>
-                      {navs?.map((v: any, i: number) => (
-                        <button
-                          key={i}
-                          onClick={() => {
-                            setFilterName(v?.name);
-                          }}
-                          className={`border-2 p-2 rounded text-xs ${
-                            filterName == v?.name ? "bg-gray-300" : ""
-                          } hover:bg-gray-300 duration-200 transition-all`}
-                        >
-                          {v?.name}
-                        </button>
-                      ))}
-                    </>
-                  )}
+                      <XCircleIcon className="w-7" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        // setResets(true);
+                        // setSelected(initialValue);
+                        setLoading(true);
+                        setList({ type: [] });
+                        setFilter({ size: 6, search: "" });
+                        setModal({ ...modal, open: false });
+                        setSearchString("");
+                        const id = subcat_id || ads?.id || params?.subcat_id;
+                        if (id) {
+                          // Only navigate if the id is valid
+                          router.push(`/category/${id}`);
+                        } else {
+                          // Handle the case where id is missing (optional)
+                          console.warn("subcat_id or ads.id is missing");
+                        }
+                      }}
+                      className="text-blue-700 mr-2 border-2 border-black rounded py-1 px-4 mt-1"
+                    >
+                      Reset
+                    </button>
+                  </div>
                 </div>
-                <div className={`w-full ${list?.types?.length > 0 ? "pb-12" : "pb-0"}`}>
-                  {filterName == "KATEGORI" ? (
-                    <div className="lg:h-[45vh] h-[60vh] overflow-auto">
-                      <div className="flex flex-col gap-2 pl-2 mt-4">
-                        {list?.subcategories?.length > 0 ? (
-                          <>
-                            {list?.subcategories?.map((v: any, i: number) => (
-                              <button
-                                key={i}
-                                className="w-full px-2 py-1 text-xs text-left border-b"
-                                onClick={() => {
-                                  if (v?.id !== 0) {
-                                    // setFilter({size: 6, search: searchString});
-                                    setModal({ ...modal, open: false });
-                                    setList({ ...list, subcategories: [] });
-                                    router.push(
-                                      `/category/${v?.id}?size=6&search=${searchString}`
-                                    );
-                                  } else {
-                                    setList({ ...list, subcategories: [] });
-                                  }
-                                }}
-                              >
-                                {v?.name}
-                              </button>
-                            ))}
-                          </>
-                        ) : (
-                          <>
-                            {categories?.map((v: any, i: number) => (
-                              <button
-                                key={i}
-                                className="w-full px-2 py-1 text-xs text-left border-b"
-                                onClick={() => {
-                                  getSubcategory(v);
-                                }}
-                              >
-                                {v?.name}
-                              </button>
-                            ))}
-                          </>
-                        )}
+                {/* Filter Selected */}
+                <div className="w-full overflow-y-auto mt-2 gap-2 flex">
+                  {Object.entries(selected)
+                    ?.filter(
+                      ([key, value]: any) =>
+                        value !== "" && !key?.includes("_id")
+                    )
+                    ?.map(([key, value]: any) => (
+                      <div
+                        key={key}
+                        className="flex bg-blue-500 rounded-full py-1 px-2 items-end w-auto"
+                      >
+                        <p className="text-white">{value}</p>
+                        <button
+                          className="ml-2"
+                          onClick={() => {
+                            setSelected({
+                              ...selected,
+                              [key]: "",
+                            });
+                          }}
+                        >
+                          <XIcon className="text-white w-4" />
+                        </button>
                       </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {filterName == "MEREK" ? (
-                    <div>
-                      <div className="flex flex-row gap-2 justify-center items-center flex-wrap pl-2">
-                        {brands
-                          ?.filter((v: any) => v.image !== null)
-                          ?.map((val: any) => (
-                            <button
-                              key={val?.id}
-                              onClick={() => {
-                                let brands = filter?.brand_id || [];
-                                if (!brands?.includes(val?.id)) {
-                                  brands.push(val?.id);
-                                  getType(val?.id);
-                                  setFilter({ ...filter, brand_id: brands });
-                                  return;
-                                } else {
-                                  brands = brands?.filter(
-                                    (v: any) => v !== val?.id
-                                  );
-                                  setFilter({
-                                    ...filter,
-                                    brand_id: brands,
-                                    type_id: filter?.type_id
-                                      ? filter?.type_id?.filter(
-                                          (val: any) =>
-                                            val !==
-                                            list?.types?.find(
-                                              (value: any) => value?.id == val
-                                            )?.id
-                                        )
-                                      : "",
-                                  });
-                                  setList({
-                                    ...list,
-                                    types: list.types?.filter(
-                                      (v: any) => v?.brand_id !== val?.id
-                                    ),
-                                  });
-                                }
-                              }}
-                              className={`border rounded p-2 ${
-                                filter?.brand_id?.includes(val?.id)
-                                  ? "border-blue-500"
-                                  : "border-gray-200"
-                              }`}
-                            >
-                              <img
-                                src={val?.image}
-                                alt="logo-car"
-                                className="lg:h-[40px] md:h-[100px] w-auto h-[40px]"
-                              />
-                            </button>
-                          ))}
-                      </div>
-                      <div className="lg:h-[20vh] h-[20vh] overflow-auto mt-4">
-                        <label htmlFor="brand" className="ml-2">
-                          Merek
-                        </label>
-                        <div className="flex flex-col gap-2 pl-2 mt-2">
-                          {brands?.map((v: any, i: number) => (
-                            <button
-                              key={i}
-                              onClick={() => {
-                                let brands = filter?.brand_id || [];
-                                if (!brands?.includes(v?.id)) {
-                                  brands.push(v?.id);
-                                  getType(v?.id);
-                                  setFilter({ ...filter, brand_id: brands });
-                                  return;
-                                } else {
-                                  brands = brands?.filter(
-                                    (val: any) => val !== v?.id
-                                  );
-                                  setFilter({
-                                    ...filter,
-                                    brand_id: brands,
-                                    type_id: filter?.type_id
-                                      ? filter?.type_id?.filter(
-                                          (val: any) =>
-                                            val !==
-                                            list?.types?.find(
-                                              (value: any) => value?.id == val
-                                            )?.id
-                                        )
-                                      : "",
-                                  });
-                                  setList({
-                                    ...list,
-                                    types: list.types?.filter(
-                                      (val: any) => val?.brand_id !== v?.id
-                                    ),
-                                  });
-                                }
-                              }}
-                              type="button"
-                              className="flex items-center justify-start"
-                            >
-                              {filter?.brand_id &&
-                              filter?.brand_id?.includes(v?.id) ? (
-                                <SquareCheck className="text-green-600" />
-                              ) : (
-                                <Square />
-                              )}
-                              <span className="ml-2">{v?.name}</span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                      {list?.types?.length > 0 ? (
-                        <div className="lg:h-[20vh] h-[20vh] overflow-auto mt-4">
-                          <label htmlFor="type" className="ml-2">
-                            Tipe
-                          </label>
-                          <div className="flex flex-col gap-2 pl-2 mt-2">
-                            {list?.types?.map((v: any, i: number) => (
-                              <div key={i}>
+                    ))}
+                </div>
+                <div className="flex mt-2">
+                  <div className="lg:w-auto w-auto flex flex-col gap-2">
+                    <button
+                      onClick={() => {
+                        setFilterName("KATEGORI");
+                      }}
+                      className={`border-2 w-auto p-2 rounded text-xs hover:bg-gray-300 duration-200 transition-all`}
+                    >
+                      KATEGORI
+                    </button>
+                    {(ads?.category_name?.toLowerCase()?.includes("mobil") &&
+                      ads?.name?.toLowerCase()?.includes("mobil")) ||
+                    (ads?.category_name?.toLowerCase()?.includes("motor") &&
+                      ads?.name?.toLowerCase()?.includes("motor")) ? (
+                      <>
+                        {navsCar?.map((v: any, i: number) => (
+                          <button
+                            key={i}
+                            onClick={() => {
+                              setFilterName(v?.name);
+                            }}
+                            className={`border-2 w-auto p-2 rounded text-xs ${
+                              filterName == v?.name ? "bg-gray-300" : ""
+                            } hover:bg-gray-300 duration-200 transition-all`}
+                          >
+                            {v?.name}
+                          </button>
+                        ))}
+                      </>
+                    ) : ads?.category_name
+                        ?.toLowerCase()
+                        ?.includes("properti") ? (
+                      <>
+                        {navsProperty?.map((v: any, i: number) => (
+                          <button
+                            key={i}
+                            onClick={() => {
+                              setFilterName(v?.name);
+                            }}
+                            className={`border-2 p-2 rounded text-xs ${
+                              filterName == v?.name ? "bg-gray-300" : ""
+                            } hover:bg-gray-300 duration-200 transition-all`}
+                          >
+                            {v?.name}
+                          </button>
+                        ))}
+                      </>
+                    ) : ads?.name?.toLowerCase() == "alat berat di sewakan" ||
+                      ads?.name?.toLowerCase() == "alat berat di jual" ||
+                      ads?.name?.toLowerCase() == "bus dan truk dijual" ||
+                      ads?.name?.toLowerCase() == "bus dan truk di sewakan" ? (
+                      <>
+                        {navsBusTruck?.map((v: any, i: number) => (
+                          <button
+                            key={i}
+                            onClick={() => {
+                              setFilterName(v?.name);
+                            }}
+                            className={`border-2 p-2 rounded text-xs ${
+                              filterName == v?.name ? "bg-gray-300" : ""
+                            } hover:bg-gray-300 duration-200 transition-all`}
+                          >
+                            {v?.name}
+                          </button>
+                        ))}
+                      </>
+                    ) : ads?.category_name
+                        ?.toLowerCase()
+                        ?.includes("makanan") ||
+                      ads?.category_name?.toLowerCase()?.includes("hewan") ? (
+                      <>
+                        {navsFoodPet?.map((v: any, i: number) => (
+                          <button
+                            key={i}
+                            onClick={() => {
+                              setFilterName(v?.name);
+                            }}
+                            className={`border-2 p-2 rounded text-xs ${
+                              filterName == v?.name ? "bg-gray-300" : ""
+                            } hover:bg-gray-300 duration-200 transition-all`}
+                          >
+                            {v?.name}
+                          </button>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        {navs?.map((v: any, i: number) => (
+                          <button
+                            key={i}
+                            onClick={() => {
+                              setFilterName(v?.name);
+                            }}
+                            className={`border-2 p-2 rounded text-xs ${
+                              filterName == v?.name ? "bg-gray-300" : ""
+                            } hover:bg-gray-300 duration-200 transition-all`}
+                          >
+                            {v?.name}
+                          </button>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                  <div
+                    className={`w-full ${
+                      list?.types?.length > 0 ? "pb-12" : "pb-0"
+                    }`}
+                  >
+                    {filterName == "KATEGORI" ? (
+                      <div className="lg:h-[45vh] h-[60vh] overflow-auto">
+                        <div className="flex flex-col gap-2 pl-2 mt-4">
+                          {list?.subcategories?.length > 0 ? (
+                            <>
+                              {list?.subcategories?.map((v: any, i: number) => (
                                 <button
                                   key={i}
+                                  className="w-full px-2 py-1 text-xs text-left border-b"
                                   onClick={() => {
-                                    let type_ids = filter?.type_id || [];
-                                    if (!type_ids?.includes(v?.id)) {
-                                      type_ids.push(v?.id);
-                                      setFilter({
-                                        ...filter,
-                                        type_id: type_ids,
-                                      });
-                                      return;
-                                    } else {
-                                      type_ids = type_ids?.filter(
-                                        (val: any) => val !== v?.id
+                                    if (v?.id !== 0) {
+                                      // setFilter({size: 6, search: searchString});
+                                      setModal({ ...modal, open: false });
+                                      setList({ ...list, subcategories: [] });
+                                      router.push(
+                                        `/category/${v?.id}?size=6&search=${searchString}`
                                       );
-                                      setFilter({
-                                        ...filter,
-                                        type_id: type_ids,
-                                      });
+                                    } else {
+                                      setList({ ...list, subcategories: [] });
                                     }
                                   }}
-                                  type="button"
-                                  className="flex items-center justify-start"
                                 >
-                                  {filter?.type_id &&
-                                  filter?.type_id?.includes(v?.id) ? (
-                                    <SquareCheck className="text-green-600" />
-                                  ) : (
-                                    <Square />
-                                  )}
-                                  <span className="ml-2">{v?.name}</span>
+                                  {v?.name}
                                 </button>
-                              </div>
+                              ))}
+                            </>
+                          ) : (
+                            <>
+                              {categories?.map((v: any, i: number) => (
+                                <button
+                                  key={i}
+                                  className="w-full px-2 py-1 text-xs text-left border-b"
+                                  onClick={() => {
+                                    getSubcategory(v);
+                                  }}
+                                >
+                                  {v?.name}
+                                </button>
+                              ))}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {filterName == "MEREK" ? (
+                      <div>
+                        <div className="flex flex-row gap-2 justify-center items-center flex-wrap pl-2">
+                          {brands
+                            ?.filter((v: any) => v.image !== null)
+                            ?.map((val: any) => (
+                              <button
+                                key={val?.id}
+                                onClick={() => {
+                                  let brands = filter?.brand_id || [];
+                                  if (!brands?.includes(val?.id)) {
+                                    brands.push(val?.id);
+                                    getType(val?.id);
+                                    setFilter({ ...filter, brand_id: brands });
+                                    return;
+                                  } else {
+                                    brands = brands?.filter(
+                                      (v: any) => v !== val?.id
+                                    );
+                                    setFilter({
+                                      ...filter,
+                                      brand_id: brands,
+                                      type_id: filter?.type_id
+                                        ? filter?.type_id?.filter(
+                                            (val: any) =>
+                                              val !==
+                                              list?.types?.find(
+                                                (value: any) => value?.id == val
+                                              )?.id
+                                          )
+                                        : "",
+                                    });
+                                    setList({
+                                      ...list,
+                                      types: list.types?.filter(
+                                        (v: any) => v?.brand_id !== val?.id
+                                      ),
+                                    });
+                                  }
+                                }}
+                                className={`border rounded p-2 ${
+                                  filter?.brand_id?.includes(val?.id)
+                                    ? "border-blue-500"
+                                    : "border-gray-200"
+                                }`}
+                              >
+                                <img
+                                  src={val?.image}
+                                  alt="logo-car"
+                                  className="lg:h-[40px] md:h-[100px] w-auto h-[40px]"
+                                />
+                              </button>
+                            ))}
+                        </div>
+                        <div className="lg:h-[20vh] h-[20vh] overflow-auto mt-4">
+                          <label htmlFor="brand" className="ml-2">
+                            Merek
+                          </label>
+                          <div className="flex flex-col gap-2 pl-2 mt-2">
+                            {brands?.map((v: any, i: number) => (
+                              <button
+                                key={i}
+                                onClick={() => {
+                                  let brands = filter?.brand_id || [];
+                                  if (!brands?.includes(v?.id)) {
+                                    brands.push(v?.id);
+                                    getType(v?.id);
+                                    setFilter({ ...filter, brand_id: brands });
+                                    return;
+                                  } else {
+                                    brands = brands?.filter(
+                                      (val: any) => val !== v?.id
+                                    );
+                                    setFilter({
+                                      ...filter,
+                                      brand_id: brands,
+                                      type_id: filter?.type_id
+                                        ? filter?.type_id?.filter(
+                                            (val: any) =>
+                                              val !==
+                                              list?.types?.find(
+                                                (value: any) => value?.id == val
+                                              )?.id
+                                          )
+                                        : "",
+                                    });
+                                    setList({
+                                      ...list,
+                                      types: list.types?.filter(
+                                        (val: any) => val?.brand_id !== v?.id
+                                      ),
+                                    });
+                                  }
+                                }}
+                                type="button"
+                                className="flex items-center justify-start"
+                              >
+                                {filter?.brand_id &&
+                                filter?.brand_id?.includes(v?.id) ? (
+                                  <SquareCheck className="text-green-600" />
+                                ) : (
+                                  <Square />
+                                )}
+                                <span className="ml-2">{v?.name}</span>
+                              </button>
                             ))}
                           </div>
                         </div>
+                        {list?.types?.length > 0 ? (
+                          <div className="lg:h-[20vh] h-[20vh] overflow-auto mt-4">
+                            <label htmlFor="type" className="ml-2">
+                              Tipe
+                            </label>
+                            <div className="flex flex-col gap-2 pl-2 mt-2">
+                              {list?.types?.map((v: any, i: number) => (
+                                <div key={i}>
+                                  <button
+                                    key={i}
+                                    onClick={() => {
+                                      let type_ids = filter?.type_id || [];
+                                      if (!type_ids?.includes(v?.id)) {
+                                        type_ids.push(v?.id);
+                                        setFilter({
+                                          ...filter,
+                                          type_id: type_ids,
+                                        });
+                                        return;
+                                      } else {
+                                        type_ids = type_ids?.filter(
+                                          (val: any) => val !== v?.id
+                                        );
+                                        setFilter({
+                                          ...filter,
+                                          type_id: type_ids,
+                                        });
+                                      }
+                                    }}
+                                    type="button"
+                                    className="flex items-center justify-start"
+                                  >
+                                    {filter?.type_id &&
+                                    filter?.type_id?.includes(v?.id) ? (
+                                      <SquareCheck className="text-green-600" />
+                                    ) : (
+                                      <Square />
+                                    )}
+                                    <span className="ml-2">{v?.name}</span>
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {filterName == "LOKASI" ? (
+                      <div>
+                        <div className="flex flex-col gap-2 items-center justify-center pl-2 mt-4">
+                          <ReactSelect
+                            options={[
+                              { value: "", label: "Semua Provinsi" },
+                              ...provinces?.map((v: any) => ({
+                                ...v,
+                                value: v?.id,
+                                label: v?.name,
+                              })),
+                            ]}
+                            onChange={(e: any) => {
+                              getCity(e);
+                            }}
+                            maxMenuHeight={150}
+                            placeholder="Semua Provinsi"
+                            className="w-full"
+                            defaultValue={{
+                              value: filter?.province_id,
+                              label:
+                                provinces?.find(
+                                  (v: any) => v?.id == filter?.province_id
+                                )?.name || "Semua Provinsi",
+                            }}
+                          />
+                          <ReactSelect
+                            isDisabled={list?.cities?.length < 1}
+                            options={[
+                              { value: "", label: "Semua Kota/Kabupaten" },
+                              ...list?.cities?.map((v: any) => ({
+                                ...v,
+                                value: v?.id,
+                                label: v?.name,
+                              })),
+                            ]}
+                            onChange={(e: any) => {
+                              getDistrict(e);
+                            }}
+                            maxMenuHeight={150}
+                            placeholder="Semua Kota/Kabupaten"
+                            className="w-full"
+                            defaultValue={{
+                              value: filter?.city_id,
+                              label:
+                                list?.cities?.find(
+                                  (v: any) => v?.id == filter?.city_id
+                                )?.name || "Semua Kota/Kabupaten",
+                            }}
+                          />
+                          <ReactSelect
+                            isDisabled={list?.districts?.length < 1}
+                            options={[
+                              { value: "", label: "Semua Kecamatan" },
+                              ...list?.districts?.map((v: any) => ({
+                                ...v,
+                                value: v?.id,
+                                label: v?.name,
+                              })),
+                            ]}
+                            onChange={(e: any) => {
+                              // setSelected({ ...selected, district_id: e.value });
+                              setFilter({ ...filter, district_id: e.value });
+                            }}
+                            maxMenuHeight={150}
+                            placeholder="Semua Kecamatan"
+                            className="w-full"
+                            defaultValue={{
+                              value: filter?.district_id,
+                              label:
+                                list?.districts?.find(
+                                  (v: any) => v?.id == filter?.district_id
+                                )?.name || "Semua Kecamatan",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {filterName == "HARGA" ? (
+                      <div>
+                        <div className="flex flex-col items-center justify-center pl-2 mt-4">
+                          <Input
+                            numericformat
+                            label=""
+                            placeholder="Dari Harga"
+                            defaultValue={filter?.min || 1}
+                            onChange={(e: any) => {
+                              // setSelected({
+                              //   ...selected,
+                              //   min: e.target.value.replaceAll(",", ""),
+                              // });
+                              setFilter({
+                                ...filter,
+                                min: e.target.value.replaceAll(",", ""),
+                              });
+                            }}
+                          />
+                          <Input
+                            numericformat
+                            label=""
+                            placeholder="Sampai Harga"
+                            defaultValue={filter?.max || 1000000000000000}
+                            onChange={(e: any) => {
+                              // setSelected({
+                              //   ...selected,
+                              //   max: e.target.value.replaceAll(",", ""),
+                              // });
+                              setFilter({
+                                ...filter,
+                                max: e.target.value.replaceAll(",", ""),
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {filterName == "LUAS TANAH" ? (
+                      <div>
+                        <div className="flex flex-col items-center justify-center pl-2 mt-4">
+                          <Input
+                            numericformat
+                            label=""
+                            placeholder="Mulai Dari"
+                            defaultValue={filter?.minArea}
+                            onChange={(e: any) => {
+                              // setSelected({
+                              //   ...selected,
+                              //   minArea: e.target.value.replaceAll(",", ""),
+                              // });
+                              setFilter({
+                                ...filter,
+                                minArea: e.target.value.replaceAll(",", ""),
+                              });
+                            }}
+                          />
+                          <Input
+                            numericformat
+                            label=""
+                            placeholder="Sampai"
+                            defaultValue={filter?.maxArea}
+                            onChange={(e: any) => {
+                              // setSelected({
+                              //   ...selected,
+                              //   maxArea: e.target.value.replaceAll(",", ""),
+                              // });
+                              setFilter({
+                                ...filter,
+                                maxArea: e.target.value.replaceAll(",", ""),
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {filterName == "LUAS BANGUNAN" ? (
+                      <div>
+                        <div className="flex flex-col items-center justify-center pl-2 mt-4">
+                          <Input
+                            numericformat
+                            label=""
+                            placeholder="Mulai Dari"
+                            defaultValue={filter?.minBuilding}
+                            onChange={(e: any) => {
+                              // setSelected({
+                              //   ...selected,
+                              //   minBuilding: e.target.value.replaceAll(",", ""),
+                              // });
+                              setFilter({
+                                ...filter,
+                                minBuilding: e.target.value.replaceAll(",", ""),
+                              });
+                            }}
+                          />
+                          <Input
+                            numericformat
+                            label=""
+                            placeholder="Sampai"
+                            defaultValue={filter?.maxBuilding}
+                            onChange={(e: any) => {
+                              // setSelected({
+                              //   ...selected,
+                              //   maxBuilding: e.target.value.replaceAll(",", ""),
+                              // });
+                              setFilter({
+                                ...filter,
+                                maxBuilding: e.target.value.replaceAll(",", ""),
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {filterName == "TAHUN" ? (
+                      <div>
+                        <div className="flex flex-col items-center justify-center pl-2 mt-2">
+                          <Input
+                            label=""
+                            placeholder={"1945"}
+                            maxLength={4}
+                            type="tel"
+                            onChange={(e: any) => {
+                              // setSelected({
+                              //   ...selected,
+                              //   year_start: e.target.value,
+                              // });
+                              setFilter({
+                                ...filter,
+                                year_start: e.target.value,
+                              });
+                            }}
+                          />
+                          <Input
+                            label=""
+                            placeholder={`${new Date().getFullYear()}`}
+                            maxLength={4}
+                            type="tel"
+                            onChange={(e: any) => {
+                              // setSelected({
+                              //   ...selected,
+                              //   year_end: e.target.value,
+                              // });
+                              setFilter({
+                                ...filter,
+                                year_end: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {filterName == "TRANSMISI" ? (
+                      <div>
+                        <div className="flex flex-col gap-2 items-start pl-2 mt-4">
+                          <div>
+                            <input
+                              type="radio"
+                              name="transmission"
+                              value={""}
+                              defaultChecked={
+                                filter?.transmission == "" ||
+                                !filter?.transmission
+                              }
+                              onChange={(e) => {
+                                // setSelected({
+                                //   ...selected,
+                                //   transmission: e.target.value,
+                                // });
+                                setFilter({
+                                  ...filter,
+                                  transmission: e.target.value,
+                                });
+                              }}
+                            />
+                            <span className="ml-2">Semua Transmisi</span>
+                          </div>
+                          <div>
+                            <input
+                              type="radio"
+                              name="transmission"
+                              value={"MT"}
+                              defaultChecked={filter?.transmission == "MT"}
+                              onChange={(e) => {
+                                // setSelected({
+                                //   ...selected,
+                                //   transmission: e.target.value,
+                                // });
+                                setFilter({
+                                  ...filter,
+                                  transmission: e.target.value,
+                                });
+                              }}
+                            />
+                            <span className="ml-2">Manual</span>
+                          </div>
+                          <div>
+                            <input
+                              type="radio"
+                              name="transmission"
+                              value={"AT"}
+                              defaultChecked={filter?.transmission == "AT"}
+                              onChange={(e) => {
+                                // setSelected({
+                                //   ...selected,
+                                //   transmission: e.target.value,
+                                // });
+                                setFilter({
+                                  ...filter,
+                                  transmission: e.target.value,
+                                });
+                              }}
+                            />
+                            <span className="ml-2">Automatic</span>
+                          </div>
+                          <div>
+                            <input
+                              type="radio"
+                              name="transmission"
+                              value={"CVT"}
+                              defaultChecked={filter?.transmission == "CVT"}
+                              onChange={(e) => {
+                                // setSelected({
+                                //   ...selected,
+                                //   transmission: e.target.value,
+                                // });
+                                setFilter({
+                                  ...filter,
+                                  transmission: e.target.value,
+                                });
+                              }}
+                            />
+                            <span className="ml-2">CVT</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {filterName == "KONDISI" ? (
+                      <div>
+                        <div className="flex flex-col gap-2 items-start pl-2 mt-4">
+                          <div>
+                            <input
+                              type="radio"
+                              name="condition"
+                              value={""}
+                              defaultChecked={
+                                filter?.condition == "" || !filter?.condition
+                              }
+                              onChange={(e) => {
+                                // setSelected({
+                                //   ...selected,
+                                //   condition: e.target.value,
+                                // });
+                                setFilter({
+                                  ...filter,
+                                  condition: e.target.value,
+                                });
+                              }}
+                            />
+                            <span className="ml-2">Semua Kondisi</span>
+                          </div>
+                          <div>
+                            <input
+                              type="radio"
+                              name="condition"
+                              value={"new"}
+                              defaultChecked={filter?.condition == "new"}
+                              onChange={(e) => {
+                                // setSelected({
+                                //   ...selected,
+                                //   condition: e.target.value,
+                                // });
+                                setFilter({
+                                  ...filter,
+                                  condition: e.target.value,
+                                });
+                              }}
+                            />
+                            <span className="ml-2">Baru</span>
+                          </div>
+                          <div>
+                            <input
+                              type="radio"
+                              name="condition"
+                              value={"second"}
+                              defaultChecked={filter?.condition == "second"}
+                              onChange={(e) => {
+                                // setSelected({
+                                //   ...selected,
+                                //   condition: e.target.value,
+                                // });
+                                setFilter({
+                                  ...filter,
+                                  condition: e.target.value,
+                                });
+                              }}
+                            />
+                            <span className="ml-2">Bekas</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {filterName == "BAHAN BAKAR" ? (
+                      <div>
+                        <div className="flex flex-col gap-2 items-start pl-2 mt-4">
+                          <div>
+                            <input
+                              type="radio"
+                              name="fuel_type"
+                              value={""}
+                              defaultChecked={
+                                filter?.fuel_type == "" || !filter?.fuel_type
+                              }
+                              onChange={(e) => {
+                                // setSelected({
+                                //   ...selected,
+                                //   fuel_type: e.target.value,
+                                // });
+                                setFilter({
+                                  ...filter,
+                                  fuel_type: e.target.value,
+                                });
+                              }}
+                            />
+                            <span className="ml-2">Semua Bahan Bakar</span>
+                          </div>
+                          <div>
+                            <input
+                              type="radio"
+                              name="fuel_type"
+                              value={"bensin"}
+                              defaultChecked={filter?.fuel_type == "bensin"}
+                              onChange={(e) => {
+                                // setSelected({
+                                //   ...selected,
+                                //   fuel_type: e.target.value,
+                                // });
+                                setFilter({
+                                  ...filter,
+                                  fuel_type: e.target.value,
+                                });
+                              }}
+                            />
+                            <span className="ml-2">Bensin</span>
+                          </div>
+                          <div>
+                            <input
+                              type="radio"
+                              name="fuel_type"
+                              value={"diesel"}
+                              defaultChecked={filter?.fuel_type == "diesel"}
+                              onChange={(e) => {
+                                // setSelected({
+                                //   ...selected,
+                                //   fuel_type: e.target.value,
+                                // });
+                                setFilter({
+                                  ...filter,
+                                  fuel_type: e.target.value,
+                                });
+                              }}
+                            />
+                            <span className="ml-2">Solar</span>
+                          </div>
+                          <div>
+                            <input
+                              type="radio"
+                              name="fuel_type"
+                              value={"hybrid"}
+                              defaultChecked={filter?.fuel_type == "hybrid"}
+                              onChange={(e) => {
+                                // setSelected({
+                                //   ...selected,
+                                //   fuel_type: e.target.value,
+                                // });
+                                setFilter({
+                                  ...filter,
+                                  fuel_type: e.target.value,
+                                });
+                              }}
+                            />
+                            <span className="ml-2">Hybrid</span>
+                          </div>
+                          <div>
+                            <input
+                              type="radio"
+                              name="fuel_type"
+                              value={"ev"}
+                              defaultChecked={filter?.fuel_type == "ev"}
+                              onChange={(e) => {
+                                // setSelected({
+                                //   ...selected,
+                                //   fuel_type: e.target.value,
+                                // });
+                                setFilter({
+                                  ...filter,
+                                  fuel_type: e.target.value,
+                                });
+                              }}
+                            />
+                            <span className="ml-2">Listrik</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {filterName == "URUTKAN" ? (
+                      <div className="pl-2 mt-4 flex flex-col gap-2">
+                        <button
+                          onClick={() => {
+                            // setSelected({ ...selected, sort: "newest" });
+                            setFilter({ ...filter, sort: "newest" });
+                          }}
+                          className={`border-2 w-full p-2 rounded text-xs ${
+                            filter?.sort == "newest" || !filter?.sort
+                              ? "bg-gray-300"
+                              : ""
+                          } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
+                        >
+                          {(filter?.sort == "newest" || !filter?.sort) && (
+                            <CheckIcon className="w-4 text-green-700" />
+                          )}
+                          IKLAN TERBARU
+                        </button>
+                        <button
+                          onClick={() => {
+                            // setSelected({ ...selected, sort: "minprice" });
+                            setFilter({ ...filter, sort: "minprice" });
+                          }}
+                          className={`border-2 w-full p-2 rounded text-xs ${
+                            filter?.sort == "minprice" ? "bg-gray-300" : ""
+                          } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
+                        >
+                          {filter?.sort == "minprice" && (
+                            <CheckIcon className="w-4 text-green-700" />
+                          )}
+                          IKLAN PALING MURAH
+                        </button>
+                        <button
+                          onClick={() => {
+                            // setSelected({ ...selected, sort: "maxprice" });
+                            setFilter({ ...filter, sort: "maxprice" });
+                          }}
+                          className={`border-2 w-full p-2 rounded text-xs ${
+                            filter?.sort == "maxprice" ? "bg-gray-300" : ""
+                          } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
+                        >
+                          {filter?.sort == "maxprice" && (
+                            <CheckIcon className="w-4 text-green-700" />
+                          )}
+                          IKLAN PALING MAHAL
+                        </button>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <div className="pl-2 fixed bottom-4 w-full pr-[105px]">
+                      {filterName !== "KATEGORI" ? (
+                        <Button
+                          color="info"
+                          onClick={() => {
+                            setModal({ ...modal, open: false });
+                            setLoading(true);
+                          }}
+                        >
+                          Terapkan
+                        </Button>
                       ) : (
                         ""
                       )}
                     </div>
-                  ) : (
-                    ""
-                  )}
-                  {filterName == "LOKASI" ? (
-                    <div>
-                      <div className="flex flex-col gap-2 items-center justify-center pl-2 mt-4">
-                        <ReactSelect
-                          options={[
-                            { value: "", label: "Semua Provinsi" },
-                            ...provinces?.map((v: any) => ({
-                              ...v,
-                              value: v?.id,
-                              label: v?.name,
-                            })),
-                          ]}
-                          onChange={(e: any) => {
-                            getCity(e);
-                          }}
-                          maxMenuHeight={150}
-                          placeholder="Semua Provinsi"
-                          className="w-full"
-                          defaultValue={{
-                            value: filter?.province_id,
-                            label:
-                              provinces?.find(
-                                (v: any) => v?.id == filter?.province_id
-                              )?.name || "Semua Provinsi",
-                          }}
-                        />
-                        <ReactSelect
-                          isDisabled={list?.cities?.length < 1}
-                          options={[
-                            { value: "", label: "Semua Kota/Kabupaten" },
-                            ...list?.cities?.map((v: any) => ({
-                              ...v,
-                              value: v?.id,
-                              label: v?.name,
-                            })),
-                          ]}
-                          onChange={(e: any) => {
-                            getDistrict(e);
-                          }}
-                          maxMenuHeight={150}
-                          placeholder="Semua Kota/Kabupaten"
-                          className="w-full"
-                          defaultValue={{
-                            value: filter?.city_id,
-                            label:
-                              list?.cities?.find(
-                                (v: any) => v?.id == filter?.city_id
-                              )?.name || "Semua Kota/Kabupaten",
-                          }}
-                        />
-                        <ReactSelect
-                          isDisabled={list?.districts?.length < 1}
-                          options={[
-                            { value: "", label: "Semua Kecamatan" },
-                            ...list?.districts?.map((v: any) => ({
-                              ...v,
-                              value: v?.id,
-                              label: v?.name,
-                            })),
-                          ]}
-                          onChange={(e: any) => {
-                            // setSelected({ ...selected, district_id: e.value });
-                            setFilter({ ...filter, district_id: e.value });
-                          }}
-                          maxMenuHeight={150}
-                          placeholder="Semua Kecamatan"
-                          className="w-full"
-                          defaultValue={{
-                            value: filter?.district_id,
-                            label:
-                              list?.districts?.find(
-                                (v: any) => v?.id == filter?.district_id
-                              )?.name || "Semua Kecamatan",
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {filterName == "HARGA" ? (
-                    <div>
-                      <div className="flex flex-col items-center justify-center pl-2 mt-4">
-                        <Input
-                          numericformat
-                          label=""
-                          placeholder="Dari Harga"
-                          defaultValue={filter?.min || 1}
-                          onChange={(e: any) => {
-                            // setSelected({
-                            //   ...selected,
-                            //   min: e.target.value.replaceAll(",", ""),
-                            // });
-                            setFilter({
-                              ...filter,
-                              min: e.target.value.replaceAll(",", ""),
-                            });
-                          }}
-                        />
-                        <Input
-                          numericformat
-                          label=""
-                          placeholder="Sampai Harga"
-                          defaultValue={filter?.max || 1000000000000000}
-                          onChange={(e: any) => {
-                            // setSelected({
-                            //   ...selected,
-                            //   max: e.target.value.replaceAll(",", ""),
-                            // });
-                            setFilter({
-                              ...filter,
-                              max: e.target.value.replaceAll(",", ""),
-                            });
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {filterName == "LUAS TANAH" ? (
-                    <div>
-                      <div className="flex flex-col items-center justify-center pl-2 mt-4">
-                        <Input
-                          numericformat
-                          label=""
-                          placeholder="Mulai Dari"
-                          defaultValue={filter?.minArea}
-                          onChange={(e: any) => {
-                            // setSelected({
-                            //   ...selected,
-                            //   minArea: e.target.value.replaceAll(",", ""),
-                            // });
-                            setFilter({
-                              ...filter,
-                              minArea: e.target.value.replaceAll(",", ""),
-                            });
-                          }}
-                        />
-                        <Input
-                          numericformat
-                          label=""
-                          placeholder="Sampai"
-                          defaultValue={filter?.maxArea}
-                          onChange={(e: any) => {
-                            // setSelected({
-                            //   ...selected,
-                            //   maxArea: e.target.value.replaceAll(",", ""),
-                            // });
-                            setFilter({
-                              ...filter,
-                              maxArea: e.target.value.replaceAll(",", ""),
-                            });
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {filterName == "LUAS BANGUNAN" ? (
-                    <div>
-                      <div className="flex flex-col items-center justify-center pl-2 mt-4">
-                        <Input
-                          numericformat
-                          label=""
-                          placeholder="Mulai Dari"
-                          defaultValue={filter?.minBuilding}
-                          onChange={(e: any) => {
-                            // setSelected({
-                            //   ...selected,
-                            //   minBuilding: e.target.value.replaceAll(",", ""),
-                            // });
-                            setFilter({
-                              ...filter,
-                              minBuilding: e.target.value.replaceAll(",", ""),
-                            });
-                          }}
-                        />
-                        <Input
-                          numericformat
-                          label=""
-                          placeholder="Sampai"
-                          defaultValue={filter?.maxBuilding}
-                          onChange={(e: any) => {
-                            // setSelected({
-                            //   ...selected,
-                            //   maxBuilding: e.target.value.replaceAll(",", ""),
-                            // });
-                            setFilter({
-                              ...filter,
-                              maxBuilding: e.target.value.replaceAll(",", ""),
-                            });
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {filterName == "TAHUN" ? (
-                    <div>
-                      <div className="flex flex-col items-center justify-center pl-2 mt-2">
-                        <Input
-                          label=""
-                          placeholder={"1945"}
-                          maxLength={4}
-                          type="tel"
-                          onChange={(e: any) => {
-                            // setSelected({
-                            //   ...selected,
-                            //   year_start: e.target.value,
-                            // });
-                            setFilter({
-                              ...filter,
-                              year_start: e.target.value,
-                            });
-                          }}
-                        />
-                        <Input
-                          label=""
-                          placeholder={`${new Date().getFullYear()}`}
-                          maxLength={4}
-                          type="tel"
-                          onChange={(e: any) => {
-                            // setSelected({
-                            //   ...selected,
-                            //   year_end: e.target.value,
-                            // });
-                            setFilter({ ...filter, year_end: e.target.value });
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {filterName == "TRANSMISI" ? (
-                    <div>
-                      <div className="flex flex-col gap-2 items-start pl-2 mt-4">
-                        <div>
-                          <input
-                            type="radio"
-                            name="transmission"
-                            value={""}
-                            defaultChecked={
-                              filter?.transmission == "" ||
-                              !filter?.transmission
-                            }
-                            onChange={(e) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   transmission: e.target.value,
-                              // });
-                              setFilter({
-                                ...filter,
-                                transmission: e.target.value,
-                              });
-                            }}
-                          />
-                          <span className="ml-2">Semua Transmisi</span>
-                        </div>
-                        <div>
-                          <input
-                            type="radio"
-                            name="transmission"
-                            value={"MT"}
-                            defaultChecked={filter?.transmission == "MT"}
-                            onChange={(e) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   transmission: e.target.value,
-                              // });
-                              setFilter({
-                                ...filter,
-                                transmission: e.target.value,
-                              });
-                            }}
-                          />
-                          <span className="ml-2">Manual</span>
-                        </div>
-                        <div>
-                          <input
-                            type="radio"
-                            name="transmission"
-                            value={"AT"}
-                            defaultChecked={filter?.transmission == "AT"}
-                            onChange={(e) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   transmission: e.target.value,
-                              // });
-                              setFilter({
-                                ...filter,
-                                transmission: e.target.value,
-                              });
-                            }}
-                          />
-                          <span className="ml-2">Automatic</span>
-                        </div>
-                        <div>
-                          <input
-                            type="radio"
-                            name="transmission"
-                            value={"CVT"}
-                            defaultChecked={filter?.transmission == "CVT"}
-                            onChange={(e) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   transmission: e.target.value,
-                              // });
-                              setFilter({
-                                ...filter,
-                                transmission: e.target.value,
-                              });
-                            }}
-                          />
-                          <span className="ml-2">CVT</span>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {filterName == "KONDISI" ? (
-                    <div>
-                      <div className="flex flex-col gap-2 items-start pl-2 mt-4">
-                        <div>
-                          <input
-                            type="radio"
-                            name="condition"
-                            value={""}
-                            defaultChecked={
-                              filter?.condition == "" || !filter?.condition
-                            }
-                            onChange={(e) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   condition: e.target.value,
-                              // });
-                              setFilter({
-                                ...filter,
-                                condition: e.target.value,
-                              });
-                            }}
-                          />
-                          <span className="ml-2">Semua Kondisi</span>
-                        </div>
-                        <div>
-                          <input
-                            type="radio"
-                            name="condition"
-                            value={"new"}
-                            defaultChecked={filter?.condition == "new"}
-                            onChange={(e) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   condition: e.target.value,
-                              // });
-                              setFilter({
-                                ...filter,
-                                condition: e.target.value,
-                              });
-                            }}
-                          />
-                          <span className="ml-2">Baru</span>
-                        </div>
-                        <div>
-                          <input
-                            type="radio"
-                            name="condition"
-                            value={"second"}
-                            defaultChecked={filter?.condition == "second"}
-                            onChange={(e) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   condition: e.target.value,
-                              // });
-                              setFilter({
-                                ...filter,
-                                condition: e.target.value,
-                              });
-                            }}
-                          />
-                          <span className="ml-2">Bekas</span>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {filterName == "BAHAN BAKAR" ? (
-                    <div>
-                      <div className="flex flex-col gap-2 items-start pl-2 mt-4">
-                        <div>
-                          <input
-                            type="radio"
-                            name="fuel_type"
-                            value={""}
-                            defaultChecked={
-                              filter?.fuel_type == "" || !filter?.fuel_type
-                            }
-                            onChange={(e) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   fuel_type: e.target.value,
-                              // });
-                              setFilter({
-                                ...filter,
-                                fuel_type: e.target.value,
-                              });
-                            }}
-                          />
-                          <span className="ml-2">Semua Bahan Bakar</span>
-                        </div>
-                        <div>
-                          <input
-                            type="radio"
-                            name="fuel_type"
-                            value={"bensin"}
-                            defaultChecked={filter?.fuel_type == "bensin"}
-                            onChange={(e) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   fuel_type: e.target.value,
-                              // });
-                              setFilter({
-                                ...filter,
-                                fuel_type: e.target.value,
-                              });
-                            }}
-                          />
-                          <span className="ml-2">Bensin</span>
-                        </div>
-                        <div>
-                          <input
-                            type="radio"
-                            name="fuel_type"
-                            value={"diesel"}
-                            defaultChecked={filter?.fuel_type == "diesel"}
-                            onChange={(e) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   fuel_type: e.target.value,
-                              // });
-                              setFilter({
-                                ...filter,
-                                fuel_type: e.target.value,
-                              });
-                            }}
-                          />
-                          <span className="ml-2">Solar</span>
-                        </div>
-                        <div>
-                          <input
-                            type="radio"
-                            name="fuel_type"
-                            value={"hybrid"}
-                            defaultChecked={filter?.fuel_type == "hybrid"}
-                            onChange={(e) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   fuel_type: e.target.value,
-                              // });
-                              setFilter({
-                                ...filter,
-                                fuel_type: e.target.value,
-                              });
-                            }}
-                          />
-                          <span className="ml-2">Hybrid</span>
-                        </div>
-                        <div>
-                          <input
-                            type="radio"
-                            name="fuel_type"
-                            value={"ev"}
-                            defaultChecked={filter?.fuel_type == "ev"}
-                            onChange={(e) => {
-                              // setSelected({
-                              //   ...selected,
-                              //   fuel_type: e.target.value,
-                              // });
-                              setFilter({
-                                ...filter,
-                                fuel_type: e.target.value,
-                              });
-                            }}
-                          />
-                          <span className="ml-2">Listrik</span>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {filterName == "URUTKAN" ? (
-                    <div className="pl-2 mt-4 flex flex-col gap-2">
-                      <button
-                        onClick={() => {
-                          // setSelected({ ...selected, sort: "newest" });
-                          setFilter({ ...filter, sort: "newest" });
-                        }}
-                        className={`border-2 w-full p-2 rounded text-xs ${
-                          filter?.sort == "newest" || !filter?.sort
-                            ? "bg-gray-300"
-                            : ""
-                        } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
-                      >
-                        {(filter?.sort == "newest" || !filter?.sort) && (
-                          <CheckIcon className="w-4 text-green-700" />
-                        )}
-                        IKLAN TERBARU
-                      </button>
-                      <button
-                        onClick={() => {
-                          // setSelected({ ...selected, sort: "minprice" });
-                          setFilter({ ...filter, sort: "minprice" });
-                        }}
-                        className={`border-2 w-full p-2 rounded text-xs ${
-                          filter?.sort == "minprice" ? "bg-gray-300" : ""
-                        } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
-                      >
-                        {filter?.sort == "minprice" && (
-                          <CheckIcon className="w-4 text-green-700" />
-                        )}
-                        IKLAN PALING MURAH
-                      </button>
-                      <button
-                        onClick={() => {
-                          // setSelected({ ...selected, sort: "maxprice" });
-                          setFilter({ ...filter, sort: "maxprice" });
-                        }}
-                        className={`border-2 w-full p-2 rounded text-xs ${
-                          filter?.sort == "maxprice" ? "bg-gray-300" : ""
-                        } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
-                      >
-                        {filter?.sort == "maxprice" && (
-                          <CheckIcon className="w-4 text-green-700" />
-                        )}
-                        IKLAN PALING MAHAL
-                      </button>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  <div className="pl-2 fixed bottom-0 w-full pr-[110px]">
-                    {filterName !== "KATEGORI" ? (
-                      <Button
-                        color="info"
-                        onClick={() => {
-                          setModal({ ...modal, open: false });
-                          setLoading(true);
-                        }}
-                      >
-                        Terapkan
-                      </Button>
-                    ) : (
-                      ""
-                    )}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </Modal>
+          </ModalFilter>
+        </div>
       ) : (
         ""
       )}
