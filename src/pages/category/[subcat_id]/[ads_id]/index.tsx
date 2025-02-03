@@ -319,7 +319,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                     height={1920}
                     className="h-[250px] sm:h-auto lg:h-[300px] w-[200px] lg:w-[200px] rounded mt-5"
                   /> */}
-                  <div className="bg-gray-300 w-full lg:h-[250px] md:h-[250px] sm:h-[400px] h-[250px] overflow-hidden">
+                  <div className="bg-gray-300 w-full lg:h-[250px] md:h-[250px] sm:h-[500px] h-[250px] overflow-hidden">
                     <img
                       src={v}
                       alt="thumbnail"
@@ -329,7 +329,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 </button>
               ))}
             </OwlCarousel>
-            <div className="flex justify-between gap-2 items-center">
+            <div className="flex justify-between gap-2 items-center mt-4">
               <a
                 className="bg-gray-700 p-2 w-full rounded text-white text-xs text-center"
                 target="_blank"
