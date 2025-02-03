@@ -243,9 +243,9 @@ export default function Home({ categories, notif, subcategories }: any) {
                 src={v?.icon}
                 // layout="relative"
                 width={100}
-                height={100}
+                height={80}
                 alt="icon"
-                className="w-16 h-16"
+                className="w-auto h-auto"
               />
               {v?.name}
             </button>

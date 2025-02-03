@@ -574,7 +574,7 @@ export default function HeaderAds(props: Props) {
                     </>
                   )}
                 </div>
-                <div className="w-full">
+                <div className={`w-full relative ${list?.types?.length > 0 ? "pb-12" : "pb-0"}`}>
                   {filterName == "KATEGORI" ? (
                     <div className="lg:h-[45vh] h-[60vh] overflow-auto">
                       <div className="flex flex-col gap-2 pl-2 mt-4">
@@ -675,7 +675,7 @@ export default function HeaderAds(props: Props) {
                             </button>
                           ))}
                       </div>
-                      <div className="lg:h-[25vh] h-[20vh] overflow-auto mt-4">
+                      <div className="lg:h-[20vh] h-[20vh] overflow-auto mt-4">
                         <label htmlFor="brand" className="ml-2">
                           Merek
                         </label>
@@ -730,7 +730,7 @@ export default function HeaderAds(props: Props) {
                         </div>
                       </div>
                       {list?.types?.length > 0 ? (
-                        <div className="lg:h-[25vh] h-[20vh] overflow-auto mt-4">
+                        <div className="lg:h-[20vh] h-[20vh] overflow-auto mt-4">
                           <label htmlFor="type" className="ml-2">
                             Tipe
                           </label>
@@ -1326,7 +1326,7 @@ export default function HeaderAds(props: Props) {
                   ) : (
                     ""
                   )}
-                  <div className="flex flex-col gap-2 items-center justify-center pl-2">
+                  <div className="flex flex-col gap-2 items-center justify-center pl-2 absolute bottom-0 w-full">
                     {filterName !== "KATEGORI" ? (
                       <Button
                         color="info"
