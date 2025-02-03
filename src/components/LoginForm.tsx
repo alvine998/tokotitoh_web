@@ -5,18 +5,19 @@ import Button from "./Button";
 import axios from "axios";
 import { CONFIG } from "@/config";
 import Swal from "sweetalert2";
-import { useRouter } from "next/router";
 import { setCookie } from "cookies-next";
 import { normalizePhoneNumber } from "@/utils";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { provider } from "@/config/firebase";
 import Modal, { useModal } from "./Modal";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
+  const queryString = useSearchParams();
   const [type, setType] = useState<string>(
-    router.query?.type == "reset" ? "reset" : "login"
+    queryString?.get("type") == "reset" ? "reset" : "login"
   );
   const [payload, setPayload] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -168,7 +169,7 @@ export default function LoginForm() {
         setCookie("account", JSON.stringify(result?.data?.user), {
           secure: true,
         });
-        router.reload();
+        router.push("/account");
       }
       if (type == "register") {
         if (payload?.password !== payload?.password_confirm) {
