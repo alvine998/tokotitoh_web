@@ -407,7 +407,7 @@ export default function HeaderAds(props: Props) {
 
       {modal?.key == "filter" ? (
         <Modal open={modal.open} setOpen={() => {}} type="filters">
-          <div className="h-screen">
+          <div className="h-[80vh]">
             <div className="p-2">
               <div className="flex justify-between items-start">
                 <p>
@@ -574,7 +574,7 @@ export default function HeaderAds(props: Props) {
                     </>
                   )}
                 </div>
-                <div className={`w-full relative ${list?.types?.length > 0 ? "pb-12" : "pb-0"}`}>
+                <div className={`w-full ${list?.types?.length > 0 ? "pb-12" : "pb-0"}`}>
                   {filterName == "KATEGORI" ? (
                     <div className="lg:h-[45vh] h-[60vh] overflow-auto">
                       <div className="flex flex-col gap-2 pl-2 mt-4">
@@ -1326,15 +1326,11 @@ export default function HeaderAds(props: Props) {
                   ) : (
                     ""
                   )}
-                  <div className="flex flex-col gap-2 items-center justify-center pl-2 absolute bottom-0 w-full">
+                  <div className="pl-2 fixed bottom-0 w-full pr-[110px]">
                     {filterName !== "KATEGORI" ? (
                       <Button
                         color="info"
                         onClick={() => {
-                          // setFilter({
-                          //   subcat_id: filter?.subcat_id,
-                          //   ...selected,
-                          // });
                           setModal({ ...modal, open: false });
                           setLoading(true);
                         }}
