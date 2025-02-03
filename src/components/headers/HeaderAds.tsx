@@ -407,7 +407,7 @@ export default function HeaderAds(props: Props) {
 
       {modal?.key == "filter" ? (
         <Modal open={modal.open} setOpen={() => {}} type="filters">
-          <div className="h-[80vh]">
+          <div className="h-full">
             <div className="p-2">
               <div className="flex justify-between items-start">
                 <p>
