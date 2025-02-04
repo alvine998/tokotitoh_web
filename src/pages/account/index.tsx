@@ -223,21 +223,21 @@ export default function Account() {
             )}
           </button>
           <div>
-            <h5 className="font-bold text-lg">{user?.name}</h5>
-            <h5 className="text-lg">{user?.email || user?.phone}</h5>
+            <h5 className="font-bold text-xl">{user?.name}</h5>
+            <h5 className="text-xl">{user?.email || user?.phone}</h5>
           </div>
         </div>
         <button
           onClick={() => {
             setModal({ ...modal, open: true, key: "edit", data: null });
           }}
-          className="w-full bg-blue-500 p-2 rounded text-white mt-4"
+          className="w-full bg-blue-500 p-2 rounded text-white mt-4 text-lg"
         >
           Edit Akun
         </button>
         <div className="py-2">
           <Link href={"https://play.google.com/"}>
-            <button type="button" className="border-b p-2 w-full">
+            <button type="button" className="border-b p-2 w-full text-lg">
               Download Aplikasi
             </button>
           </Link>
@@ -246,7 +246,7 @@ export default function Account() {
             onClick={() => {
               router.push("helps/help-center");
             }}
-            className="border-b p-2 w-full"
+            className="border-b p-2 w-full text-lg"
           >
             Pusat Bantuan
           </button>
@@ -255,7 +255,7 @@ export default function Account() {
             onClick={() => {
               router.push("helps/call-us");
             }}
-            className="border-b p-2 w-full"
+            className="border-b p-2 w-full text-lg"
           >
             Hubungi Kami
           </button>
@@ -264,7 +264,7 @@ export default function Account() {
             onClick={() => {
               router.push("helps/about-us");
             }}
-            className="border-b p-2 w-full"
+            className="border-b p-2 w-full text-lg"
           >
             Tentang Kami
           </button>
@@ -273,7 +273,7 @@ export default function Account() {
             onClick={() => {
               router.push("helps/term-condition");
             }}
-            className="border-b p-2 w-full"
+            className="border-b p-2 w-full text-lg"
           >
             Syarat & Ketentuan
           </button>
@@ -282,14 +282,14 @@ export default function Account() {
             onClick={() => {
               router.push("helps/privacy-policy");
             }}
-            className="border-b p-2 w-full"
+            className="border-b p-2 w-full text-lg"
           >
             Kebijakan Privasi
           </button>
           <button
             type="button"
             onClick={() => {}}
-            className="border-b p-2 w-full"
+            className="border-b p-2 w-full text-lg"
           >
             Versi Web 1.1.5
           </button>
@@ -298,7 +298,7 @@ export default function Account() {
           onClick={() => {
             setModal({ ...modal, open: true, data: null, key: "remove" });
           }}
-          className="w-full bg-orange-500 p-2 rounded text-white mt-2"
+          className="w-full bg-orange-500 p-2 rounded text-white mt-2 text-lg"
         >
           Hapus Akun
         </button>
@@ -306,7 +306,7 @@ export default function Account() {
           onClick={() => {
             setModal({ ...modal, open: true, data: null, key: "logout" });
           }}
-          className="w-full bg-red-500 p-2 rounded text-white mt-2"
+          className="w-full bg-red-500 p-2 rounded text-white mt-2 text-lg"
         >
           Logout
         </button>
@@ -314,7 +314,7 @@ export default function Account() {
         {modal?.key == "edit" ? (
           <Modal open={modal.open} setOpen={() => {}}>
             <form onSubmit={update}>
-              <h2 className="text-xl font-semibold text-center">Ubah Profil</h2>
+              <h2 className="text-2xl font-semibold text-center">Ubah Profil</h2>
               <div>
                 <Input
                   label="Foto"

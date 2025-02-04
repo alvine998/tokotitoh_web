@@ -172,7 +172,7 @@ export default function AdsProduct(props: Props) {
         /> */}
         <div className="flex justify-between items-end mt-4">
           <div>
-            <h5 className="text-left text-sm">{title}</h5>
+            <h5 className="text-left text-2xl font-bold">{title}</h5>
             <p className="text-left font-bold text-lg">Rp {toMoney(price)}</p>
           </div>
           {router.pathname == "/myads" ? (

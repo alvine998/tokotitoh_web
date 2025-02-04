@@ -286,7 +286,7 @@ export default function Home({ categories, notif, subcategories }: any) {
         >
           <div className="p-2">
             <div className="flex gap-3 items-center justify-between">
-              <h1 className="font-bold text-xl">Tips Menghindari Penipuan</h1>
+              <h1 className="font-bold text-2xl">Tips Menghindari Penipuan</h1>
               <button
                 onClick={() => {
                   setModal({ ...modal, open: false });
@@ -295,7 +295,7 @@ export default function Home({ categories, notif, subcategories }: any) {
                 <XCircleIcon />
               </button>
             </div>
-            <p className="mt-2">
+            <p className="mt-2 text-lg">
               - Hindari pembelian non COD
               <br />
               - Hindari DP transfer sebelum bertemu langsung dengan penjual

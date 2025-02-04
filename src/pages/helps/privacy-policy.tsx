@@ -34,7 +34,7 @@ export default function PrivacyPolicy() {
         onClick={() => {
           router.push("/account");
         }}
-        className="flex gap-2 items-center mt-4 font-bold ml-2"
+        className="flex gap-2 items-center mt-4 font-bold ml-2 text-lg"
       >
         <ArrowLeftCircle /> Kembali
       </button>
@@ -48,8 +48,8 @@ export default function PrivacyPolicy() {
           className="w-[150px] h-[150px]"
         />
         <div className="mt-5 w-full px-8">
-          <h2 className="font-bold text-center text-lg">Kebijakan Privasi</h2>
-          <p className="mt-3 text-justify">
+          <h2 className="font-bold text-center text-2xl">Kebijakan Privasi</h2>
+          <p className="mt-3 text-justify text-lg">
             TOKOTITOH sangat menghargai privasi Anda, Kebijakan Privasi ini
             merupakan komitmen dari PT LOKOH TITOH INTIATOH untuk menghargai dan
             melindungi setiap informasi pribadi Pengguna situs

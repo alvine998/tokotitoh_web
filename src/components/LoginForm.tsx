@@ -248,7 +248,7 @@ export default function LoginForm() {
             className="w-[150px] h-[150px]"
           />
           <div className="mt-2 w-full px-8">
-            <h2 className="text-center text-xl font-semibold">
+            <h2 className="text-center text-2xl font-semibold">
               Login Tokotitoh
             </h2>
             <Input
@@ -273,10 +273,10 @@ export default function LoginForm() {
                   onChange={(e) => setShow(e.target.checked)}
                   defaultChecked={show}
                 />
-                <span className="text-xs">Tampilkan password</span>
+                <span className="text-md">Tampilkan password</span>
               </div>
               <button
-                className="text-xs text-blue-700"
+                className="text-md text-blue-700"
                 onClick={() => {
                   setType("forget");
                 }}
@@ -284,20 +284,21 @@ export default function LoginForm() {
                 Lupa Password
               </button>
             </div>
-            <Button onClick={onSubmit} disabled={loading}>
+            <Button onClick={onSubmit} disabled={loading} className={'text-lg'}>
               {loading ? "Memproses..." : "Masuk"}
             </Button>
-            <p className="text-center">Atau</p>
+            <p className="text-center text-lg">Atau</p>
             <Button
               color="warning"
               type="button"
               onClick={() => setType("register")}
+              className={'text-lg'}
             >
               Daftar
             </Button>
             <Button
               onClick={loginByGoogle}
-              className={"mt-5 flex gap-2 justify-center items-center"}
+              className={"mt-5 flex gap-2 justify-center items-center text-lg"}
               color="white"
               disabled={loading}
             >
@@ -314,7 +315,7 @@ export default function LoginForm() {
           </div>
 
           <div className="px-6 mt-2">
-            <p className="text-xs text-center">
+            <p className="text-lg text-center">
               Dengan mendaftar atau login anda meyetujui{" "}
               <a
                 className="text-blue-600"

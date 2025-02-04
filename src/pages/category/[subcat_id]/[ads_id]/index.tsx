@@ -372,8 +372,8 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               </button>
             </div>
             <div className="mt-3">
-              <h2 className="text-xl">{ads?.title}</h2>
-              <h2 className="text-xl font-semibold">
+              <h2 className="text-3xl font-semibold">{ads?.title}</h2>
+              <h2 className="text-2xl font-semibold">
                 Rp {toMoney(ads?.price)}
               </h2>
               {ads?.subcategory_name?.toLowerCase() ==
@@ -382,7 +382,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               ads?.subcategory_name?.toLowerCase() == "bus dan truk dijual" ||
               ads?.subcategory_name?.toLowerCase() ==
                 "bus dan truk di sewakan" ? (
-                <p className="mt-3 text-xs">
+                <p className="mt-3 text-lg">
                   Tahun: {ads?.year}
                   <br />
                   <hr />
@@ -394,7 +394,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 ads?.subcategory_name?.toLowerCase().includes("dijual")) ||
               (ads?.category_name?.toLowerCase().includes("motor") &&
                 ads?.subcategory_name?.toLowerCase().includes("dijual")) ? (
-                <p className="mt-3 text-xs">
+                <p className="mt-3 text-lg">
                   <strong className="text-lg">Detail</strong> <br />
                   <hr />
                   Merek: {ads?.brand_name}
@@ -423,7 +423,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 ""
               )}
               {ads?.category_name?.toLowerCase().includes("properti") ? (
-                <p className="mt-3 text-xs">
+                <p className="mt-3 text-lg">
                   Detail <br />
                   <hr />
                   Luas Tanah: {ads?.area || 0} m2
@@ -436,7 +436,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               ) : (
                 ""
               )}
-              <p className="text-xs">
+              <p className="text-lg">
                 Kota: {ads?.district_name}
                 <br />
                 <hr />
@@ -449,8 +449,8 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <hr />
               </p>
             </div>
-            <p className="mt-2 text-md whitespace-pre-line">
-              <strong className="text-lg">Deskripsi:</strong> <br />
+            <p className="mt-2 text-lg whitespace-pre-line">
+              <strong className="text-xl">Deskripsi:</strong> <br />
               {ads?.description}
             </p>
           </div>
@@ -625,20 +625,20 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <UserCircleIcon className="w-20 h-20" />
               )}
               <div>
-                <p className="text-left">Pengiklan</p>
-                <h5 className="font-bold text-md text-left">
+                <p className="text-left text-lg">Pengiklan</p>
+                <h5 className="font-bold text-lg text-left">
                   {user?.name?.toUpperCase()}
                 </h5>
-                <p className="text-left text-sm">
+                <p className="text-left text-lg">
                   Bergabung sejak {new Date(user?.created_on)?.getFullYear()}
                 </p>
               </div>
             </button>
 
-            <div className="pb-20 w-full px-4">
+            <div className="pb-20 w-full px-2 mt-4">
               <div className="flex gap-2 items-center">
-                <p className="text-left font-bold">ID Iklan</p>
-                <p className="text-left font-bold">{ads?.id}</p>
+                <p className="text-left font-bold text-lg">ID Iklan</p>
+                <p className="text-left font-bold text-lg">{ads?.id}</p>
               </div>
             </div>
           </div>

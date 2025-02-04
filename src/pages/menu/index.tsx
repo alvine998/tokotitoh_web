@@ -49,14 +49,14 @@ export default function Menu({ categories }: any) {
         <div className='pb-20  flex flex-col justify-center items-center'>
             {/* Kategori */}
             <div className='p-2 mt-5 max-w-sm w-full'>
-                <h2 className='text-center font-semibold text-xl'>Menu</h2>
+                <h2 className='text-center font-semibold text-2xl'>Menu</h2>
                 <div className='flex flex-col gap-2 items-center justify-center mt-5'>
                     <button type="button" onClick={() => { setModal({ ...modal, open: true, data: "Tips Hindari Penipuan Online", key: "penipuan" }) }}
-                        className='bg-white border-2 hover:bg-gray-200 duration-200 transition-all rounded w-full p-2'>
+                        className='bg-white border-2 hover:bg-gray-200 duration-200 transition-all rounded w-full p-2 text-xl'>
                         Tips Hindari Penipuan
                     </button>
                     <button type="button" onClick={() => { setModal({ ...modal, open: true, data: "Cara Beriklan", key: "cara_beriklan" }) }}
-                        className='bg-white border-2 hover:bg-gray-200 duration-200 transition-all rounded w-full p-2'>
+                        className='bg-white border-2 hover:bg-gray-200 duration-200 transition-all rounded w-full p-2 text-xl'>
                         Cara Beriklan
                     </button>
                 </div>
@@ -74,12 +74,12 @@ export default function Menu({ categories }: any) {
                             <button onClick={() => { setModal({ ...modal, open: false }) }}>
                                 <ChevronLeftIcon />
                             </button>
-                            <h1 className='font-bold'>{modal?.data}</h1>
+                            <h1 className='font-bold text-xl'>{modal?.data}</h1>
                         </div>
                         <div className='mt-5 p-2'>
                             {
                                 modal?.key == "penipuan" ?
-                                    <p className='text-justify'>
+                                    <p className='text-lg'>
                                         - Hindari pembelian Non COD<br />
                                         - Hindari DP transfer sebelum bertemu langsung dengan penjual. Periksa surat surat dan kelengkapan barang<br />
                                         - Untuk pembelian properti, Cek surat surat dan kondisi situasi tanah dengan teliti sesuai ketentuan yg berlaku<br /><br />
@@ -95,7 +95,7 @@ export default function Menu({ categories }: any) {
                                         pembayaran ke rekening yg harus disetujui oleh orang yg kita temui secara langsung karena orang yg kita temui secara langsung
                                         adalah orang yg diberi / mempunyai kuasa atas barang kendaraan tersebut.
                                     </p> :
-                                    <p className='text-justify'>
+                                    <p className='text-lg'>
                                         1. Buat judul iklan yang baik<br/>
                                         2. Cantumkan nomor kontak telepon dan WA yang aktif<br/>
                                         3. Pilih kategori yang sesuai<br/>

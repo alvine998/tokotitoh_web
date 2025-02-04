@@ -287,7 +287,7 @@ export default function Ads({
           {ads?.count > 0 ? (
             <div className="lg:px-[500px] md:px-40 px-0">
               {/* Kategori */}
-              <div className="mt-28 grid lg:gap-4 gap-0 grid-cols-2 justify-center items-center">
+              <div className="mt-28 grid lg:gap-4 gap-0 grid-cols-2">
                 {loading ? (
                   <div className="mt-10">
                     <CircleDotDashedIcon className="animate-spin text-green-500 ml-5" />
@@ -298,7 +298,7 @@ export default function Ads({
                     {ads?.rows?.map((v: any, i: number) => (
                       <div
                         key={i}
-                        className="lg:w-[200px] sm:w-[250px] w-[180px]"
+                        className="lg:w-[200px] sm:w-[250px] w-[180px] h-full"
                       >
                         <AdsProduct
                           price={v?.price}

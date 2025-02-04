@@ -34,7 +34,7 @@ export default function TermCondition() {
                 onClick={() => {
                     router.push("/account");
                 }}
-                className="flex gap-2 items-center mt-4 font-bold ml-2"
+                className="flex gap-2 items-center mt-4 font-bold ml-2 text-lg"
             >
                 <ArrowLeftCircle /> Kembali
             </button>
@@ -48,11 +48,11 @@ export default function TermCondition() {
                     className="w-[150px] h-[150px]"
                 />
                 <div className="mt-5 w-full lg:px-8 px-4">
-                    <h2 className="font-bold text-center text-lg">Syarat & Ketentuan</h2>
-                    <h5 className="text-center font-bold mt-4">
+                    <h2 className="font-bold text-center text-2xl">Syarat & Ketentuan</h2>
+                    <h5 className="text-center font-bold mt-4 text-xl">
                         Syarat Dan Ketentuan Umum
                     </h5>
-                    <p className="mt-3 text-justify">
+                    <p className="mt-3 text-justify text-lg">
                         PT LOKOH TITOH INTIATOH adalah suatu perseroan terbatas yang
                         didirikan menurut hukum Indonesia yang menjalankan kegiatan usaha
                         jasa website portal www.tokotitoh.co.id dan / atau aplikasi
@@ -188,8 +188,8 @@ export default function TermCondition() {
                         PT LOKOH TITOH INTIATOH.
                     </p>
 
-                    <h5 className="text-center font-bold mt-4">Larangan Beriklan</h5>
-                    <p className="mt-3 text-justify">
+                    <h5 className="text-center font-bold mt-4 text-xl">Larangan Beriklan</h5>
+                    <p className="mt-3 text-justify text-lg">
                         Untuk menjaga kualitas layanan dan ketertiban terhadap hukum
                         Indonesia, kepuasan Pengguna, serta pengalaman Pengguna (User
                         Experience), daftar barang dan jasa ini adalah bagian yang tidak

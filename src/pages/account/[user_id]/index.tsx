@@ -105,15 +105,15 @@ export default function MyAds({ ads, detailBuyer }: any) {
             <UserCircleIcon className="w-20 h-20" />
           )}
           <div className="mt-4">
-            <p className="text-lg font-semibold">
+            <p className="text-2xl font-semibold">
               {detailBuyer?.name?.toUpperCase()}
             </p>
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-xs">Pengguna terverifikasi dengan</p>
+                <p className="text-lg">Pengguna terverifikasi dengan</p>
                 <MailCheckIcon className="w-5 mt-1" />
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-lg text-gray-500">
                 Anggota sejak{" "}
                 {moment(detailBuyer?.created_on).format("MM YYYY")}
               </p>
@@ -143,11 +143,11 @@ export default function MyAds({ ads, detailBuyer }: any) {
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center">
-              <h5 className="text-center text-xl font-bold">
+              <h5 className="text-center text-2xl font-bold">
                 Iklan Tidak Ditemukan!
               </h5>
               <Link href={"/sell"}>
-                <button className="rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center duration-200 transition-all">
+                <button className="rounded-full text-xl border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center duration-200 transition-all">
                   <PlusIcon className="w-6" />
                   Buat Iklan Disini
                 </button>

@@ -40,7 +40,7 @@ export default function ModalFilter(props: Props) {
                     </Transition.Child>
 
                     <div className="fixed inset-0 z-10 overflow-y-auto">
-                        <div className={`flex min-h-full md:items-center items-center justify-center p-0 text-center sm:items-center sm:p-0`}>
+                        <div className={`flex min-h-full md:items-end items-end justify-center p-0 text-center sm:items-center sm:p-0`}>
                             <Transition.Child
                                 as={Fragment}
                                 enter="ease-out duration-300"
@@ -50,7 +50,7 @@ export default function ModalFilter(props: Props) {
                                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                             >
-                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all lg:py-4 lg:px-2 lg:w-1/3 w-full py-2 px-2">
+                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all lg:py-4 lg:px-0 lg:w-1/3 w-full py-2 px-0">
                                     {children}
                                 </Dialog.Panel>
 

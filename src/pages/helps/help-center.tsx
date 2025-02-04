@@ -34,7 +34,7 @@ export default function HelpCenter() {
         onClick={() => {
           router.push("/account");
         }}
-        className="flex gap-2 items-center mt-4 font-bold ml-2"
+        className="flex gap-2 items-center mt-4 font-bold ml-2 text-lg"
       >
         <ArrowLeftCircle /> Kembali
       </button>
@@ -48,8 +48,8 @@ export default function HelpCenter() {
           className="w-[150px] h-[150px]"
         />
         <div className="mt-5 w-full px-8">
-          <h2 className="font-bold text-center text-lg">Pusat Bantuan</h2>
-          <p className="mt-3 text-justify">
+          <h2 className="font-bold text-center text-2xl">Pusat Bantuan</h2>
+          <p className="mt-3 text-justify text-lg">
             <strong>Cara Mendaftar Akun Tokotitoh</strong>
             <br />
             Anda memiliki 2 pilihan:
@@ -70,7 +70,7 @@ export default function HelpCenter() {
             diarahkan untuk membuat password.
           </p>
 
-          <p className="mt-3 text-justify">
+          <p className="mt-3 text-justify text-lg">
             <strong>Edit Profil</strong>
             <br />
             1. Cara mengubah email dan nomor HP
@@ -92,7 +92,7 @@ export default function HelpCenter() {
             verifikasi nomor HP baru anda
           </p>
 
-          <p className="mt-3 text-justify">
+          <p className="mt-3 text-justify text-lg">
             <strong>Lupa Password</strong>
             <br />
             1. Klik &quot;Lupa Password&quot; pada laman &quot;Masuk/Daftar&quot;.
@@ -108,7 +108,7 @@ export default function HelpCenter() {
             5. Masukkan password baru Anda, lalu klik tombol &quot;Ubah Password&quot;.
           </p>
 
-          <p className="mt-3 text-justify">
+          <p className="mt-3 text-justify text-lg">
             <strong>Cara Pasang Iklan</strong>
             <br />
             1. Klik tombol &quot;Sell&quot;.
@@ -129,7 +129,7 @@ export default function HelpCenter() {
             8. Klik pasang iklan dan iklan Anda akan langsung tayang.
           </p>
 
-          <p className="mt-3 text-justify">
+          <p className="mt-3 text-justify text-lg">
             <strong>Cara Beli Barang Atau Jasa</strong>
             <br />
             1. Cari iklan yg sesuai dengan keinginan Anda, bisa dengan bantuan

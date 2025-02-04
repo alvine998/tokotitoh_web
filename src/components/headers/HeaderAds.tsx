@@ -344,14 +344,14 @@ export default function HeaderAds(props: Props) {
             onClick={() => {
               setModal({ ...modal, data: ads, open: true, key: "filter" });
             }}
-            className="flex gap-2 items-center"
+            className="flex gap-2 items-center text-lg"
           >
             <Settings2Icon className="w-4 h-4" />
             Filter
           </button>
           <button type="button" className="flex gap-2 items-center">
             <MapPinIcon className="w-4 h-4" />
-            <h5 className="text-xs">
+            <h5 className="text-lg">
               {adress?.substring(0, 30)}
               {adress?.length > 30 ? "..." : ""}
             </h5>
@@ -400,7 +400,7 @@ export default function HeaderAds(props: Props) {
       </div>
 
       <div className="mt-2">
-        <p>
+        <p className="text-lg">
           {ads?.category_name || "Semua Kategori"} {">"}{" "}
           {ads?.name || "Semua Sub Kategori"}
         </p>
@@ -409,10 +409,10 @@ export default function HeaderAds(props: Props) {
       {modal?.key == "filter" ? (
         <div>
           <ModalFilter open={modal.open} setOpen={() => {}} type="filters">
-            <div className="h-[100vh]">
+            <div className="h-[90vh]">
               <div className="p-2">
                 <div className="flex justify-between items-start">
-                  <p>
+                  <p className="text-lg">
                     Filter: {ads?.category_name || "Semua Kategori"} {">"}{" "}
                     {ads?.name || "Semua Sub Kategori"}
                   </p>
@@ -443,7 +443,7 @@ export default function HeaderAds(props: Props) {
                           console.warn("subcat_id or ads.id is missing");
                         }
                       }}
-                      className="text-blue-700 mr-2 border-2 border-black rounded py-1 px-4 mt-1"
+                      className="text-blue-700 mr-2 border-2 border-black rounded py-1 px-4 mt-1 text-lg"
                     >
                       Reset
                     </button>
@@ -461,7 +461,7 @@ export default function HeaderAds(props: Props) {
                         key={key}
                         className="flex bg-blue-500 rounded-full py-1 px-2 items-end w-auto"
                       >
-                        <p className="text-white">{value}</p>
+                        <p className="text-white text-lg">{value}</p>
                         <button
                           className="ml-2"
                           onClick={() => {
@@ -482,7 +482,7 @@ export default function HeaderAds(props: Props) {
                       onClick={() => {
                         setFilterName("KATEGORI");
                       }}
-                      className={`border-2 w-auto p-2 rounded text-xs hover:bg-gray-300 duration-200 transition-all`}
+                      className={`border-2 w-auto p-2 rounded text-lg hover:bg-gray-300 duration-200 transition-all`}
                     >
                       KATEGORI
                     </button>
@@ -497,7 +497,7 @@ export default function HeaderAds(props: Props) {
                             onClick={() => {
                               setFilterName(v?.name);
                             }}
-                            className={`border-2 w-auto p-2 rounded text-xs ${
+                            className={`border-2 w-auto p-2 rounded text-lg ${
                               filterName == v?.name ? "bg-gray-300" : ""
                             } hover:bg-gray-300 duration-200 transition-all`}
                           >
@@ -515,7 +515,7 @@ export default function HeaderAds(props: Props) {
                             onClick={() => {
                               setFilterName(v?.name);
                             }}
-                            className={`border-2 p-2 rounded text-xs ${
+                            className={`border-2 p-2 rounded text-lg ${
                               filterName == v?.name ? "bg-gray-300" : ""
                             } hover:bg-gray-300 duration-200 transition-all`}
                           >
@@ -534,7 +534,7 @@ export default function HeaderAds(props: Props) {
                             onClick={() => {
                               setFilterName(v?.name);
                             }}
-                            className={`border-2 p-2 rounded text-xs ${
+                            className={`border-2 p-2 rounded text-lg ${
                               filterName == v?.name ? "bg-gray-300" : ""
                             } hover:bg-gray-300 duration-200 transition-all`}
                           >
@@ -553,7 +553,7 @@ export default function HeaderAds(props: Props) {
                             onClick={() => {
                               setFilterName(v?.name);
                             }}
-                            className={`border-2 p-2 rounded text-xs ${
+                            className={`border-2 p-2 rounded text-lg ${
                               filterName == v?.name ? "bg-gray-300" : ""
                             } hover:bg-gray-300 duration-200 transition-all`}
                           >
@@ -569,7 +569,7 @@ export default function HeaderAds(props: Props) {
                             onClick={() => {
                               setFilterName(v?.name);
                             }}
-                            className={`border-2 p-2 rounded text-xs ${
+                            className={`border-2 p-2 rounded text-lg ${
                               filterName == v?.name ? "bg-gray-300" : ""
                             } hover:bg-gray-300 duration-200 transition-all`}
                           >
@@ -592,7 +592,7 @@ export default function HeaderAds(props: Props) {
                               {list?.subcategories?.map((v: any, i: number) => (
                                 <button
                                   key={i}
-                                  className="w-full px-2 py-1 text-xs text-left border-b"
+                                  className="w-full px-2 py-1 text-lg text-left border-b"
                                   onClick={() => {
                                     if (v?.id !== 0) {
                                       // setFilter({size: 6, search: searchString});
@@ -615,7 +615,7 @@ export default function HeaderAds(props: Props) {
                               {categories?.map((v: any, i: number) => (
                                 <button
                                   key={i}
-                                  className="w-full px-2 py-1 text-xs text-left border-b"
+                                  className="w-full px-2 py-1 text-lg text-left border-b"
                                   onClick={() => {
                                     getSubcategory(v);
                                   }}
@@ -632,7 +632,7 @@ export default function HeaderAds(props: Props) {
                     )}
                     {filterName == "MEREK" ? (
                       <div>
-                        <div className="flex flex-row gap-2 justify-center items-center flex-wrap pl-2">
+                        <div className="grid grid-cols-3 gap-2 justify-center items-center flex-wrap pl-2">
                           {brands
                             ?.filter((v: any) => v.image !== null)
                             ?.map((val: any) => (
@@ -670,7 +670,7 @@ export default function HeaderAds(props: Props) {
                                     });
                                   }
                                 }}
-                                className={`border rounded p-2 ${
+                                className={`border rounded flex justify-center items-center p-2 ${
                                   filter?.brand_id?.includes(val?.id)
                                     ? "border-blue-500"
                                     : "border-gray-200"
@@ -685,7 +685,7 @@ export default function HeaderAds(props: Props) {
                             ))}
                         </div>
                         <div className="lg:h-[20vh] h-[20vh] overflow-auto mt-4">
-                          <label htmlFor="brand" className="ml-2">
+                          <label htmlFor="brand" className="ml-2 text-lg">
                             Merek
                           </label>
                           <div className="flex flex-col gap-2 pl-2 mt-2">
@@ -733,14 +733,14 @@ export default function HeaderAds(props: Props) {
                                 ) : (
                                   <Square />
                                 )}
-                                <span className="ml-2">{v?.name}</span>
+                                <span className="ml-2 text-lg">{v?.name}</span>
                               </button>
                             ))}
                           </div>
                         </div>
                         {list?.types?.length > 0 ? (
                           <div className="lg:h-[20vh] h-[20vh] overflow-auto mt-4">
-                            <label htmlFor="type" className="ml-2">
+                            <label htmlFor="type" className="ml-2 text-lg">
                               Tipe
                             </label>
                             <div className="flex flex-col gap-2 pl-2 mt-2">
@@ -776,7 +776,9 @@ export default function HeaderAds(props: Props) {
                                     ) : (
                                       <Square />
                                     )}
-                                    <span className="ml-2">{v?.name}</span>
+                                    <span className="ml-2 text-lg">
+                                      {v?.name}
+                                    </span>
                                   </button>
                                 </div>
                               ))}
@@ -1052,7 +1054,9 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2">Semua Transmisi</span>
+                            <span className="ml-2 text-lg">
+                              Semua Transmisi
+                            </span>
                           </div>
                           <div>
                             <input
@@ -1071,7 +1075,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2">Manual</span>
+                            <span className="ml-2 text-lg">Manual</span>
                           </div>
                           <div>
                             <input
@@ -1090,7 +1094,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2">Automatic</span>
+                            <span className="ml-2 text-lg">Automatic</span>
                           </div>
                           <div>
                             <input
@@ -1109,7 +1113,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2">CVT</span>
+                            <span className="ml-2 text-lg">CVT</span>
                           </div>
                         </div>
                       </div>
@@ -1138,7 +1142,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2">Semua Kondisi</span>
+                            <span className="ml-2 text-lg">Semua Kondisi</span>
                           </div>
                           <div>
                             <input
@@ -1157,7 +1161,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2">Baru</span>
+                            <span className="ml-2 text-lg">Baru</span>
                           </div>
                           <div>
                             <input
@@ -1176,7 +1180,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2">Bekas</span>
+                            <span className="ml-2 text-lg">Bekas</span>
                           </div>
                         </div>
                       </div>
@@ -1205,7 +1209,9 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2">Semua Bahan Bakar</span>
+                            <span className="ml-2 text-lg">
+                              Semua Bahan Bakar
+                            </span>
                           </div>
                           <div>
                             <input
@@ -1224,7 +1230,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2">Bensin</span>
+                            <span className="ml-2 text-lg">Bensin</span>
                           </div>
                           <div>
                             <input
@@ -1243,7 +1249,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2">Solar</span>
+                            <span className="ml-2 text-lg">Solar</span>
                           </div>
                           <div>
                             <input
@@ -1262,7 +1268,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2">Hybrid</span>
+                            <span className="ml-2 text-lg">Hybrid</span>
                           </div>
                           <div>
                             <input
@@ -1281,7 +1287,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2">Listrik</span>
+                            <span className="ml-2 text-lg">Listrik</span>
                           </div>
                         </div>
                       </div>
@@ -1295,7 +1301,7 @@ export default function HeaderAds(props: Props) {
                             // setSelected({ ...selected, sort: "newest" });
                             setFilter({ ...filter, sort: "newest" });
                           }}
-                          className={`border-2 w-full p-2 rounded text-xs ${
+                          className={`border-2 w-full p-2 rounded text-lg ${
                             filter?.sort == "newest" || !filter?.sort
                               ? "bg-gray-300"
                               : ""
@@ -1311,7 +1317,7 @@ export default function HeaderAds(props: Props) {
                             // setSelected({ ...selected, sort: "minprice" });
                             setFilter({ ...filter, sort: "minprice" });
                           }}
-                          className={`border-2 w-full p-2 rounded text-xs ${
+                          className={`border-2 w-full p-2 rounded text-lg ${
                             filter?.sort == "minprice" ? "bg-gray-300" : ""
                           } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
                         >
@@ -1325,7 +1331,7 @@ export default function HeaderAds(props: Props) {
                             // setSelected({ ...selected, sort: "maxprice" });
                             setFilter({ ...filter, sort: "maxprice" });
                           }}
-                          className={`border-2 w-full p-2 rounded text-xs ${
+                          className={`border-2 w-full p-2 rounded text-lg ${
                             filter?.sort == "maxprice" ? "bg-gray-300" : ""
                           } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
                         >
@@ -1338,23 +1344,23 @@ export default function HeaderAds(props: Props) {
                     ) : (
                       ""
                     )}
-                    <div className="pl-2 fixed bottom-4 w-full pr-[105px]">
-                      {filterName !== "KATEGORI" ? (
-                        <Button
-                          color="info"
-                          onClick={() => {
-                            setModal({ ...modal, open: false });
-                            setLoading(true);
-                          }}
-                        >
-                          Terapkan
-                        </Button>
-                      ) : (
-                        ""
-                      )}
-                    </div>
                   </div>
                 </div>
+              </div>
+              <div className="fixed bottom-0 w-full px-4">
+                {filterName !== "KATEGORI" ? (
+                  <Button
+                    color="info"
+                    onClick={() => {
+                      setModal({ ...modal, open: false });
+                      setLoading(true);
+                    }}
+                  >
+                    Terapkan
+                  </Button>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </ModalFilter>
