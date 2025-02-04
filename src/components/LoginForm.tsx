@@ -319,7 +319,7 @@ export default function LoginForm() {
               Dengan mendaftar atau login anda meyetujui{" "}
               <a
                 className="text-blue-600"
-                href="/helps/privacy-policy"
+                href="/helps/term-condition"
                 target="_blank"
               >
                 syarat & ketentuan
@@ -327,7 +327,7 @@ export default function LoginForm() {
               dan{" "}
               <a
                 className="text-blue-600"
-                href="/helps/term-condition"
+                href="/helps/privacy-policy"
                 target="_blank"
               >
                 kebijakan privasi tokotitoh
@@ -404,8 +404,8 @@ export default function LoginForm() {
           <div>
             <p>
               Dengan mendaftar atau login anda meyetujui{" "}
-              <button>syarat & ketentuan</button> dan{" "}
-              <button>kebijakan privasi tokotitoh</button>
+              <a href="/helps/term-condition" target="_blank"className="text-blue-600">syarat & ketentuan</a> dan{" "}
+              <a href="/helps/privacy-policy" target="_blank" className="text-blue-600">kebijakan privasi tokotitoh</a>
             </p>
           </div>
         </div>
