@@ -157,6 +157,15 @@ export default function LoginForm() {
           }
         );
         setLoading(false);
+        const notVerified = await localStorage.getItem("userVerificationRegistration")
+        if(notVerified){
+          Swal.fire({
+            icon: "success",
+            text: "Harap verifikasi email otp",
+          });
+          router.push("/account/registration/verification");
+          return;
+        }
         Swal.fire({
           icon: "success",
           text: "Selamat Datang " + result?.data?.user?.name,
@@ -192,13 +201,28 @@ export default function LoginForm() {
             },
           }
         );
+        if(result?.status == 200){
+          await axios.post(
+            CONFIG.base_url_api + `/sendmail/verification/registration`,
+            {
+              from: "tokotitoh2024@gmail.com",
+              to: payload?.email,
+            },
+            {
+              headers: {
+                "bearer-token": "tokotitohapi",
+                "x-partner-code": "id.marketplace.tokotitoh",
+              },
+            }
+          );
+        }
         setLoading(false);
         Swal.fire({
           icon: "success",
-          text: "Pendaftaran Berhasil",
+          text: "Pendaftaran Berhasil, Silahkan Periksa Email Anda Untuk Verifikasi Akun",
         });
-        setPayload({});
-        setType("login");
+        localStorage.setItem("userVerificationRegistration", JSON.stringify(result?.data?.items));
+        router.push("/account/registration/verification");
       }
       if (type == "forget") {
         const result = await axios.post(
@@ -217,7 +241,7 @@ export default function LoginForm() {
         setLoading(false);
         Swal.fire({
           icon: "success",
-          text: "Kami telah mengirimkan kode OTP ke email kamu!",
+          text: "Kami telah mengirimkan kode OTP melalui email!",
         });
         setPayload({});
         localStorage.setItem("userReset", JSON.stringify(result?.data?.items));
