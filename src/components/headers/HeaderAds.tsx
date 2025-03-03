@@ -1142,7 +1142,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-lg">Semua Kondisi</span>
+                            <span className="ml-2 text-2xl">Semua Kondisi</span>
                           </div>
                           <div>
                             <input
@@ -1161,7 +1161,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-lg">Baru</span>
+                            <span className="ml-2 text-2xl">Baru</span>
                           </div>
                           <div>
                             <input
@@ -1180,7 +1180,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-lg">Bekas</span>
+                            <span className="ml-2 text-2xl">Bekas</span>
                           </div>
                         </div>
                       </div>
