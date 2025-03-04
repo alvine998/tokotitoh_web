@@ -468,7 +468,7 @@ export default function Sell({
 
       const payload = {
         ...selected,
-        images: images,
+        images: images?.slice(0,10),
         user_id: user?.id,
         user_name: user?.name,
         price: +selected?.price,
@@ -573,7 +573,7 @@ export default function Sell({
               <ArrowLeft />
               Kembali
             </button>
-            <p className="m-2 mt-4">Apa yang ingin anda jual?</p>
+            <p className="m-2 mt-4 text-xl">Apa yang ingin anda jual?</p>
             <div className="mt-4">
               {categories?.map((v: any) => (
                 <button
@@ -582,7 +582,7 @@ export default function Sell({
                   }}
                   type="button"
                   key={v?.id}
-                  className="p-2 border w-full text-left hover:bg-gray-300"
+                  className="p-2 border w-full text-left hover:bg-gray-300 text-xl"
                 >
                   {v?.name}
                 </button>
@@ -603,7 +603,7 @@ export default function Sell({
             >
               <ArrowLeft />
             </button>
-            <p className="m-2">Pilih Sub Kategori {selected?.category_name}:</p>
+            <p className="m-2 text-xl">Pilih Sub Kategori {selected?.category_name}:</p>
             <div className="mt-4">
               {subcategories?.map((v: any) => (
                 <button
@@ -612,7 +612,7 @@ export default function Sell({
                   }}
                   type="button"
                   key={v?.id}
-                  className="p-2 border w-full text-left hover:bg-gray-300"
+                  className="p-2 border w-full text-left hover:bg-gray-300 text-xl"
                 >
                   {v?.name}
                 </button>
@@ -636,7 +636,7 @@ export default function Sell({
             {/* <div className='bg-green-300 p-2 w-full rounded'>
                                 <p className='text-center'>Pastikan ukuran gambar tidak lebih dari 2mb</p>
                             </div> */}
-            <p className="m-2">Pilih Gambar:</p>
+            <p className="m-2 text-xl">Pilih Gambar:</p>
             <div className="mt-5">
               <input
                 type="file"
@@ -650,7 +650,7 @@ export default function Sell({
                 disabled={images?.length == 10}
                 type="button"
                 onClick={handleButtonClick}
-                className="border rounded p-2 w-full flex gap-2 items-center justify-center"
+                className="border rounded p-2 w-full flex gap-2 items-center justify-center text-xl"
               >
                 <PlusIcon className="w-4" />
                 Tambah
@@ -663,7 +663,7 @@ export default function Sell({
                 ""
               )}
               <div className="flex flex-wrap mt-5">
-                {images?.map((v: any) => (
+                {images?.slice(0,10)?.map((v: any) => (
                   <button
                     key={v}
                     onClick={() => {
@@ -723,7 +723,7 @@ export default function Sell({
                 <ArrowLeft />
               </button>
             )}
-            <p className="m-2 mt-4">
+            <p className="m-2 mt-4 text-xl">
               {selected?.category_name} {">"} {selected?.subcategory_name}
             </p>
             <div className="mt-4">
@@ -735,6 +735,7 @@ export default function Sell({
                 onChange={(e: any) => {
                   setSelected({ ...selected, title: e.target.value });
                 }}
+                className="text-xl"
               />
               {selected?.subcategory_name?.toLowerCase()?.includes("mobil") ||
               selected?.subcategory_name?.toLowerCase()?.includes("motor") ? (
@@ -756,6 +757,7 @@ export default function Sell({
                           }
                         });
                       }}
+                      className="text-xl"
                     />
                     {/* <label className="text-gray-500" htmlFor="brand">
                       Merek
@@ -795,6 +797,7 @@ export default function Sell({
                           }
                         });
                       }}
+                      className="text-xl"
                     />
                     {/* <label className="text-gray-500" htmlFor="type">
                       Tipe
@@ -868,6 +871,7 @@ export default function Sell({
                       { value: "bekas", label: "Bekas" },
                     ]?.find((v: any) => v?.value == selected?.condition)}
                     id="condition"
+                    className="text-xl"
                   />
                 </div>
               ) : (
@@ -888,6 +892,7 @@ export default function Sell({
                     price: +e.target.value?.replaceAll(".", ""),
                   });
                 }}
+                className="text-xl"
               />
               <TextArea
                 label="Deksripsi"
@@ -897,6 +902,7 @@ export default function Sell({
                 onChange={(e) => {
                   setSelected({ ...selected, description: e.target.value });
                 }}
+                className="text-xl"
               />
               <Input
                 label="Nomor Whatsapp"
@@ -907,6 +913,7 @@ export default function Sell({
                 onChange={(e: any) => {
                   setSelected({ ...selected, wa: e.target.value });
                 }}
+                className="text-xl"
               />
               {selected?.category_name?.toLowerCase()?.includes("properti") ? (
                 <div>
@@ -927,6 +934,7 @@ export default function Sell({
                         area: +e.target.value?.replaceAll(".", ""),
                       });
                     }}
+                    className="text-xl"
                   />
                   <Input
                     label="Luas Bangunan (m2)"
@@ -945,6 +953,7 @@ export default function Sell({
                         building: +e.target.value?.replaceAll(".", ""),
                       });
                     }}
+                    className="text-xl"
                   />
                   {/* <Input
                     label="Sertifikat"
@@ -978,6 +987,7 @@ export default function Sell({
                   onChange={(e: any) => {
                     setSelected({ ...selected, year: e.target.value });
                   }}
+                  className="text-xl"
                 />
               ) : (
                 ""
@@ -1014,6 +1024,7 @@ export default function Sell({
                         });
                       }}
                       defaultValue={selected?.fuel_type}
+                      className="text-xl"
                     />
                     {/* <label className="text-gray-500" htmlFor="fuel_type">
                       Jenis Bahan Bakar
@@ -1043,6 +1054,7 @@ export default function Sell({
                         });
                       }}
                       defaultValue={selected?.transmission}
+                      className="text-xl"
                     />
                     {/* <label className="text-gray-500" htmlFor="transmission">
                       Jenis Transmisi
@@ -1085,6 +1097,7 @@ export default function Sell({
                     onChange={(e: any) => {
                       setSelected({ ...selected, year: e.target.value });
                     }}
+                    className="text-xl"
                   />
                   {/* <Input
                     label="Warna"
@@ -1122,7 +1135,7 @@ export default function Sell({
             >
               <ArrowLeft />
             </button>
-            <p className="m-2">Pilih Lokasi:</p>
+            <p className="m-2 text-xl">Pilih Lokasi:</p>
             <div className="mt-4">
               <div>
                 <label className="text-gray-500" htmlFor="province">
@@ -1139,6 +1152,7 @@ export default function Sell({
                   defaultValue={PROVINCES?.find(
                     (v: any) => v?.id == detail?.province_id
                   )}
+                  className="text-xl"
                 />
               </div>
               <div className="mt-2">
@@ -1158,6 +1172,7 @@ export default function Sell({
                     value: detail?.city_id || "",
                     label: detail?.city_name || "Pilih Kota/Kab",
                   }}
+                  className="text-xl"
                 />
               </div>
               <div className="mt-2">
@@ -1177,6 +1192,7 @@ export default function Sell({
                     value: detail?.district_id || "",
                     label: detail?.district_name || "Pilih Kecamatan",
                   }}
+                  className="text-xl"
                 />
               </div>
               <Button color="info" className={"mt-4"} onClick={onSubmit}>

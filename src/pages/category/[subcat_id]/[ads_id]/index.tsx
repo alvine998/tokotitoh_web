@@ -331,14 +331,14 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
             </OwlCarousel>
             <div className="flex justify-between gap-2 items-center mt-4">
               <a
-                className="bg-gray-700 p-2 w-full rounded text-white text-xs text-center"
+                className="bg-gray-700 p-2 w-full rounded text-white text-sm text-center"
                 target="_blank"
                 href={`https://api.whatsapp.com/send?text=https://tokotitoh.co.id/category/${router.query?.subcat_id}/${router.query?.ads_id}`}
               >
                 Bagikan Iklan
               </a>
               <button
-                className="bg-gray-700 p-2 w-full rounded text-white text-xs text-center"
+                className="bg-gray-700 p-2 w-full rounded text-white text-md text-center"
                 type="button"
                 onClick={() => {
                   if (account?.user_id) {
@@ -357,7 +357,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 Laporkan
               </button>
               <button
-                className={`bg-gray-700 p-2 w-full rounded text-white text-xs text-center ${
+                className={`bg-gray-700 p-2 w-full rounded text-white text-md text-center ${
                   account?.save_ads?.includes(ads?.id)
                     ? "opacity-80"
                     : "opacity-100"
@@ -394,8 +394,8 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 ads?.subcategory_name?.toLowerCase().includes("dijual")) ||
               (ads?.category_name?.toLowerCase().includes("motor") &&
                 ads?.subcategory_name?.toLowerCase().includes("dijual")) ? (
-                <p className="mt-3 text-lg">
-                  <strong className="text-lg">Detail</strong> <br />
+                <p className="mt-3 text-2xl">
+                  <strong className="text-2xl">Detail</strong> <br />
                   <hr />
                   Merek: {ads?.brand_name}
                   <br />
@@ -423,7 +423,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 ""
               )}
               {ads?.category_name?.toLowerCase().includes("properti") ? (
-                <p className="mt-3 text-lg">
+                <p className="mt-3 text-2xl">
                   Detail <br />
                   <hr />
                   Luas Tanah: {ads?.area || 0} m2
@@ -436,7 +436,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               ) : (
                 ""
               )}
-              <p className="text-lg">
+              <p className="text-2xl">
                 Kota: {ads?.district_name}
                 <br />
                 <hr />
@@ -449,8 +449,8 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <hr />
               </p>
             </div>
-            <p className="mt-2 text-lg whitespace-pre-line">
-              <strong className="text-xl">Deskripsi:</strong> <br />
+            <p className="mt-2 text-2xl whitespace-pre-line">
+              <strong className="text-2xl">Deskripsi:</strong> <br />
               {ads?.description}
             </p>
           </div>
@@ -625,11 +625,11 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <UserCircleIcon className="w-20 h-20" />
               )}
               <div>
-                <p className="text-left text-lg">Pengiklan</p>
-                <h5 className="font-bold text-lg text-left">
+                <p className="text-left text-2xl">Pengiklan</p>
+                <h5 className="font-bold text-2xl text-left">
                   {user?.name?.toUpperCase()}
                 </h5>
-                <p className="text-left text-lg">
+                <p className="text-left text-2xl">
                   Bergabung sejak {new Date(user?.created_on)?.getFullYear()}
                 </p>
               </div>
@@ -637,8 +637,8 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
 
             <div className="pb-20 w-full px-2 mt-4">
               <div className="flex gap-2 items-center">
-                <p className="text-left font-bold text-lg">ID Iklan</p>
-                <p className="text-left font-bold text-lg">{ads?.id}</p>
+                <p className="text-left font-bold text-2xl">ID Iklan</p>
+                <p className="text-left font-bold text-2xl">{ads?.id}</p>
               </div>
             </div>
           </div>

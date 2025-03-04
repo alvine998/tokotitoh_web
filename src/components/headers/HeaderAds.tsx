@@ -808,7 +808,7 @@ export default function HeaderAds(props: Props) {
                             }}
                             maxMenuHeight={150}
                             placeholder="Semua Provinsi"
-                            className="w-full"
+                            className="w-full text-3xl"
                             defaultValue={{
                               value: filter?.province_id,
                               label:
@@ -816,6 +816,7 @@ export default function HeaderAds(props: Props) {
                                   (v: any) => v?.id == filter?.province_id
                                 )?.name || "Semua Provinsi",
                             }}
+                            isSearchable={false}
                           />
                           <ReactSelect
                             isDisabled={list?.cities?.length < 1}
@@ -832,7 +833,7 @@ export default function HeaderAds(props: Props) {
                             }}
                             maxMenuHeight={150}
                             placeholder="Semua Kota/Kabupaten"
-                            className="w-full"
+                            className="w-full text-3xl"
                             defaultValue={{
                               value: filter?.city_id,
                               label:
@@ -840,6 +841,7 @@ export default function HeaderAds(props: Props) {
                                   (v: any) => v?.id == filter?.city_id
                                 )?.name || "Semua Kota/Kabupaten",
                             }}
+                            isSearchable={false}
                           />
                           <ReactSelect
                             isDisabled={list?.districts?.length < 1}
@@ -857,7 +859,7 @@ export default function HeaderAds(props: Props) {
                             }}
                             maxMenuHeight={150}
                             placeholder="Semua Kecamatan"
-                            className="w-full"
+                            className="w-full text-3xl"
                             defaultValue={{
                               value: filter?.district_id,
                               label:
@@ -865,6 +867,7 @@ export default function HeaderAds(props: Props) {
                                   (v: any) => v?.id == filter?.district_id
                                 )?.name || "Semua Kecamatan",
                             }}
+                            isSearchable={false}
                           />
                         </div>
                       </div>
@@ -889,12 +892,13 @@ export default function HeaderAds(props: Props) {
                                 min: e.target.value.replaceAll(",", ""),
                               });
                             }}
+                            className="text-3xl"
                           />
                           <Input
                             numericformat
                             label=""
                             placeholder="Sampai Harga"
-                            defaultValue={filter?.max || 1000000000000000}
+                            defaultValue={filter?.max || 10000000000}
                             onChange={(e: any) => {
                               // setSelected({
                               //   ...selected,
@@ -905,6 +909,7 @@ export default function HeaderAds(props: Props) {
                                 max: e.target.value.replaceAll(",", ""),
                               });
                             }}
+                            className="text-3xl"
                           />
                         </div>
                       </div>
@@ -929,6 +934,7 @@ export default function HeaderAds(props: Props) {
                                 minArea: e.target.value.replaceAll(",", ""),
                               });
                             }}
+                            className="text-3xl"
                           />
                           <Input
                             numericformat
@@ -945,6 +951,7 @@ export default function HeaderAds(props: Props) {
                                 maxArea: e.target.value.replaceAll(",", ""),
                               });
                             }}
+                            className="text-3xl"
                           />
                         </div>
                       </div>
@@ -969,6 +976,7 @@ export default function HeaderAds(props: Props) {
                                 minBuilding: e.target.value.replaceAll(",", ""),
                               });
                             }}
+                            className="text-3xl"
                           />
                           <Input
                             numericformat
@@ -985,6 +993,7 @@ export default function HeaderAds(props: Props) {
                                 maxBuilding: e.target.value.replaceAll(",", ""),
                               });
                             }}
+                            className="text-3xl"
                           />
                         </div>
                       </div>
@@ -1009,6 +1018,7 @@ export default function HeaderAds(props: Props) {
                                 year_start: e.target.value,
                               });
                             }}
+                            className="text-3xl"
                           />
                           <Input
                             label=""
@@ -1025,6 +1035,7 @@ export default function HeaderAds(props: Props) {
                                 year_end: e.target.value,
                               });
                             }}
+                            className="text-3xl"
                           />
                         </div>
                       </div>
@@ -1054,7 +1065,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-lg">
+                            <span className="ml-2 text-3xl">
                               Semua Transmisi
                             </span>
                           </div>
@@ -1075,7 +1086,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-lg">Manual</span>
+                            <span className="ml-2 text-3xl">Manual</span>
                           </div>
                           <div>
                             <input
@@ -1094,7 +1105,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-lg">Automatic</span>
+                            <span className="ml-2 text-3xl">Automatic</span>
                           </div>
                           <div>
                             <input
@@ -1113,7 +1124,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-lg">CVT</span>
+                            <span className="ml-2 text-3xl">CVT</span>
                           </div>
                         </div>
                       </div>
@@ -1142,7 +1153,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-2xl">Semua Kondisi</span>
+                            <span className="ml-2 text-3xl">Semua Kondisi</span>
                           </div>
                           <div>
                             <input
@@ -1161,7 +1172,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-2xl">Baru</span>
+                            <span className="ml-2 text-3xl">Baru</span>
                           </div>
                           <div>
                             <input
@@ -1180,7 +1191,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-2xl">Bekas</span>
+                            <span className="ml-2 text-3xl">Bekas</span>
                           </div>
                         </div>
                       </div>
@@ -1209,7 +1220,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-lg">
+                            <span className="ml-2 text-3xl">
                               Semua Bahan Bakar
                             </span>
                           </div>
@@ -1230,7 +1241,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-lg">Bensin</span>
+                            <span className="ml-2 text-3xl">Bensin</span>
                           </div>
                           <div>
                             <input
@@ -1249,7 +1260,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-lg">Solar</span>
+                            <span className="ml-2 text-3xl">Solar</span>
                           </div>
                           <div>
                             <input
@@ -1268,7 +1279,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-lg">Hybrid</span>
+                            <span className="ml-2 text-3xl">Hybrid</span>
                           </div>
                           <div>
                             <input
@@ -1287,7 +1298,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-lg">Listrik</span>
+                            <span className="ml-2 text-3xl">Listrik</span>
                           </div>
                         </div>
                       </div>
