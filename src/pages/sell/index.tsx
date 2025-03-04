@@ -700,6 +700,7 @@ export default function Sell({
                   setFilled([...filled, 4]);
                   setIsMoved(3);
                 }}
+                className={"text-2xl"}
               >
                 Selanjutnya
               </Button>
@@ -1116,6 +1117,7 @@ export default function Sell({
                 color="info"
                 type="button"
                 onClick={() => validationFormData(selected)}
+                className={"text-2xl"}
               >
                 Selanjutnya
               </Button>
@@ -1195,7 +1197,7 @@ export default function Sell({
                   className="text-xl"
                 />
               </div>
-              <Button color="info" className={"mt-4"} onClick={onSubmit}>
+              <Button color="info" className={"mt-4 text-2xl"} onClick={onSubmit}>
                 Selesai
               </Button>
             </div>
