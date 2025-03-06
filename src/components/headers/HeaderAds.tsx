@@ -1306,12 +1306,13 @@ export default function HeaderAds(props: Props) {
                 <h1 className="text-3xl text-black font-bold mb-4">
                   Pilih Lokasi
                 </h1>
-                {filter?.city_id !== "" ? (
+                {list?.districts?.length > 0 ? (
                   <div className="w-full">
                     <button
                       type="button"
                       onClick={() => {
                         setFilter({ ...filter, district_id: "", city_id: "" });
+                        setList({...list, districts: []})
                       }}
                       className="py-1 px-2 border-b-2 w-full flex gap-2 items-center"
                     >
@@ -1350,13 +1351,14 @@ export default function HeaderAds(props: Props) {
                       </button>
                     ))}
                   </div>
-                ) : filter?.province_id !== "" ? (
+                ) : list?.cities?.length > 0 ? (
                   <div className="w-full">
                     <button
                       type="button"
                       onClick={() => {
                         getDistrict({ id: "" });
                         setFilter({ ...filter, province_id: "" });
+                        setList({...list, cities: []})
                       }}
                       className="py-1 px-2 border-b-2 w-full flex gap-2 items-center"
                     >
