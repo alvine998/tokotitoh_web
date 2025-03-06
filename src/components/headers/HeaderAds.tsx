@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   BellIcon,
   CheckIcon,
+  ChevronLeft,
+  ChevronRight,
   MapPinIcon,
   MenuIcon,
   SearchIcon,
@@ -71,9 +73,9 @@ export default function HeaderAds(props: Props) {
 
   const getCity = async (data: any) => {
     try {
-      if (data?.value !== "") {
+      if (data?.id !== "") {
         const result = await axios.get(
-          CONFIG.base_url_api + `/cities?province_id=${data?.value}`,
+          CONFIG.base_url_api + `/cities?province_id=${data?.id}`,
           {
             headers: {
               "bearer-token": "tokotitohapi",
@@ -88,11 +90,11 @@ export default function HeaderAds(props: Props) {
         });
         // setSelected({
         //   ...selected,
-        //   province_id: data?.value,
+        //   province_id: data?.id,
         //   province_name: data?.label,
         // });
-        setFilter({ ...filter, province_id: data?.value, city_id: "" });
-        setAddress(data?.label);
+        setFilter({ ...filter, province_id: data?.id, city_id: "" });
+        setAddress(data?.name);
       } else {
         setList({
           cities: [],
@@ -109,9 +111,9 @@ export default function HeaderAds(props: Props) {
 
   const getDistrict = async (data: any) => {
     try {
-      if (data?.value !== "") {
+      if (data?.id !== "") {
         const result = await axios.get(
-          CONFIG.base_url_api + `/districts?city_id=${data?.value}`,
+          CONFIG.base_url_api + `/districts?city_id=${data?.id}`,
           {
             headers: {
               "bearer-token": "tokotitohapi",
@@ -126,11 +128,11 @@ export default function HeaderAds(props: Props) {
         });
         // setSelected({
         //   ...selected,
-        //   district_id: data?.value,
+        //   district_id: data?.id,
         //   district_name: data?.label,
         // });
-        setFilter({ ...filter, city_id: data?.value, district_id: "" });
-        setAddress(`${data?.label}, ${adress}`);
+        setFilter({ ...filter, city_id: data?.id, district_id: "" });
+        setAddress(`${data?.name}, ${adress}`);
       } else {
         setList({
           ...list,
@@ -1290,7 +1292,7 @@ export default function HeaderAds(props: Props) {
       {modal?.key == "location" ? (
         <div>
           <ModalFilter open={modal.open} setOpen={() => {}} type="location">
-            <div className="bg-white h-[90vh] w-full">
+            <div className="bg-white h-[90vh] w-full overflow-auto pb-4">
               <div className="flex justify-end pr-4">
                 <button
                   onClick={() => {
@@ -1304,9 +1306,126 @@ export default function HeaderAds(props: Props) {
                 <h1 className="text-3xl text-black font-bold mb-4">
                   Pilih Lokasi
                 </h1>
-                <ReactSelect
+                {filter?.city_id !== "" ? (
+                  <div className="w-full">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFilter({ ...filter, district_id: "", city_id: "" });
+                      }}
+                      className="py-1 px-2 border-b-2 w-full flex gap-2 items-center"
+                    >
+                      <ChevronLeft />
+                      <p>Kembali</p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFilter({ ...filter, district_id: "" });
+                      }}
+                      className={`py-1 px-2 w-full flex justify-between items-center ${
+                        filter?.district_id == ""
+                          ? "border-2 border-blue-400 rounded"
+                          : "border-b-2"
+                      }`}
+                    >
+                      <p>Semua Kecamatan</p>
+                      <ChevronRight />
+                    </button>
+                    {list?.districts?.map((v: any, i: number) => (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFilter({ ...filter, district_id: v.id });
+                        }}
+                        className={`py-1 px-2 w-full flex justify-between items-center ${
+                          filter?.district_id == v?.id
+                            ? "border-2 border-blue-400 rounded"
+                            : "border-b-2"
+                        }`}
+                        key={i}
+                      >
+                        <p>{v?.name}</p>
+                        <ChevronRight />
+                      </button>
+                    ))}
+                  </div>
+                ) : filter?.province_id !== "" ? (
+                  <div className="w-full">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        getDistrict({ id: "" });
+                        setFilter({ ...filter, province_id: "" });
+                      }}
+                      className="py-1 px-2 border-b-2 w-full flex gap-2 items-center"
+                    >
+                      <ChevronLeft />
+                      <p>Kembali</p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        getDistrict({ id: "" });
+                      }}
+                      className={`py-1 px-2 w-full flex justify-between items-center ${
+                        filter?.city_id == ""
+                          ? "border-2 border-blue-400 rounded"
+                          : "border-b-2"
+                      }`}
+                    >
+                      <p>Semua Kota/Kab</p>
+                      <ChevronRight />
+                    </button>
+                    {list?.cities?.map((v: any, i: number) => (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          getDistrict(v);
+                        }}
+                        className="py-1 px-2 border-b-2 w-full flex justify-between items-center"
+                        key={i}
+                      >
+                        <p>{v?.name}</p>
+                        <ChevronRight />
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="w-full">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        getCity({ id: "" });
+                      }}
+                      className={`py-1 px-2 w-full flex justify-between items-center ${
+                        filter?.province_id == ""
+                          ? "border-2 border-blue-400 rounded"
+                          : "border-b-2"
+                      }`}
+                    >
+                      <p>Semua Provinsi</p>
+                      <ChevronRight />
+                    </button>
+                    {provinces?.map((v: any, i: number) => (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          getCity(v);
+                        }}
+                        className="py-1 px-2 border-b-2 w-full flex justify-between items-center"
+                        key={i}
+                      >
+                        <p>{v?.name}</p>
+                        <ChevronRight />
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* <ReactSelect
                   options={[
-                    { value: "", label: "Semua Provinsi" },
+                    { id: "", label: "Semua Provinsi" },
                     ...provinces?.map((v: any) => ({
                       ...v,
                       value: v?.id,
@@ -1376,7 +1495,7 @@ export default function HeaderAds(props: Props) {
                       )?.name || "Semua Kecamatan",
                   }}
                   isSearchable={false}
-                />
+                /> */}
                 <div className="fixed bottom-0 w-full px-4">
                   <Button
                     color="info"
