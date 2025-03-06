@@ -5,7 +5,7 @@ interface Props {
     open: any;
     setOpen: any;
     children: any;
-    type?: 'filters' | 'default';
+    type?: 'filters' | 'location' | 'default';
 }
 
 export interface useModal {

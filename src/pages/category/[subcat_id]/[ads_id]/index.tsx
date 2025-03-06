@@ -367,8 +367,8 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 disabled={account?.save_ads?.includes(ads?.id)}
               >
                 {account?.save_ads?.includes(ads?.id)
-                  ? "Iklan Tersimpan"
-                  : "Simpan Iklan"}
+                  ? "Tersimpan"
+                  : "Simpan"}
               </button>
             </div>
             <div className="mt-3">

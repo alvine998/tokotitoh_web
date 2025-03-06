@@ -236,9 +236,6 @@ export default function HeaderAds(props: Props) {
       name: "MEREK",
     },
     {
-      name: "LOKASI",
-    },
-    {
       name: "HARGA",
     },
     {
@@ -257,9 +254,6 @@ export default function HeaderAds(props: Props) {
 
   let navsProperty = [
     {
-      name: "LOKASI",
-    },
-    {
       name: "HARGA",
     },
     {
@@ -275,9 +269,6 @@ export default function HeaderAds(props: Props) {
 
   let navsBusTruck = [
     {
-      name: "LOKASI",
-    },
-    {
       name: "HARGA",
     },
     {
@@ -290,9 +281,6 @@ export default function HeaderAds(props: Props) {
 
   let navsFoodPet = [
     {
-      name: "LOKASI",
-    },
-    {
       name: "HARGA",
     },
     {
@@ -301,9 +289,6 @@ export default function HeaderAds(props: Props) {
   ];
 
   let navs = [
-    {
-      name: "LOKASI",
-    },
     {
       name: "HARGA",
     },
@@ -349,9 +334,15 @@ export default function HeaderAds(props: Props) {
             <Settings2Icon className="w-4 h-4" />
             Filter
           </button>
-          <button type="button" className="flex gap-2 items-center">
+          <button
+            onClick={() => {
+              setModal({ ...modal, data: ads, open: true, key: "location" });
+            }}
+            type="button"
+            className="flex gap-2 items-center"
+          >
             <MapPinIcon className="w-4 h-4" />
-            <h5 className="text-lg">
+            <h5 className="text-sm">
               {adress?.substring(0, 30)}
               {adress?.length > 30 ? "..." : ""}
             </h5>
@@ -791,89 +782,6 @@ export default function HeaderAds(props: Props) {
                     ) : (
                       ""
                     )}
-                    {filterName == "LOKASI" ? (
-                      <div>
-                        <div className="flex flex-col gap-2 items-center justify-center pl-2 mt-4">
-                          <ReactSelect
-                            options={[
-                              { value: "", label: "Semua Provinsi" },
-                              ...provinces?.map((v: any) => ({
-                                ...v,
-                                value: v?.id,
-                                label: v?.name,
-                              })),
-                            ]}
-                            onChange={(e: any) => {
-                              getCity(e);
-                            }}
-                            maxMenuHeight={150}
-                            placeholder="Semua Provinsi"
-                            className="w-full text-3xl"
-                            defaultValue={{
-                              value: filter?.province_id,
-                              label:
-                                provinces?.find(
-                                  (v: any) => v?.id == filter?.province_id
-                                )?.name || "Semua Provinsi",
-                            }}
-                            isSearchable={false}
-                          />
-                          <ReactSelect
-                            isDisabled={list?.cities?.length < 1}
-                            options={[
-                              { value: "", label: "Semua Kota/Kabupaten" },
-                              ...list?.cities?.map((v: any) => ({
-                                ...v,
-                                value: v?.id,
-                                label: v?.name,
-                              })),
-                            ]}
-                            onChange={(e: any) => {
-                              getDistrict(e);
-                            }}
-                            maxMenuHeight={150}
-                            placeholder="Semua Kota/Kabupaten"
-                            className="w-full text-3xl"
-                            defaultValue={{
-                              value: filter?.city_id,
-                              label:
-                                list?.cities?.find(
-                                  (v: any) => v?.id == filter?.city_id
-                                )?.name || "Semua Kota/Kabupaten",
-                            }}
-                            isSearchable={false}
-                          />
-                          <ReactSelect
-                            isDisabled={list?.districts?.length < 1}
-                            options={[
-                              { value: "", label: "Semua Kecamatan" },
-                              ...list?.districts?.map((v: any) => ({
-                                ...v,
-                                value: v?.id,
-                                label: v?.name,
-                              })),
-                            ]}
-                            onChange={(e: any) => {
-                              // setSelected({ ...selected, district_id: e.value });
-                              setFilter({ ...filter, district_id: e.value });
-                            }}
-                            maxMenuHeight={150}
-                            placeholder="Semua Kecamatan"
-                            className="w-full text-3xl"
-                            defaultValue={{
-                              value: filter?.district_id,
-                              label:
-                                list?.districts?.find(
-                                  (v: any) => v?.id == filter?.district_id
-                                )?.name || "Semua Kecamatan",
-                            }}
-                            isSearchable={false}
-                          />
-                        </div>
-                      </div>
-                    ) : (
-                      ""
-                    )}
                     {filterName == "HARGA" ? (
                       <div>
                         <div className="flex flex-col items-center justify-center pl-2 mt-4">
@@ -892,7 +800,7 @@ export default function HeaderAds(props: Props) {
                                 min: e.target.value.replaceAll(",", ""),
                               });
                             }}
-                            className="text-3xl"
+                            className="text-2xl"
                           />
                           <Input
                             numericformat
@@ -909,7 +817,7 @@ export default function HeaderAds(props: Props) {
                                 max: e.target.value.replaceAll(",", ""),
                               });
                             }}
-                            className="text-3xl"
+                            className="text-2xl"
                           />
                         </div>
                       </div>
@@ -934,7 +842,7 @@ export default function HeaderAds(props: Props) {
                                 minArea: e.target.value.replaceAll(",", ""),
                               });
                             }}
-                            className="text-3xl"
+                            className="text-2xl"
                           />
                           <Input
                             numericformat
@@ -951,7 +859,7 @@ export default function HeaderAds(props: Props) {
                                 maxArea: e.target.value.replaceAll(",", ""),
                               });
                             }}
-                            className="text-3xl"
+                            className="text-2xl"
                           />
                         </div>
                       </div>
@@ -976,7 +884,7 @@ export default function HeaderAds(props: Props) {
                                 minBuilding: e.target.value.replaceAll(",", ""),
                               });
                             }}
-                            className="text-3xl"
+                            className="text-2xl"
                           />
                           <Input
                             numericformat
@@ -993,7 +901,7 @@ export default function HeaderAds(props: Props) {
                                 maxBuilding: e.target.value.replaceAll(",", ""),
                               });
                             }}
-                            className="text-3xl"
+                            className="text-2xl"
                           />
                         </div>
                       </div>
@@ -1018,7 +926,7 @@ export default function HeaderAds(props: Props) {
                                 year_start: e.target.value,
                               });
                             }}
-                            className="text-3xl"
+                            className="text-2xl"
                           />
                           <Input
                             label=""
@@ -1035,7 +943,7 @@ export default function HeaderAds(props: Props) {
                                 year_end: e.target.value,
                               });
                             }}
-                            className="text-3xl"
+                            className="text-2xl"
                           />
                         </div>
                       </div>
@@ -1065,7 +973,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-3xl">
+                            <span className="ml-2 text-2xl">
                               Semua Transmisi
                             </span>
                           </div>
@@ -1086,7 +994,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-3xl">Manual</span>
+                            <span className="ml-2 text-2xl">Manual</span>
                           </div>
                           <div>
                             <input
@@ -1105,7 +1013,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-3xl">Automatic</span>
+                            <span className="ml-2 text-2xl">Automatic</span>
                           </div>
                           <div>
                             <input
@@ -1124,7 +1032,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-3xl">CVT</span>
+                            <span className="ml-2 text-2xl">CVT</span>
                           </div>
                         </div>
                       </div>
@@ -1153,7 +1061,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-3xl">Semua Kondisi</span>
+                            <span className="ml-2 text-2xl">Semua Kondisi</span>
                           </div>
                           <div>
                             <input
@@ -1172,7 +1080,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-3xl">Baru</span>
+                            <span className="ml-2 text-2xl">Baru</span>
                           </div>
                           <div>
                             <input
@@ -1191,7 +1099,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-3xl">Bekas</span>
+                            <span className="ml-2 text-2xl">Bekas</span>
                           </div>
                         </div>
                       </div>
@@ -1220,7 +1128,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-3xl">
+                            <span className="ml-2 text-2xl">
                               Semua Bahan Bakar
                             </span>
                           </div>
@@ -1241,7 +1149,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-3xl">Bensin</span>
+                            <span className="ml-2 text-2xl">Bensin</span>
                           </div>
                           <div>
                             <input
@@ -1260,7 +1168,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-3xl">Solar</span>
+                            <span className="ml-2 text-2xl">Solar</span>
                           </div>
                           <div>
                             <input
@@ -1279,7 +1187,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-3xl">Hybrid</span>
+                            <span className="ml-2 text-2xl">Hybrid</span>
                           </div>
                           <div>
                             <input
@@ -1298,7 +1206,7 @@ export default function HeaderAds(props: Props) {
                                 });
                               }}
                             />
-                            <span className="ml-2 text-3xl">Listrik</span>
+                            <span className="ml-2 text-2xl">Listrik</span>
                           </div>
                         </div>
                       </div>
@@ -1372,6 +1280,114 @@ export default function HeaderAds(props: Props) {
                 ) : (
                   ""
                 )}
+              </div>
+            </div>
+          </ModalFilter>
+        </div>
+      ) : (
+        ""
+      )}
+      {modal?.key == "location" ? (
+        <div>
+          <ModalFilter open={modal.open} setOpen={() => {}} type="location">
+            <div className="bg-white h-[90vh] w-full">
+              <div className="flex justify-end pr-4">
+                <button
+                  onClick={() => {
+                    setModal({ ...modal, open: false });
+                  }}
+                >
+                  <XCircleIcon />
+                </button>
+              </div>
+              <div className="flex flex-col gap-2 items-center justify-center p-4">
+                <h1 className="text-3xl text-black font-bold mb-4">
+                  Pilih Lokasi
+                </h1>
+                <ReactSelect
+                  options={[
+                    { value: "", label: "Semua Provinsi" },
+                    ...provinces?.map((v: any) => ({
+                      ...v,
+                      value: v?.id,
+                      label: v?.name,
+                    })),
+                  ]}
+                  onChange={(e: any) => {
+                    getCity(e);
+                  }}
+                  maxMenuHeight={150}
+                  placeholder="Semua Provinsi"
+                  className="w-full text-2xl"
+                  defaultValue={{
+                    value: filter?.province_id,
+                    label:
+                      provinces?.find((v: any) => v?.id == filter?.province_id)
+                        ?.name || "Semua Provinsi",
+                  }}
+                  isSearchable={false}
+                />
+                <ReactSelect
+                  isDisabled={list?.cities?.length < 1}
+                  options={[
+                    { value: "", label: "Semua Kota/Kabupaten" },
+                    ...list?.cities?.map((v: any) => ({
+                      ...v,
+                      value: v?.id,
+                      label: v?.name,
+                    })),
+                  ]}
+                  onChange={(e: any) => {
+                    getDistrict(e);
+                  }}
+                  maxMenuHeight={150}
+                  placeholder="Semua Kota/Kabupaten"
+                  className="w-full text-2xl"
+                  defaultValue={{
+                    value: filter?.city_id,
+                    label:
+                      list?.cities?.find((v: any) => v?.id == filter?.city_id)
+                        ?.name || "Semua Kota/Kabupaten",
+                  }}
+                  isSearchable={false}
+                />
+                <ReactSelect
+                  isDisabled={list?.districts?.length < 1}
+                  options={[
+                    { value: "", label: "Semua Kecamatan" },
+                    ...list?.districts?.map((v: any) => ({
+                      ...v,
+                      value: v?.id,
+                      label: v?.name,
+                    })),
+                  ]}
+                  onChange={(e: any) => {
+                    // setSelected({ ...selected, district_id: e.value });
+                    setFilter({ ...filter, district_id: e.value });
+                  }}
+                  maxMenuHeight={150}
+                  placeholder="Semua Kecamatan"
+                  className="w-full text-2xl"
+                  defaultValue={{
+                    value: filter?.district_id,
+                    label:
+                      list?.districts?.find(
+                        (v: any) => v?.id == filter?.district_id
+                      )?.name || "Semua Kecamatan",
+                  }}
+                  isSearchable={false}
+                />
+                <div className="fixed bottom-0 w-full px-4">
+                  <Button
+                    color="info"
+                    onClick={() => {
+                      setModal({ ...modal, open: false });
+                      setLoading(true);
+                    }}
+                  >
+                    Terapkan
+                  </Button>
+                </div>
               </div>
             </div>
           </ModalFilter>
