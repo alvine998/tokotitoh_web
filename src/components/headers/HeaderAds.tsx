@@ -62,7 +62,6 @@ export default function HeaderAds(props: Props) {
   const [category, setCategory] = useState<any>();
   const [adress, setAddress] = useState<any>("Indonesia");
   const [modal, setModal] = useState<useModal>();
-  const [filterName, setFilterName] = useState<any>("KATEGORI");
 
   const [list, setList] = useState<any>({
     cities: [],
@@ -304,7 +303,24 @@ export default function HeaderAds(props: Props) {
       name: "URUTKAN",
     },
   ];
-
+  const [filterName, setFilterName] = useState<any>(
+    (ads?.category_name?.toLowerCase()?.includes("mobil") &&
+      ads?.name?.toLowerCase()?.includes("mobil")) ||
+      (ads?.category_name?.toLowerCase()?.includes("motor") &&
+        ads?.name?.toLowerCase()?.includes("motor"))
+      ? navsCar[0].name
+      : ads?.category_name?.toLowerCase()?.includes("properti")
+      ? navsProperty[0].name
+      : ads?.name?.toLowerCase() == "alat berat di sewakan" ||
+        ads?.name?.toLowerCase() == "alat berat di jual" ||
+        ads?.name?.toLowerCase() == "bus dan truk dijual" ||
+        ads?.name?.toLowerCase() == "bus dan truk di sewakan"
+      ? navsBusTruck[0].name
+      : ads?.category_name?.toLowerCase()?.includes("makanan") ||
+        ads?.category_name?.toLowerCase()?.includes("hewan")
+      ? navsFoodPet[0].name
+      : navs[0].name
+  );
   const checkboxRef = useRef<HTMLInputElement>(null);
 
   const handleButtonClick = () => {
@@ -781,7 +797,9 @@ export default function HeaderAds(props: Props) {
                             </div>
                           </div>
                         ) : (
-                          <p className="text-center text-xl">Silahkan pilih merek terlebih dahulu</p>
+                          <p className="text-center text-xl">
+                            Silahkan pilih merek terlebih dahulu
+                          </p>
                         )}
                       </div>
                     ) : (
