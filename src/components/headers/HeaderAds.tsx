@@ -238,6 +238,9 @@ export default function HeaderAds(props: Props) {
       name: "MEREK",
     },
     {
+      name: "MODEL",
+    },
+    {
       name: "HARGA",
     },
     {
@@ -677,10 +680,7 @@ export default function HeaderAds(props: Props) {
                               </button>
                             ))}
                         </div>
-                        <div className="lg:h-[20vh] h-[20vh] overflow-auto mt-4">
-                          <label htmlFor="brand" className="ml-2 text-lg">
-                            Merek
-                          </label>
+                        <div className="lg:h-[40vh] h-[40vh] overflow-auto mt-4">
                           <div className="flex flex-col gap-2 pl-2 mt-2">
                             {brands?.map((v: any, i: number) => (
                               <button
@@ -731,11 +731,14 @@ export default function HeaderAds(props: Props) {
                             ))}
                           </div>
                         </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {filterName == "MODEL" ? (
+                      <div>
                         {list?.types?.length > 0 ? (
-                          <div className="lg:h-[20vh] h-[20vh] overflow-auto mt-4">
-                            <label htmlFor="type" className="ml-2 text-lg">
-                              Tipe
-                            </label>
+                          <div className="lg:h-[70vh] h-[70vh] overflow-auto mt-4">
                             <div className="flex flex-col gap-2 pl-2 mt-2">
                               {list?.types?.map((v: any, i: number) => (
                                 <div key={i}>
@@ -778,7 +781,7 @@ export default function HeaderAds(props: Props) {
                             </div>
                           </div>
                         ) : (
-                          ""
+                          <p className="text-center text-xl">Silahkan pilih merek terlebih dahulu</p>
                         )}
                       </div>
                     ) : (
