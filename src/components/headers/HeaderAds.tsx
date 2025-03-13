@@ -471,14 +471,6 @@ export default function HeaderAds(props: Props) {
                 </div>
                 <div className="flex mt-2">
                   <div className="lg:w-auto w-auto flex flex-col gap-2">
-                    <button
-                      onClick={() => {
-                        setFilterName("KATEGORI");
-                      }}
-                      className={`border-2 w-auto p-2 rounded text-lg hover:bg-gray-300 duration-200 transition-all`}
-                    >
-                      KATEGORI
-                    </button>
                     {(ads?.category_name?.toLowerCase()?.includes("mobil") &&
                       ads?.name?.toLowerCase()?.includes("mobil")) ||
                     (ads?.category_name?.toLowerCase()?.includes("motor") &&
@@ -571,6 +563,14 @@ export default function HeaderAds(props: Props) {
                         ))}
                       </>
                     )}
+                    <button
+                      onClick={() => {
+                        setFilterName("KATEGORI");
+                      }}
+                      className={`border-2 w-auto p-2 rounded text-lg hover:bg-gray-300 duration-200 transition-all`}
+                    >
+                      KATEGORI
+                    </button>
                   </div>
                   <div
                     className={`w-full ${
@@ -578,7 +578,7 @@ export default function HeaderAds(props: Props) {
                     }`}
                   >
                     {filterName == "KATEGORI" ? (
-                      <div className="lg:h-[45vh] h-[60vh] overflow-auto">
+                      <div className="lg:h-[60vh] h-[70vh] overflow-auto">
                         <div className="flex flex-col gap-2 pl-2 mt-4">
                           {list?.subcategories?.length > 0 ? (
                             <>
@@ -1312,7 +1312,7 @@ export default function HeaderAds(props: Props) {
                       type="button"
                       onClick={() => {
                         setFilter({ ...filter, district_id: "", city_id: "" });
-                        setList({...list, districts: []})
+                        setList({ ...list, districts: [] });
                       }}
                       className="py-1 px-2 border-b-2 w-full flex gap-2 items-center"
                     >
@@ -1358,7 +1358,7 @@ export default function HeaderAds(props: Props) {
                       onClick={() => {
                         getDistrict({ id: "" });
                         setFilter({ ...filter, province_id: "" });
-                        setList({...list, cities: []})
+                        setList({ ...list, cities: [] });
                       }}
                       className="py-1 px-2 border-b-2 w-full flex gap-2 items-center"
                     >

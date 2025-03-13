@@ -468,7 +468,7 @@ export default function Sell({
 
       const payload = {
         ...selected,
-        images: images?.slice(0,10),
+        images: images?.slice(0, 10),
         user_id: user?.id,
         user_name: user?.name,
         price: +selected?.price,
@@ -603,7 +603,9 @@ export default function Sell({
             >
               <ArrowLeft />
             </button>
-            <p className="m-2 text-xl">Pilih Sub Kategori {selected?.category_name}:</p>
+            <p className="m-2 text-xl">
+              Pilih Sub Kategori {selected?.category_name}:
+            </p>
             <div className="mt-4">
               {subcategories?.map((v: any) => (
                 <button
@@ -663,7 +665,7 @@ export default function Sell({
                 ""
               )}
               <div className="flex flex-wrap mt-5">
-                {images?.slice(0,10)?.map((v: any) => (
+                {images?.slice(0, 10)?.map((v: any) => (
                   <button
                     key={v}
                     onClick={() => {
@@ -695,7 +697,7 @@ export default function Sell({
                       icon: "warning",
                       text: `Harap lengkapi gambar!`,
                     });
-                    return
+                    return;
                   }
                   setFilled([...filled, 4]);
                   setIsMoved(3);
@@ -1140,10 +1142,23 @@ export default function Sell({
             <p className="m-2 text-xl">Pilih Lokasi:</p>
             <div className="mt-4">
               <div>
-                <label className="text-gray-500" htmlFor="province">
+                {/* <label className="text-gray-500" htmlFor="province">
                   Provinsi
-                </label>
-                <ReactSelect
+                </label> */}
+                <Select
+                  options={PROVINCES}
+                  label="Provinsi"
+                  defaultValue={selected?.province_id}
+                  onChange={(e: any) => {
+                    PROVINCES?.map((v: any) => {
+                      if (e.target.value == v?.id) {
+                        getCity(v);
+                      }
+                    });
+                  }}
+                  className="text-xl"
+                />
+                {/* <ReactSelect
                   options={PROVINCES}
                   placeholder="Pilih Provinsi"
                   onChange={(e: any) => {
@@ -1155,10 +1170,10 @@ export default function Sell({
                     (v: any) => v?.id == detail?.province_id
                   )}
                   className="text-xl"
-                />
+                /> */}
               </div>
               <div className="mt-2">
-                <label className="text-gray-500" htmlFor="city">
+                {/* <label className="text-gray-500" htmlFor="city">
                   Kota/Kab
                 </label>
                 <ReactSelect
@@ -1175,10 +1190,24 @@ export default function Sell({
                     label: detail?.city_name || "Pilih Kota/Kab",
                   }}
                   className="text-xl"
+                /> */}
+                <Select
+                  options={list.cities}
+                  disabled={list?.cities?.length < 1}
+                  label="Kota/Kab"
+                  defaultValue={selected?.city_id}
+                  onChange={(e: any) => {
+                    list?.cities?.map((v: any) => {
+                      if (e.target.value == v?.id) {
+                        getDistrict(v);
+                      }
+                    });
+                  }}
+                  className="text-xl"
                 />
               </div>
               <div className="mt-2">
-                <label className="text-gray-500" htmlFor="district">
+                {/* <label className="text-gray-500" htmlFor="district">
                   Kecamatan
                 </label>
                 <ReactSelect
@@ -1195,9 +1224,27 @@ export default function Sell({
                     label: detail?.district_name || "Pilih Kecamatan",
                   }}
                   className="text-xl"
+                /> */}
+                <Select
+                  options={list?.districts}
+                  disabled={list?.districts?.length < 1}
+                  label="Kecamatan"
+                  defaultValue={selected?.district_id}
+                  onChange={(e: any) => {
+                    list?.districts?.map((v: any) => {
+                      if (e.target.value == v?.id) {
+                        getVillage(v);
+                      }
+                    });
+                  }}
+                  className="text-xl"
                 />
               </div>
-              <Button color="info" className={"mt-4 text-2xl"} onClick={onSubmit}>
+              <Button
+                color="info"
+                className={"mt-4 text-2xl"}
+                onClick={onSubmit}
+              >
                 Selesai
               </Button>
             </div>
