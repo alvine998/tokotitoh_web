@@ -287,7 +287,7 @@ export default function Ads({
           {ads?.count > 0 ? (
             <div className="lg:px-[500px] md:px-40 px-0">
               {/* Kategori */}
-              <div className="mt-36 grid lg:gap-4 gap-0 grid-cols-2">
+              <div className="mt-36 grid lg:gap-4 gap-2 grid-cols-2">
                 {loading ? (
                   <div className="mt-10">
                     <CircleDotDashedIcon className="animate-spin text-green-500 ml-5" />
