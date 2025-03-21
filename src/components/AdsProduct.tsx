@@ -157,7 +157,7 @@ export default function AdsProduct(props: Props) {
           <img
             src={thumbnail}
             alt="thumbnail"
-            className="w-auto h-auto rounded"
+            className="w-[200px] h-[170px] rounded"
           />
         </div>
         {/* <Image
