@@ -150,7 +150,7 @@ export default function AdsProduct(props: Props) {
       )}
       <button
         type="button"
-        className="shadow border p-2 rounded lg:h-auto w-full lg:w-full"
+        className="shadow border p-2 rounded lg:h-[50vh] w-full lg:w-full items-start justify-start"
         onClick={onClick}
       >
         <div className="bg-white w-full h-[200px] overflow-hidden flex justify-center items-center">
