@@ -215,7 +215,7 @@ export default function Home({ categories, notif, subcategories }: any) {
                 width={100}
                 height={80}
                 alt="icon"
-                className="w-[100px] h-[80px]"
+                className="w-[100px] h-[60px]"
               />
               {v?.name}
             </button>
