@@ -150,10 +150,10 @@ export default function AdsProduct(props: Props) {
       )}
       <button
         type="button"
-        className="shadow border p-2 rounded lg:h-[50vh] h-[50vh] lg:mt-0 mt-2 w-full lg:w-full items-start justify-start"
+        className="shadow border p-2 relative z-10 rounded lg:h-[50vh] h-[50vh] lg:mt-0 mt-2 w-full lg:w-full flex flex-col justify-start"
         onClick={onClick}
       >
-        <div className="bg-white w-full h-[200px] overflow-hidden flex justify-center items-center">
+        <div className="bg-white w-full h-[200px] overflow-hidden flex">
           <img
             src={thumbnail}
             alt="thumbnail"
@@ -170,33 +170,41 @@ export default function AdsProduct(props: Props) {
           objectFit="cover"
           className="h-[250px] lg:h-auto w-full rounded"
         /> */}
-        <div className="flex justify-between items-end mt-4">
-          <div>
-            <h5 className="text-left text-2xl font-bold">{title}</h5>
-            <p className="text-left font-bold text-lg">Rp {toMoney(price)}</p>
-          </div>
-          {router.pathname == "/myads" ? (
+        {router.pathname == "/myads" ? (
+          <div className="flex justify-between items-end mt-4">
             <div>
-              <p
-                className={
-                  status == 0
-                    ? "text-orange-700"
-                    : status == 1
-                    ? "text-green-700"
-                    : "text-red-700"
-                }
-              >
-                {status == 0
-                  ? "Sedang Ditinjau"
-                  : status == 1
-                  ? "Disetujui"
-                  : "Ditolak"}
-              </p>
+              <h5 className="text-left text-2xl font-bold">{title}</h5>
+              <p className="text-left font-bold text-lg">Rp {toMoney(price)}</p>
             </div>
-          ) : (
-            ""
-          )}
-        </div>
+            {router.pathname == "/myads" ? (
+              <div>
+                <p
+                  className={
+                    status == 0
+                      ? "text-orange-700"
+                      : status == 1
+                      ? "text-green-700"
+                      : "text-red-700"
+                  }
+                >
+                  {status == 0
+                    ? "Sedang Ditinjau"
+                    : status == 1
+                    ? "Disetujui"
+                    : "Ditolak"}
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+        ) : (
+          <div className="absolute top-48 left-2">
+              <h5 className="text-left text-2xl font-bold">{title}</h5>
+              <p className="text-left font-bold text-lg">Rp {toMoney(price)}</p>
+          </div>
+        )}
+
         {router.pathname == "/myads" ? (
           <div className="flex justify-between items-center mt-2">
             <div className="w-full border-r-2">
