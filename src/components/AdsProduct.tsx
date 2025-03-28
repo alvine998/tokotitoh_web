@@ -150,7 +150,7 @@ export default function AdsProduct(props: Props) {
       )}
       <button
         type="button"
-        className="shadow border p-2 relative z-10 rounded lg:h-[50vh] h-[50vh] lg:mt-0 mt-2 w-full lg:w-full flex flex-col justify-start"
+        className="shadow border p-2 relative z-10 rounded lg:h-[40vh] h-[35vh] lg:mt-0 mt-2 w-full lg:w-full flex flex-col justify-start"
         onClick={onClick}
       >
         <div className="bg-white w-full h-[200px] overflow-hidden flex">
@@ -173,7 +173,9 @@ export default function AdsProduct(props: Props) {
         {router.pathname == "/myads" ? (
           <div className="flex justify-between items-end mt-4">
             <div>
-              <h5 className="text-left text-2xl font-bold">{title}</h5>
+              <h5 className="text-left text-2xl font-bold">
+                {title?.length > 10 ? title?.slice(0, 10) + "..." : title}
+              </h5>
               <p className="text-left font-bold text-lg">Rp {toMoney(price)}</p>
             </div>
             {router.pathname == "/myads" ? (
@@ -200,8 +202,11 @@ export default function AdsProduct(props: Props) {
           </div>
         ) : (
           <div className="absolute top-48 left-2">
-              <h5 className="text-left text-2xl font-bold">{title}</h5>
-              <p className="text-left font-bold text-lg">Rp {toMoney(price)}</p>
+            <h5 className="text-left text-2xl font-bold">
+              {" "}
+              {title?.length > 10 ? title?.slice(0, 10) + "..." : title}
+            </h5>
+            <p className="text-left font-bold text-lg">Rp {toMoney(price)}</p>
           </div>
         )}
 
