@@ -174,9 +174,19 @@ export default function AdsProduct(props: Props) {
           <div className="flex justify-between items-end mt-4">
             <div>
               <h5 className="text-left text-lg font-bold">
-                {title?.length > 20 ? title?.slice(0, 20) : title}
+                {title?.length > 17 ? title?.slice(0, 17) : title}
               </h5>
-              <p className="text-left font-bold text-lg">Rp {toMoney(price)}</p>
+              <p
+                className={`text-left font-bold ${
+                  price.length > 15
+                    ? "text-xs"
+                    : price.length > 10
+                    ? "text-sm"
+                    : "text-lg"
+                }`}
+              >
+                Rp {toMoney(price)}
+              </p>{" "}
             </div>
             {router.pathname == "/myads" ? (
               <div>
@@ -204,11 +214,15 @@ export default function AdsProduct(props: Props) {
           <div className="absolute top-48 left-2">
             <h5 className="text-left text-lg font-bold">
               {" "}
-              {title?.length > 20 ? title?.slice(0, 20) : title}
+              {title?.length > 17 ? title?.slice(0, 17) : title}
             </h5>
             <p
               className={`text-left font-bold ${
-                price.length > 15 ? "text-xs" : price.length > 10 ? "text-md" : "text-lg"
+                price.length > 15
+                  ? "text-xs"
+                  : price.length > 10
+                  ? "text-sm"
+                  : "text-lg"
               }`}
             >
               Rp {toMoney(price)}
