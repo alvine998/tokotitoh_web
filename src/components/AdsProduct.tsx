@@ -174,7 +174,7 @@ export default function AdsProduct(props: Props) {
           <div className="flex justify-between items-end mt-4">
             <div>
               <h5 className="text-left text-lg font-bold">
-                {title?.length > 15 ? title?.slice(0, 15) : title}
+                {title?.length > 20 ? title?.slice(0, 20) : title}
               </h5>
               <p className="text-left font-bold text-lg">Rp {toMoney(price)}</p>
             </div>
@@ -204,7 +204,7 @@ export default function AdsProduct(props: Props) {
           <div className="absolute top-48 left-2">
             <h5 className="text-left text-lg font-bold">
               {" "}
-              {title?.length > 15 ? title?.slice(0, 15) : title}
+              {title?.length > 20 ? title?.slice(0, 20) : title}
             </h5>
             <p className="text-left font-bold text-lg">Rp {toMoney(price)}</p>
           </div>
