@@ -173,8 +173,8 @@ export default function AdsProduct(props: Props) {
         {router.pathname == "/myads" ? (
           <div className="flex justify-between items-end mt-4">
             <div>
-              <h5 className="text-left text-xl font-bold">
-                {title?.length > 12 ? title?.slice(0, 12) : title}
+              <h5 className="text-left text-lg font-bold">
+                {title?.length > 15 ? title?.slice(0, 15) : title}
               </h5>
               <p className="text-left font-bold text-lg">Rp {toMoney(price)}</p>
             </div>
