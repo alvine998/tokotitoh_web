@@ -202,9 +202,9 @@ export default function AdsProduct(props: Props) {
           </div>
         ) : (
           <div className="absolute top-48 left-2">
-            <h5 className="text-left text-2xl font-bold">
+            <h5 className="text-left text-lg font-bold">
               {" "}
-              {title?.length > 10 ? title?.slice(0, 10) + "..." : title}
+              {title?.length > 15 ? title?.slice(0, 15) : title}
             </h5>
             <p className="text-left font-bold text-lg">Rp {toMoney(price)}</p>
           </div>
