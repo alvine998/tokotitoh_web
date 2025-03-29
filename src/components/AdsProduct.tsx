@@ -150,10 +150,10 @@ export default function AdsProduct(props: Props) {
       )}
       <button
         type="button"
-        className="shadow border p-2 relative z-10 rounded lg:h-[40vh] h-[35vh] lg:mt-0 mt-2 w-full lg:w-full flex flex-col justify-start"
+        className="shadow border p-2 relative z-10 rounded lg:h-[40vh] md:h-[32vh] h-[32vh] lg:mt-0 mt-2 w-full lg:w-full flex flex-col justify-start"
         onClick={onClick}
       >
-        <div className="bg-white w-full h-[200px] overflow-hidden flex">
+        <div className="bg-white w-full h-[200px] overflow-hidden flex justify-center">
           <img
             src={thumbnail}
             alt="thumbnail"
