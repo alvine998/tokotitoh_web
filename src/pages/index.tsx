@@ -217,7 +217,7 @@ export default function Home({ categories, notif, subcategories }: any) {
                 width={400}
                 height={400}
                 alt="icon"
-                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] w-[100px] h-[60px]"
+                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[210px] sm:h-[130px] w-[100px] h-[60px]"
               />
               {v?.name}
             </button>
@@ -226,7 +226,7 @@ export default function Home({ categories, notif, subcategories }: any) {
             onClick={() => {
               router.push("/category");
             }}
-            className="flex flex-col items-center justify-center md:w-[230px] lg:w-[100px] w-[100px] text-sm uppercase text-blue-700 font-semibold"
+            className="flex flex-col items-center justify-center md:w-[230px] sm:w-[210px] lg:w-[100px] w-[100px] text-sm uppercase text-blue-700 font-semibold"
           >
             Lihat Semua Kategori
           </button>
@@ -239,7 +239,7 @@ export default function Home({ categories, notif, subcategories }: any) {
                 getSubCat(v?.id);
                 setModal({ ...modal, open: true, data: v, key: "subcat" });
               }}
-              className="flex flex-col items-center justify-center md:w-auto lg:w-[100px] w-[100px]"
+              className="flex flex-col items-center justify-center md:w-auto sm:w-auto lg:w-[100px] w-[100px]"
             >
               <img
                 src={v?.icon}
@@ -247,7 +247,7 @@ export default function Home({ categories, notif, subcategories }: any) {
                 width={100}
                 height={80}
                 alt="icon"
-                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] w-[100px] h-[60px]"
+                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[210px] sm:h-[130px] w-[100px] h-[60px]"
               />
               {v?.name}
             </button>
@@ -256,7 +256,7 @@ export default function Home({ categories, notif, subcategories }: any) {
       </div>
 
       {/* Tips */}
-      <div className="p-2 mt-5 md:w-full w-auto lg:w-auto md:px-10 px-2">
+      <div className="p-2 mt-5 md:w-full sm:w-full w-auto lg:w-auto md:px-10 sm:px-7 px-2">
         <div className="flex gap-2">
           <button
             onClick={() => {

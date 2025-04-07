@@ -87,7 +87,7 @@ export default function Category({ categories }: any) {
           <ChevronLeftCircleIcon className="w-6 h-6" />
           Kembali
         </button>
-        <h2 className="text-center font-semibold lg:text-xl text-xl md:text-4xl">Kategori</h2>
+        <h2 className="text-center font-semibold lg:text-xl text-xl md:text-4xl sm:text-4xl">Kategori</h2>
         <div className="grid lg:grid-cols-3 grid-cols-3 gap-5 items-center justify-center mt-5">
           {categories?.map((v: any, i: number) => (
             <button
@@ -103,7 +103,7 @@ export default function Category({ categories }: any) {
                 width={100}
                 height={80}
                 alt="icon"
-                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] w-[100px] h-[60px]"
+                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[230px] sm:h-[130px] w-[100px] h-[60px]"
               />
               {v?.name}
             </button>
