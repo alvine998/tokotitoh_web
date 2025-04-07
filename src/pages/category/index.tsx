@@ -77,7 +77,7 @@ export default function Category({ categories }: any) {
   return (
     <div className="pb-20  flex flex-col justify-center items-center">
       {/* Kategori */}
-      <div className="p-2 mt-5 lg:max-w-sm md:max-w-full sm:max-w-full max-w-sm w-full">
+      <div className="p-2 mt-5 lg:max-w-sm md:max-w-xl sm:max-w-xl max-w-sm w-full">
         <button
           className="flex gap-3 items-center"
           onClick={() => {
@@ -103,7 +103,7 @@ export default function Category({ categories }: any) {
                 width={100}
                 height={80}
                 alt="icon"
-                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[230px] sm:h-[130px] w-[100px] h-[60px]"
+                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[170px] sm:h-[100px] w-[100px] h-[60px]"
               />
               {v?.name}
             </button>

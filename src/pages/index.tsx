@@ -217,7 +217,7 @@ export default function Home({ categories, notif, subcategories }: any) {
                 width={400}
                 height={400}
                 alt="icon"
-                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[210px] sm:h-[130px] w-[100px] h-[60px]"
+                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[170px] sm:h-[100px] w-[100px] h-[60px]"
               />
               {v?.name}
             </button>
@@ -226,7 +226,7 @@ export default function Home({ categories, notif, subcategories }: any) {
             onClick={() => {
               router.push("/category");
             }}
-            className="flex flex-col items-center justify-center md:w-[230px] sm:w-[210px] lg:w-[100px] w-[100px] text-sm uppercase text-blue-700 font-semibold"
+            className="flex flex-col items-center justify-center md:w-[230px] sm:w-[170px] lg:w-[100px] w-[100px] text-sm uppercase text-blue-700 font-semibold"
           >
             Lihat Semua Kategori
           </button>
@@ -247,7 +247,7 @@ export default function Home({ categories, notif, subcategories }: any) {
                 width={100}
                 height={80}
                 alt="icon"
-                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[210px] sm:h-[130px] w-[100px] h-[60px]"
+                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[170px] sm:h-[100px] w-[100px] h-[60px]"
               />
               {v?.name}
             </button>
