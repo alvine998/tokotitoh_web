@@ -82,7 +82,7 @@ export default function HeaderHome(props: Props) {
         </div>
       </div>
 
-      <div className="mt-2 flex gap-2">
+      <div className="mt-2 flex gap-2 lg:px-0 px-0 md:px-4">
         <div className="w-full" onKeyDown={handleKeyPress}>
           {/* <ReactSearchAutocomplete
             items={items?.map((v: any) => ({ ...v, name: `${v?.title}` }))}

@@ -170,13 +170,15 @@ export default function Home({ categories, notif, subcategories }: any) {
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
-      if (screenWidth >= 500 && screenWidth < 1024) {
-        setFilteredItems(categories.slice(0, 5)); // Apply slice only on tablet (768px - 1023px)
-        setFilteredItems2(categories.slice(6, 12));
-      } else {
-        setFilteredItems(categories.slice(0, 2));
-        setFilteredItems2(categories.slice(2, 5));
-      }
+      // if (screenWidth >= 500 && screenWidth < 1024) {
+      //   setFilteredItems(categories.slice(0, 5)); // Apply slice only on tablet (768px - 1023px)
+      //   setFilteredItems2(categories.slice(6, 12));
+      // } else {
+      //   setFilteredItems(categories.slice(0, 2));
+      //   setFilteredItems2(categories.slice(2, 5));
+      // }
+      setFilteredItems(categories.slice(0, 2));
+      setFilteredItems2(categories.slice(2, 5));
     };
 
     handleResize(); // Run once on mount
@@ -198,8 +200,8 @@ export default function Home({ categories, notif, subcategories }: any) {
       />
 
       {/* Kategori */}
-      <div className="p-2 mt-28">
-        <div className="grid lg:grid-cols-3 grid-cols-3 md:grid-cols-6 sm:grid-cols-6 gap-4 items-center justify-center">
+      <div className="mt-28">
+        <div className="grid grid-cols-3 gap-4 items-center justify-center">
           {filteredItems?.map((v: any, i: number) => (
             <button
               key={i}
@@ -212,10 +214,10 @@ export default function Home({ categories, notif, subcategories }: any) {
               <img
                 src={v?.icon}
                 // layout="relative"
-                width={100}
-                height={80}
+                width={400}
+                height={400}
                 alt="icon"
-                className="lg:w-[100px] lg:h-[60px] md:w-[100px] md:h-[60px] w-[100px] h-[60px]"
+                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] w-[100px] h-[60px]"
               />
               {v?.name}
             </button>
@@ -224,12 +226,12 @@ export default function Home({ categories, notif, subcategories }: any) {
             onClick={() => {
               router.push("/category");
             }}
-            className="flex flex-col items-center justify-center w-[100px] text-sm uppercase text-blue-700 font-semibold"
+            className="flex flex-col items-center justify-center md:w-[230px] lg:w-[100px] w-[100px] text-sm uppercase text-blue-700 font-semibold"
           >
             Lihat Semua Kategori
           </button>
         </div>
-        <div className="grid lg:grid-cols-3 grid-cols-3 md:grid-cols-6 sm:grid-cols-6 gap-4 items-center justify-center mt-4">
+        <div className="grid grid-cols-3 gap-4 items-center justify-center mt-4">
           {filteredItems2?.map((v: any, i: number) => (
             <button
               key={i}
@@ -237,7 +239,7 @@ export default function Home({ categories, notif, subcategories }: any) {
                 getSubCat(v?.id);
                 setModal({ ...modal, open: true, data: v, key: "subcat" });
               }}
-              className="flex flex-col items-center justify-center w-[100px]"
+              className="flex flex-col items-center justify-center md:w-auto lg:w-[100px] w-[100px]"
             >
               <img
                 src={v?.icon}
@@ -245,7 +247,7 @@ export default function Home({ categories, notif, subcategories }: any) {
                 width={100}
                 height={80}
                 alt="icon"
-                className="lg:w-auto lg:h-auto md:w-[100px] md:h-[70px] w-auto h-auto"
+                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] w-[100px] h-[60px]"
               />
               {v?.name}
             </button>
