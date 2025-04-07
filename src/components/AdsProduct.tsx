@@ -150,7 +150,7 @@ export default function AdsProduct(props: Props) {
       )}
       <button
         type="button"
-        className="shadow border p-2 relative z-10 rounded lg:h-[40vh] md:h-[32vh] h-[32vh] lg:mt-0 mt-2 w-full lg:w-full flex flex-col justify-start"
+        className="p-2 relative z-10 rounded lg:h-[40vh] md:h-[32vh] h-[32vh] lg:mt-0 mt-2 w-full lg:w-full flex flex-col justify-start"
         onClick={onClick}
       >
         <div className="bg-white w-full h-[200px] overflow-hidden flex justify-center">
@@ -171,14 +171,14 @@ export default function AdsProduct(props: Props) {
           className="h-[250px] lg:h-auto w-full rounded"
         /> */}
         {router.pathname == "/myads" ? (
-          <div className="flex justify-between items-end mt-4">
+          <div className="flex justify-between items-end mt-2">
             <div>
               <h5 className="text-left text-lg font-bold">
                 {title?.length > 17 ? title?.slice(0, 17) : title}
               </h5>
               <p
                 className={`text-left font-bold ${
-                  price.length > 15
+                  price.length > 12
                     ? "text-xs"
                     : price.length > 10
                     ? "text-sm"
@@ -211,18 +211,14 @@ export default function AdsProduct(props: Props) {
             )}
           </div>
         ) : (
-          <div className="absolute top-48 left-2">
-            <h5 className="text-left text-lg font-bold">
+          <div className="absolute top-44 lg:left-2 md:left-6 sm:left-6 left-2">
+            <h5 className="text-left text-lg font-bold mt-2">
               {" "}
               {title?.length > 17 ? title?.slice(0, 17) : title}
             </h5>
             <p
-              className={`text-left font-bold ${
-                price.length > 15
-                  ? "text-xs"
-                  : price.length > 10
-                  ? "text-sm"
-                  : "text-lg"
+              className={`text-left font-bold -mt-1 ${
+                price.length > 11 ? "text-xs" : "text-md"
               }`}
             >
               Rp {toMoney(price)}
