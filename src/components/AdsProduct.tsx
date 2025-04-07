@@ -150,14 +150,14 @@ export default function AdsProduct(props: Props) {
       )}
       <button
         type="button"
-        className="p-2 relative z-10 rounded lg:h-[40vh] md:h-[32vh] h-[32vh] lg:mt-0 mt-2 w-full lg:w-full flex flex-col justify-start"
+        className="p-2 relative z-10 rounded h-auto md:mt-10 sm:mt-10 lg:mt-2 mt-2 w-full lg:w-full flex flex-col justify-start"
         onClick={onClick}
       >
-        <div className="bg-white w-full h-[200px] overflow-hidden flex justify-center">
+        <div className="bg-white w-full sm:h-[300px] md:h-[400px] lg:h-[200px] h-[200px] overflow-hidden flex justify-center">
           <img
             src={thumbnail}
             alt="thumbnail"
-            className="w-[200px] h-[170px] rounded object-cover"
+            className="lg:w-[200px] lg:h-[170px] md:w-[400px] md:h-[400px] sm:w-[300px] sm:h-[300px]  w-[200px] h-[170px] rounded object-cover"
           />
         </div>
         {/* <Image
@@ -211,14 +211,14 @@ export default function AdsProduct(props: Props) {
             )}
           </div>
         ) : (
-          <div className="absolute top-44 lg:left-2 md:left-6 sm:left-6 left-2">
-            <h5 className="text-left text-lg font-bold mt-2">
+          <div className="absolute md:top-[390px] sm:top-[290px] top-44 lg:top-44 lg:left-2 md:left-2 sm:left-2 left-2">
+            <h5 className="text-left md:text-2xl sm:text-2xl lg:text-lg text-lg font-bold md:mt-4 sm:mt-4 mt-2 lg:mt-2">
               {" "}
               {title?.length > 17 ? title?.slice(0, 17) : title}
             </h5>
             <p
               className={`text-left font-bold -mt-1 ${
-                price.length > 11 ? "text-xs" : "text-md"
+                price.length > 11 ? "md:text-lg sm:text-lg lg:text-xs text-xs" : "md:text-xl sm:text-xl lg:text-sm text-md"
               }`}
             >
               Rp {toMoney(price)}

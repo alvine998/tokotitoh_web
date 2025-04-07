@@ -59,8 +59,8 @@ export async function getServerSideProps(context: any) {
       status: "1",
       search: search || "",
       pagination: true,
-      page: safeParseInt(page, 0),
-      size: safeParseInt(size, 6),
+      page: page || safeParseInt(page, 0),
+      size: size || safeParseInt(size, 6),
       brand_id: brand_id || "",
       type_id: type_id || "",
       province_id: province_id || "",
@@ -285,7 +285,7 @@ export default function Ads({
       ) : (
         <>
           {ads?.count > 0 ? (
-            <div className="lg:px-[500px] md:px-40 px-0">
+            <div className="lg:px-[500px] md:px-2 sm:px-2 px-0">
               {/* Kategori */}
               <div className="mt-36 grid lg:gap-4 gap-2 grid-cols-2">
                 {loading ? (
@@ -298,7 +298,7 @@ export default function Ads({
                     {ads?.rows?.map((v: any, i: number) => (
                       <div
                         key={i}
-                        className="lg:w-[200px] sm:w-[250px] w-[180px] h-full"
+                        className="lg:w-[200px] md:w-full sm:w-full w-[180px] h-auto"
                       >
                         <AdsProduct
                           price={v?.price}
@@ -317,7 +317,7 @@ export default function Ads({
               {filter?.size < ads?.count ? (
                 <div className="flex items-center justify-center">
                   {spinning ? (
-                    <CircleDotDashedIcon className="animate-spin text-green-500" />
+                    <CircleDotDashedIcon className="animate-spin text-green-500 mt-10" />
                   ) : (
                     <button
                       onClick={() => {
@@ -333,7 +333,7 @@ export default function Ads({
                         });
                       }}
                       type="button"
-                      className="rounded-full border-2 p-2 px-4 mt-3 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center"
+                      className="rounded-full border-2 p-2 px-4 mt-12 text-white bg-green-500 hover:bg-green-700 flex gap-2 items-center"
                     >
                       <PlusIcon className="w-6" />
                       Lihat Lainnya
