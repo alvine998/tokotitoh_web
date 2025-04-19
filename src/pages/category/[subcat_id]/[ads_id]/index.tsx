@@ -341,7 +341,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 className="bg-gray-700 p-2 w-full rounded text-white text-md text-center"
                 type="button"
                 onClick={() => {
-                  if (account?.user_id) {
+                  if (account?.id) {
                     setModal({
                       ...modal,
                       open: true,

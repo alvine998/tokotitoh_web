@@ -120,15 +120,18 @@ export default function MyAds({ ads, detailBuyer }: any) {
             </div>
           </div>
         </div>
-        <div className="p-2 mt-2 w-full">
+        <div className="p-2 w-full">
           {ads?.length > 0 ? (
-            <div className="w-full">
+            <div className="grid lg:gap-4 gap-2 grid-cols-2">
               {ads?.map((v: any, i: number) => (
-                <div key={i} className="w-[350px]">
+                <div
+                  key={i}
+                  className="lg:w-[200px] md:w-full sm:w-full w-[180px] h-auto"
+                >
                   <AdsProduct
                     status={v?.status}
                     price={v?.price}
-                    thumbnail={v?.images[0]}
+                    thumbnail={JSON.parse(v?.images)[0]}
                     title={v?.title}
                     onClick={() => onRoute(v)}
                     views={v?.views}

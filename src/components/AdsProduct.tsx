@@ -185,7 +185,7 @@ export default function AdsProduct(props: Props) {
                     : "text-lg"
                 }`}
               >
-                Rp {toMoney(price)}
+                Rp {toMoney(price)?.slice(0, 15)}
               </p>{" "}
             </div>
             {router.pathname == "/myads" ? (
@@ -221,7 +221,7 @@ export default function AdsProduct(props: Props) {
                 price.length > 11 ? "md:text-lg sm:text-lg lg:text-xs text-xs" : "md:text-xl sm:text-xl lg:text-sm text-md"
               }`}
             >
-              Rp {toMoney(price)}
+              Rp {toMoney(price)?.slice(0, 15)}
             </p>
           </div>
         )}
