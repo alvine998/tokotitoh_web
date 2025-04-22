@@ -91,7 +91,7 @@ export default function MyAds({ ads, detailBuyer }: any) {
   return (
     <div className="pb-20 flex flex-col justify-center items-center">
       <div className="">
-        <div className="p-2 flex gap-2">
+        <div className="p-2 flex gap-10">
           {detailBuyer?.image ? (
             <img
               alt="image"
