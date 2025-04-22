@@ -91,7 +91,7 @@ export default function MyAds({ ads, detailBuyer }: any) {
   return (
     <div className="pb-20 flex flex-col justify-center items-center">
       <div className="">
-        <div className="p-2">
+        <div className="p-2 flex gap-2">
           {detailBuyer?.image ? (
             <img
               alt="image"
@@ -99,7 +99,7 @@ export default function MyAds({ ads, detailBuyer }: any) {
               // layout="relative"
               width={800}
               height={500}
-              className="h-20 w-20 rounded-full mt-5"
+              className="h-24 w-24 rounded-full mt-5"
             />
           ) : (
             <UserCircleIcon className="w-20 h-20" />
@@ -108,10 +108,9 @@ export default function MyAds({ ads, detailBuyer }: any) {
             <p className="text-2xl font-semibold">
               {detailBuyer?.name?.toUpperCase()}
             </p>
-            <div className="flex justify-between items-start">
+            <div className="flex flex-col items-start">
               <div>
-                <p className="text-lg">Pengguna terverifikasi dengan</p>
-                <MailCheckIcon className="w-5 mt-1" />
+                <p className="text-lg">Pengguna terverifikasi</p>
               </div>
               <p className="text-lg text-gray-500">
                 Anggota sejak{" "}
