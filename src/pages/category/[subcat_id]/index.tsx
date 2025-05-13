@@ -189,22 +189,26 @@ export default function Ads({
   const router = useRouter();
   const routers = router2();
   const [spinning, setSpinning] = useState<boolean>(false);
-  const [filter, setFilter] = useState<any>({ ...router?.query, size: router?.query?.size || 6 });
+  const [filter, setFilter] = useState<any>({
+    ...router?.query,
+    size: router?.query?.size || 6,
+  });
   const [loading, setLoading] = useState<any>(false);
   let user: any = getCookie("account");
   const [filterAds, setFilterAds] = useState<any>([]);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [modal, setModal] = useState<useModal>();
   const handleScroll = () => {
-      const position = window.pageYOffset;
-      setScrollPosition(position);
+    const position = window.pageYOffset;
+    setScrollPosition(position);
   };
-  
+
   useEffect(() => {
-      window.addEventListener('scroll', handleScroll, { passive: true });
-  
-      return () => {
-          window.removeEventListener('scroll', handleScroll);
-      };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const addViews = async (data: any) => {
@@ -275,6 +279,8 @@ export default function Ads({
         subcat_id={subcat_id}
         categories={categories}
         handleSearch={searchAds}
+        modal={modal}
+        setModal={setModal}
       />
 
       {ads1?.id !== +subcat_id && +subcat_id !== 0 ? (
@@ -306,7 +312,10 @@ export default function Ads({
                           title={v?.title}
                           onClick={() => {
                             addViews(v);
-                            localStorage.setItem("linkBefore", `/category/${subcat_id}?${queryFilter}`)
+                            localStorage.setItem(
+                              "linkBefore",
+                              `/category/${subcat_id}?${queryFilter}`
+                            );
                           }}
                         />
                       </div>
@@ -371,7 +380,7 @@ export default function Ads({
         </>
       )}
 
-      <BottomTabs />
+      {modal?.open ? <></> : <BottomTabs />}
     </div>
   );
 }

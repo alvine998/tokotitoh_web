@@ -16,7 +16,7 @@ export default function HeaderMyAds(props: Props) {
   const { filter, setFilter, items } = props;
 
   return (
-    <div className="w-full lg:w-1/4 lg:max-w-sm md:max-w-full sm:max-w-full max-w-full fixed top-0 left-0 lg:left-[37%] bg-white">
+    <div className="w-full lg:w-1/4 lg:max-w-sm md:max-w-full sm:max-w-full max-w-full fixed top-0 left-0 lg:left-[37%] bg-white z-50">
       <div className="mt-4 px-2">
         <div className="w-full">
           <ReactSearchAutocomplete

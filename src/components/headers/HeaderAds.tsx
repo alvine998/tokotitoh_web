@@ -38,6 +38,8 @@ interface Props {
   subcat_id?: any;
   categories: any[];
   handleSearch?: any;
+  modal: any;
+  setModal: any;
 }
 
 export default function HeaderAds(props: Props) {
@@ -53,6 +55,8 @@ export default function HeaderAds(props: Props) {
     subcat_id,
     categories,
     handleSearch,
+    modal,
+    setModal
   } = props;
   const router = useRouter();
   const [location, setLocation] = useState<any>({
@@ -61,7 +65,6 @@ export default function HeaderAds(props: Props) {
   });
   const [category, setCategory] = useState<any>();
   const [adress, setAddress] = useState<any>("Indonesia");
-  const [modal, setModal] = useState<useModal>();
 
   const [list, setList] = useState<any>({
     cities: [],
@@ -342,7 +345,7 @@ export default function HeaderAds(props: Props) {
 
   const params = useParams();
   return (
-    <div className="w-full lg:w-1/3 lg:max-w-sm md:max-w-full sm:max-w-full max-w-full fixed top-0 bg-white p-2 z-50">
+    <div className={`w-full lg:w-1/3 lg:max-w-sm md:max-w-full sm:max-w-full max-w-full fixed top-0 bg-white p-2 ${modal?.open ? "z-0" : "z-[999]"}`}>
       <div className="flex justify-between">
         <div className="flex gap-2">
           <button
@@ -419,9 +422,9 @@ export default function HeaderAds(props: Props) {
       </div>
 
       {modal?.key == "filter" ? (
-        <div>
+        <div className="relative z-[100]">
           <ModalFilter open={modal.open} setOpen={() => {}} type="filters">
-            <div className="h-[90vh]">
+            <div className="h-[90vh] relative z-[100]">
               <div className="p-2">
                 <div className="flex justify-between items-start">
                   <p className="text-lg">

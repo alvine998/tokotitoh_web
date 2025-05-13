@@ -42,7 +42,7 @@ export async function getServerSideProps(context: any) {
         CONFIG.base_url_api +
           `/notifications?pagination=true&page=${+page || 0}&size=${
             +size || 5
-          }`,
+          }&user_id=${user?.id}`,
         {
           headers: {
             "bearer-token": "tokotitohapi",
