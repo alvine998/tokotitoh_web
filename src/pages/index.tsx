@@ -177,8 +177,8 @@ export default function Home({ categories, notif, subcategories }: any) {
       //   setFilteredItems(categories.slice(0, 2));
       //   setFilteredItems2(categories.slice(2, 5));
       // }
-      setFilteredItems(categories.slice(0, 2));
-      setFilteredItems2(categories.slice(2, 5));
+      setFilteredItems(categories?.slice(0, 2));
+      setFilteredItems2(categories?.slice(2, 5));
     };
 
     handleResize(); // Run once on mount
