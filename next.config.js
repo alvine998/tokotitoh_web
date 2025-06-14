@@ -23,7 +23,7 @@ const nextConfig = {
     ],
   },
   env: {
-    BASE_URL_API_TOKOTITOH: 'https://api.tokonyang.com',
+    BASE_URL_API_TOKOTITOH: 'https://api.tokonyang.com'
   }
 }
 
