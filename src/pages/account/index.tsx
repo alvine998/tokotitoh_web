@@ -83,14 +83,14 @@ export default function Account() {
     e?.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target));
     try {
-      if (formData?.password) {
-        if (formData?.password !== formData?.password_confirm) {
-          return Swal.fire({
-            icon: "warning",
-            text: "Password tidak sesuai",
-          });
-        }
-      }
+      // if (formData?.password) {
+      //   if (formData?.password !== formData?.password_confirm) {
+      //     return Swal.fire({
+      //       icon: "warning",
+      //       text: "Password tidak sesuai",
+      //     });
+      //   }
+      // }
       const payload = {
         ...formData,
         image: images[0],
@@ -233,9 +233,18 @@ export default function Account() {
           }}
           className="w-full bg-blue-500 p-2 rounded text-white mt-4 text-lg"
         >
-          Edit Akun
+          Ubah Profil
         </button>
         <div className="py-2">
+          <button
+            type="button"
+            onClick={() => {
+              router.push("helps/help-center");
+            }}
+            className="border-b p-2 w-full text-lg"
+          >
+            Pengaturan Akun
+          </button>
           <Link href={"https://play.google.com/"}>
             <button type="button" className="border-b p-2 w-full text-lg">
               Download Aplikasi
@@ -314,7 +323,9 @@ export default function Account() {
         {modal?.key == "edit" ? (
           <Modal open={modal.open} setOpen={() => {}}>
             <form onSubmit={update}>
-              <h2 className="text-2xl font-semibold text-center">Ubah Profil</h2>
+              <h2 className="text-2xl font-semibold text-center">
+                Ubah Profil
+              </h2>
               <div>
                 <Input
                   label="Foto"
@@ -346,7 +357,7 @@ export default function Account() {
                   name="phone"
                   type="number"
                 />
-                <Input
+                {/* <Input
                   placeholder="********"
                   minLength={8}
                   label="Password"
@@ -361,7 +372,7 @@ export default function Account() {
                   defaultValue={""}
                   name="password_confirm"
                   isPassword
-                />
+                /> */}
                 <input type="hidden" name="id" value={user?.id} />
               </div>
               <Button type="submit">Simpan</Button>

@@ -70,7 +70,7 @@ export default function HeaderHome(props: Props) {
                     <MapPinIcon className='w-4 h-4' />
                     <h5>{adress}</h5>
                 </button> */}
-        <div className="justify-end">
+        {/* <div className="justify-end">
           <Image
             alt="logo"
             src={"/images/tokotitoh.png"}
@@ -79,10 +79,20 @@ export default function HeaderHome(props: Props) {
             height={50}
             className="w-7 h-7"
           />
-        </div>
+        </div> */}
       </div>
 
-      <div className="mt-2 flex gap-2 lg:px-0 px-0 md:px-4">
+      <div className="mt-2 flex gap-2 lg:px-0 px-0 md:px-4 items-center">
+        <div className="w-10">
+          <Image
+            alt="logo"
+            src={"/images/tokotitoh.png"}
+            layout="relative"
+            width={50}
+            height={50}
+            className="w-10 h-8"
+          />
+        </div>
         <div className="w-full" onKeyDown={handleKeyPress}>
           {/* <ReactSearchAutocomplete
             items={items?.map((v: any) => ({ ...v, name: `${v?.title}` }))}
