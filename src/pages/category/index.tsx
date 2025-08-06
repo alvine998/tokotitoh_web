@@ -88,7 +88,7 @@ export default function Category({ categories }: any) {
           Kembali
         </button>
         <h2 className="text-center font-semibold lg:text-xl text-xl md:text-4xl sm:text-4xl">Kategori</h2>
-        <div className="grid lg:grid-cols-3 grid-cols-3 gap-5 items-center justify-center mt-5">
+        <div className="flex flex-row gap-5 items-center justify-center mt-5 flex-wrap">
           {categories?.map((v: any, i: number) => (
             <button
               onClick={() => {
@@ -96,7 +96,7 @@ export default function Category({ categories }: any) {
                 setModal({ ...modal, open: true, key: "subcat", data: v });
               }}
               key={i}
-              className="flex flex-col items-center justify-center w-auto text-xs pt-2 font-bold"
+              className="flex flex-col items-center justify-center text-xs pt-2 font-bold flex-wrap lg:w-[100px] md:w-[170px] sm:w-[170px] w-[100px]"
             >
               <img
                 src={v?.icon}
