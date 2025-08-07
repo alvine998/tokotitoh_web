@@ -300,7 +300,7 @@ export default function Account() {
             onClick={() => {}}
             className="border-b p-2 w-full text-lg"
           >
-            Versi Web 1.1.5
+            Versi 1.1.6
           </button>
         </div>
         <button

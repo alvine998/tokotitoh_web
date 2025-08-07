@@ -121,7 +121,7 @@ export default function MyAds({ ads, adscount }: any) {
                   <AdsProduct
                     status={v?.status}
                     price={v?.price}
-                    thumbnail={JSON.parse(v?.images)?.[0]}
+                    thumbnail={v?.images?.[0]}
                     title={v?.title}
                     onClick={() => onRoute(v)}
                     views={v?.views}

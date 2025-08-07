@@ -1,4 +1,3 @@
-import AdsProduct from "@/components/AdsProduct";
 import BottomTabs from "@/components/BottomTabs";
 import Button from "@/components/Button";
 import HeaderAds from "@/components/headers/HeaderAds";
@@ -23,6 +22,7 @@ import { useRouter as router2 } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { createQueryString } from "@/utils";
 import { getCookie } from "cookies-next";
+import AdsProduct2 from "@/components/AdsProduct2";
 
 const safeParseInt = (value: string | undefined, fallback: number): number => {
   return value ? parseInt(value, 10) || fallback : fallback;
@@ -266,7 +266,7 @@ export default function Ads({
   }, [loading]);
 
   return (
-    <div className="pb-20 flex flex-col justify-center items-center">
+    <div className="pb-20 flex flex-col">
       <HeaderAds
         setLoading={setLoading}
         filter={filter}
@@ -293,7 +293,7 @@ export default function Ads({
           {ads?.count > 0 ? (
             <div className="lg:px-[500px] md:px-2 sm:px-2 px-0">
               {/* Kategori */}
-              <div className="mt-36 grid lg:gap-4 gap-2 grid-cols-2">
+              <div className="mt-36 flex flex-col lg:gap-4 gap-2">
                 {loading ? (
                   <div className="mt-10">
                     <CircleDotDashedIcon className="animate-spin text-green-500 ml-5" />
@@ -304,9 +304,9 @@ export default function Ads({
                     {ads?.rows?.map((v: any, i: number) => (
                       <div
                         key={i}
-                        className="lg:w-[200px] md:w-full sm:w-full w-[180px] h-auto"
+                        className="lg:w-full md:w-full sm:w-full w-full h-auto"
                       >
-                        <AdsProduct
+                        <AdsProduct2
                           price={v?.price}
                           thumbnail={JSON.parse(v?.images)[0]}
                           title={v?.title}
@@ -317,6 +317,7 @@ export default function Ads({
                               `/category/${subcat_id}?${queryFilter}`
                             );
                           }}
+                          created_at={v?.created_on}
                         />
                       </div>
                     ))}
