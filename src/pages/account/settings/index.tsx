@@ -11,12 +11,16 @@ import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import imageCompression from "browser-image-compression";
 import {
+  ArrowLeft,
   CarFrontIcon,
   CarIcon,
   ChevronLeftIcon,
+  ChevronRightIcon,
   InfoIcon,
+  LockIcon,
   LucideHome,
   PlusCircleIcon,
+  Trash2Icon,
   UserCircleIcon,
   UserIcon,
   XCircleIcon,
@@ -65,7 +69,7 @@ export async function getServerSideProps(context: any) {
   }
 }
 
-export default function Account() {
+export default function AccountSettingsPage() {
   const router = useRouter();
   const [modal, setModal] = useState<useModal>();
   const [user, setUser] = useState<any>(null);
@@ -152,47 +156,6 @@ export default function Account() {
     }
   };
 
-  const handleImage = async (e: any) => {
-    setProgress(true);
-    // Set compression options
-    const options = {
-      maxSizeMB: 0.1, // Maximum size in MB
-      maxWidthOrHeight: 1000, // Max width or height (maintains aspect ratio)
-      useWebWorker: true, // Use multi-threading for compression
-    };
-    if (e.target.files) {
-      const file = e.target.files[0];
-      const compressedFile = await imageCompression(file, options);
-      if (file?.size <= 50000000) {
-        const storageRef = ref(storage, `images/user/${compressedFile?.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, compressedFile);
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress = Math.round(
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            );
-          },
-          (error) => {
-            console.log(error);
-          },
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              setImages([...images, downloadURL]);
-              setProgress(false);
-            });
-          }
-        );
-      } else {
-        setProgress(false);
-        return Swal.fire({
-          icon: "error",
-          text: "Ukuran Gambar Tidak Boleh Lebih Dari 2mb",
-        });
-      }
-    }
-  };
-
   useEffect(() => {
     let user: any = getCookie("account");
     if (user) {
@@ -201,124 +164,49 @@ export default function Account() {
     }
   }, []);
   return (
-    <div className="pb-20 flex flex-col justify-center items-center">
-      <div className="px-4 pt-10 lg:max-w-sm max-w-full">
-        <div className="flex gap-3 items-center">
-          <button
-            onClick={() => {
-              setModal({ ...modal, open: true, key: "view", data: user });
-            }}
-          >
-            {user?.image ? (
-              <img
-                alt="image"
-                src={user?.image}
-                // layout="relative"
-                width={800}
-                height={500}
-                className="h-20 w-20 rounded-full mt-5"
-              />
-            ) : (
-              <UserCircleIcon className="w-20 h-20" />
-            )}
-          </button>
-          <div>
-            <h5 className="font-bold text-xl">{user?.name}</h5>
-            <h5 className="text-xl">{user?.email || user?.phone}</h5>
-          </div>
-        </div>
+    <div className="pb-20 flex flex-col">
+      <div className="flex justify-between items-center w-full px-2 pt-4">
         <button
+          type="button"
           onClick={() => {
-            setModal({ ...modal, open: true, key: "edit", data: null });
+            router.push("/account");
           }}
-          className="w-full bg-blue-500 p-2 rounded text-white mt-4 text-lg"
+          className="flex gap-2 font-bold"
         >
-          Ubah Profil
+          <ArrowLeft className="w-5" />
         </button>
+        <h5 className="text-lg">Pengaturan Akun</h5>
+        <div></div>
+      </div>
+      <div className="px-2 pt-4 lg:max-w-sm max-w-full">
         <div className="py-2">
           <button
             type="button"
             onClick={() => {
-              router.push("account/settings");
+              router.push("/account/settings/change-password");
             }}
-            className="border-b p-2 w-full text-lg"
+            className="border-b p-2 w-full text-lg flex justify-between items-center"
           >
-            Pengaturan Akun
-          </button>
-          <Link href={"https://play.google.com/"}>
-            <button type="button" className="border-b p-2 w-full text-lg">
-              Download Aplikasi
-            </button>
-          </Link>
-          <button
-            type="button"
-            onClick={() => {
-              router.push("helps/help-center");
-            }}
-            className="border-b p-2 w-full text-lg"
-          >
-            Pusat Bantuan
+            <div className="flex gap-2 items-center">
+              <LockIcon className="w-5 h-5 text-gray-500" />
+              Ubah Password
+            </div>
+            <ChevronRightIcon className="w-5 h-5 text-gray-500" />
           </button>
           <button
             type="button"
             onClick={() => {
-              router.push("helps/call-us");
+              setModal({ ...modal, open: true, data: null, key: "remove" });
             }}
-            className="border-b p-2 w-full text-lg"
+            className="border-b p-2 w-full text-lg flex justify-between items-center"
           >
-            Hubungi Kami
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              router.push("helps/about-us");
-            }}
-            className="border-b p-2 w-full text-lg"
-          >
-            Tentang Kami
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              router.push("helps/term-condition");
-            }}
-            className="border-b p-2 w-full text-lg"
-          >
-            Syarat & Ketentuan
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              router.push("helps/privacy-policy");
-            }}
-            className="border-b p-2 w-full text-lg"
-          >
-            Kebijakan Privasi
-          </button>
-          <button
-            type="button"
-            onClick={() => {}}
-            className="border-b p-2 w-full text-lg"
-          >
-            Versi 1.1.6
+            <div className="flex gap-2 items-center">
+              <Trash2Icon className="w-5 h-5 text-gray-500" />
+              Hapus Akun
+            </div>
+            <ChevronRightIcon className="w-5 h-5 text-gray-500" />
           </button>
         </div>
-        {/* <button
-          onClick={() => {
-            setModal({ ...modal, open: true, data: null, key: "remove" });
-          }}
-          className="w-full bg-orange-500 p-2 rounded text-white mt-2 text-lg"
-        >
-          Hapus Akun
-        </button> */}
-        <button
-          onClick={() => {
-            setModal({ ...modal, open: true, data: null, key: "logout" });
-          }}
-          className="w-full bg-red-500 p-2 rounded text-white mt-2 text-lg"
-        >
-          Keluar Akun
-        </button>
 
         {modal?.key == "edit" ? (
           <Modal open={modal.open} setOpen={() => {}}>
@@ -327,15 +215,6 @@ export default function Account() {
                 Ubah Profil
               </h2>
               <div>
-                <Input
-                  label="Foto"
-                  name="image"
-                  type="file"
-                  onChange={(e: any) => {
-                    handleImage(e);
-                  }}
-                  accept="image/*"
-                />
                 <Input
                   placeholder="Masukkan Nama"
                   label="Nama"
@@ -357,22 +236,6 @@ export default function Account() {
                   name="phone"
                   type="number"
                 />
-                {/* <Input
-                  placeholder="********"
-                  minLength={8}
-                  label="Password"
-                  defaultValue={""}
-                  name="password"
-                  isPassword
-                />
-                <Input
-                  placeholder="********"
-                  minLength={8}
-                  label="Konfirmasi Password"
-                  defaultValue={""}
-                  name="password_confirm"
-                  isPassword
-                /> */}
                 <input type="hidden" name="id" value={user?.id} />
               </div>
               <Button type="submit">Simpan</Button>
@@ -386,39 +249,6 @@ export default function Account() {
                 Kembali
               </Button>
             </form>
-          </Modal>
-        ) : (
-          ""
-        )}
-        {modal?.key == "logout" ? (
-          <Modal open={modal.open} setOpen={() => {}}>
-            <div className="px-2">
-              <h2 className="text-xl font-semibold">Logout</h2>
-              <div className="mt-2">
-                <p>
-                  Apakah anda yakin akan logout dari tokotitoh ? Pastikan anda
-                  ingat email/no telepon dan password anda untuk login kembali
-                </p>
-              </div>
-              <div className="flex gap-10 justify-end items-center mt-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setModal({ ...modal, open: false });
-                  }}
-                  className="font-semibold text-blue-700"
-                >
-                  Batalkan
-                </button>
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="font-semibold text-blue-700"
-                >
-                  Ya
-                </button>
-              </div>
-            </div>
           </Modal>
         ) : (
           ""
