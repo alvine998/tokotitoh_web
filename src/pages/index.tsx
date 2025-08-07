@@ -347,15 +347,17 @@ export default function Home({ categories, notif, subcategories }: any) {
             <h1>{modal?.data?.name?.toUpperCase()}</h1>
           </div>
           <div className="mt-5">
-            {subcat?.map((v: any, i: number) => (
-              <button
-                key={i}
-                onClick={() => router.push(`/category/${v?.id}`)}
-                className="border border-gray-500 p-2 w-full"
-              >
-                {v?.name?.toUpperCase()}
-              </button>
-            ))}
+            {subcat
+              ?.sort((a: any, b: any) => (a?.index > b?.index ? 1 : -1))
+              ?.map((v: any, i: number) => (
+                <button
+                  key={i}
+                  onClick={() => router.push(`/category/${v?.id}`)}
+                  className="border border-gray-500 p-2 w-full"
+                >
+                  {v?.name?.toUpperCase()}
+                </button>
+              ))}
           </div>
         </Modal>
       ) : (

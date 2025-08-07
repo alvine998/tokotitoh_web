@@ -128,9 +128,9 @@ export default function Category({ categories }: any) {
             <h1>{modal?.data?.name?.toUpperCase()}</h1>
           </div>
           <div className="mt-5">
-            {subcat?.map((v: any, i: number) => (
+            {subcat?.sort((a: any, b: any) => (a?.index > b?.index ? 1 : -1))?.map((v: any) => (
               <button
-                key={i}
+                key={v?.index}
                 onClick={() => router.push(`/category/${v?.id}`)}
                 className="border border-gray-500 p-2 w-full"
               >
