@@ -94,8 +94,11 @@ export default function MyAds({ ads, adscount }: any) {
 
   useEffect(() => {
     const queryFilter = new URLSearchParams(filter).toString();
-    router.push(`?${queryFilter}`);
-  }, [filter]);
+    const currentQuery = new URLSearchParams(router.query as any).toString();
+    if (queryFilter !== currentQuery) {
+      router.push(`?${queryFilter}`, undefined, { shallow: true });
+    }
+  }, [filter, router.query, router]);
 
   useEffect(() => {
     let user: any = getCookie("account");

@@ -34,7 +34,7 @@ export default function Account() {
             user = JSON?.parse(user);
             setDetail(user)
         }
-    }, [])
+    }, [router])
 
     const onSubmit = async () => {
         try {

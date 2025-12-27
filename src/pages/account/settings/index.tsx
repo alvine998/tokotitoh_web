@@ -209,7 +209,7 @@ export default function AccountSettingsPage() {
         </div>
 
         {modal?.key == "edit" ? (
-          <Modal open={modal.open} setOpen={() => {}}>
+          <Modal open={modal.open} setOpen={() => { }}>
             <form onSubmit={update}>
               <h2 className="text-2xl font-semibold text-center">
                 Ubah Profil
@@ -254,7 +254,7 @@ export default function AccountSettingsPage() {
           ""
         )}
         {modal?.key == "remove" ? (
-          <Modal open={modal.open} setOpen={() => {}}>
+          <Modal open={modal.open} setOpen={() => { }}>
             <div className="px-2">
               <form onSubmit={remove}>
                 <h2 className="text-xl font-semibold">Hapus Akun</h2>
@@ -285,16 +285,16 @@ export default function AccountSettingsPage() {
           ""
         )}
         {modal?.key == "view" ? (
-          <Modal open={modal.open} setOpen={() => {}}>
+          <Modal open={modal.open} setOpen={() => { }}>
             <div className="px-2">
-              <img
-                alt="userimage"
-                src={modal?.data?.image}
-                width={500}
-                height={500}
-                className="w-full h-auto"
-                // layout="relative"
-              />
+              <div className="w-full h-auto relative min-h-[300px]">
+                <Image
+                  alt="userimage"
+                  src={modal?.data?.image}
+                  fill
+                  className="object-contain"
+                />
+              </div>
               <div className="flex gap-10 justify-end items-center mt-4">
                 <button
                   type="button"

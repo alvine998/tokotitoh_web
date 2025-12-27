@@ -333,8 +333,11 @@ export default function Sell({
 
   useEffect(() => {
     const queryFilter = new URLSearchParams(filter).toString();
-    router.push(`?${queryFilter}`);
-  }, [filter]);
+    const currentQuery = new URLSearchParams(router.query as any).toString();
+    if (queryFilter !== currentQuery) {
+      router.push(`?${queryFilter}`, undefined, { shallow: true });
+    }
+  }, [filter, router.query, router]);
 
   const handleCategory = (data: any) => {
     setFilled([...filled, 2]);
@@ -741,7 +744,7 @@ export default function Sell({
                 className="text-xl"
               />
               {selected?.subcategory_name?.toLowerCase()?.includes("mobil") ||
-              selected?.subcategory_name?.toLowerCase()?.includes("motor") ? (
+                selected?.subcategory_name?.toLowerCase()?.includes("motor") ? (
                 <div>
                   <div>
                     <Select
@@ -831,27 +834,27 @@ export default function Sell({
               {selected?.subcategory_name
                 ?.toLowerCase()
                 ?.includes("sparepart") ||
-              selected?.subcategory_name
-                ?.toLowerCase()
-                ?.includes("aksesoris") ||
-              selected?.subcategory_name?.toLowerCase()?.includes("bengkel") ||
-              selected?.subcategory_name?.toLowerCase()?.includes("velg") ||
-              selected?.subcategory_name?.toLowerCase()?.includes("karoseri") ||
-              selected?.category_name?.toLowerCase()?.includes("elektronik") ||
-              selected?.category_name?.toLowerCase()?.includes("hp") ||
-              selected?.category_name?.toLowerCase()?.includes("hobi") ||
-              selected?.category_name
-                ?.toLowerCase()
-                ?.includes("keperluan pribadi") ||
-              selected?.category_name
-                ?.toLowerCase()
-                ?.includes("bahan bangunan") ||
-              selected?.category_name
-                ?.toLowerCase()
-                ?.includes("kantor & industri") ||
-              selected?.category_name
-                ?.toLowerCase()
-                ?.includes("perlengkapan rumah") ? (
+                selected?.subcategory_name
+                  ?.toLowerCase()
+                  ?.includes("aksesoris") ||
+                selected?.subcategory_name?.toLowerCase()?.includes("bengkel") ||
+                selected?.subcategory_name?.toLowerCase()?.includes("velg") ||
+                selected?.subcategory_name?.toLowerCase()?.includes("karoseri") ||
+                selected?.category_name?.toLowerCase()?.includes("elektronik") ||
+                selected?.category_name?.toLowerCase()?.includes("hp") ||
+                selected?.category_name?.toLowerCase()?.includes("hobi") ||
+                selected?.category_name
+                  ?.toLowerCase()
+                  ?.includes("keperluan pribadi") ||
+                selected?.category_name
+                  ?.toLowerCase()
+                  ?.includes("bahan bangunan") ||
+                selected?.category_name
+                  ?.toLowerCase()
+                  ?.includes("kantor & industri") ||
+                selected?.category_name
+                  ?.toLowerCase()
+                  ?.includes("perlengkapan rumah") ? (
                 <div className="mt-2">
                   <label className="text-gray-500" htmlFor="condition">
                     Kondisi
@@ -976,11 +979,11 @@ export default function Sell({
 
               {selected?.subcategory_name?.toLowerCase() ==
                 "bus dan truk dijual" ||
-              selected?.subcategory_name?.toLowerCase() ==
+                selected?.subcategory_name?.toLowerCase() ==
                 "bus dan truk di sewakan" ||
-              selected?.subcategory_name?.toLowerCase() ==
+                selected?.subcategory_name?.toLowerCase() ==
                 "alat berat di jual" ||
-              selected?.subcategory_name?.toLowerCase() ==
+                selected?.subcategory_name?.toLowerCase() ==
                 "alat berat di sewakan" ? (
                 <Input
                   label="Tahun"
@@ -998,10 +1001,10 @@ export default function Sell({
 
               {(selected?.category_name?.toLowerCase()?.includes("mobil") &&
                 selected?.subcategory_name?.toLowerCase()?.includes("mobil")) ||
-              (selected?.category_name?.toLowerCase()?.includes("motor") &&
-                selected?.subcategory_name
-                  ?.toLowerCase()
-                  ?.includes("motor")) ? (
+                (selected?.category_name?.toLowerCase()?.includes("motor") &&
+                  selected?.subcategory_name
+                    ?.toLowerCase()
+                    ?.includes("motor")) ? (
                 <div>
                   {/* <Input
                     label="Trip KM"

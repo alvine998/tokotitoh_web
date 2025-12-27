@@ -34,13 +34,11 @@ export async function getServerSideProps(context: any) {
       user = JSON.parse(user);
       result = await axios.get(
         CONFIG.base_url_api +
-          `/ads?id=${user?.save_ads}&pagination=true&page=${+page || 0}&size=${
-            +size || 999999
-          }&search=${
-            user?.save_ads !== null && user?.save_ads?.length > 0
-              ? search || ""
-              : "!!!"
-          }`,
+        `/ads?id=${user?.save_ads}&pagination=true&page=${+page || 0}&size=${+size || 999999
+        }&search=${user?.save_ads !== null && user?.save_ads?.length > 0
+          ? search || ""
+          : "!!!"
+        }`,
         {
           headers: {
             "bearer-token": "tokotitohapi",
@@ -80,8 +78,11 @@ export default function MyAds({ ads, user }: any) {
 
   useEffect(() => {
     const queryFilter = new URLSearchParams(filter).toString();
-    router.push(`?${queryFilter}`);
-  }, [filter]);
+    const currentQuery = new URLSearchParams(router.query as any).toString();
+    if (queryFilter !== currentQuery) {
+      router.push(`?${queryFilter}`, undefined, { shallow: true });
+    }
+  }, [filter, router.query, router]);
 
   const onRoute = async (v: any) => {
     await localStorage.setItem("from", "saved-ads");

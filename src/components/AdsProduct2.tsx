@@ -52,20 +52,20 @@ export default function AdsProduct2(props: Props) {
         className="p-2 z-10 relative rounded h-auto md:mt-2 sm:mt-2 lg:mt-2 mt-2 w-full lg:w-full flex flex-row gap-4"
         onClick={onClick}
       >
-        <div className="bg-white w-auto sm:h-[150px] md:h-[150px] lg:h-[120px] h-[120px] overflow-hidden flex justify-start">
-          <img
+        <div className="bg-white w-[140px] sm:w-[170px] md:w-[170px] lg:w-[140px] h-[120px] sm:h-[150px] md:h-[150px] lg:h-[120px] relative overflow-hidden flex justify-start">
+          <Image
             src={thumbnail}
             alt="thumbnail"
-            className="lg:w-[140px] lg:h-[120px] md:w-[170px] md:h-[150px] sm:w-[170px] sm:h-[150px]  w-[140px] h-[120px] rounded object-cover"
+            fill
+            className="rounded object-cover"
           />
         </div>
         <div className="mt-2">
           <p
-            className={`text-left font-bold -mt-1 ${
-              price.length > 11
+            className={`text-left font-bold -mt-1 ${price.length > 11
                 ? "md:text-lg sm:text-lg lg:text-xs text-xs"
                 : "md:text-xl sm:text-xl lg:text-sm text-md"
-            }`}
+              }`}
           >
             Rp {toMoney(price)?.slice(0, 15)}
           </p>
@@ -78,7 +78,7 @@ export default function AdsProduct2(props: Props) {
               className={`text-right text-sm`}
             >
               {moment(created_at).format("DD-MM-YYYY") ===
-              moment().format("DD-MM-YYYY")
+                moment().format("DD-MM-YYYY")
                 ? "Hari ini"
                 : moment(created_at).format("DD MMM")}
             </p>

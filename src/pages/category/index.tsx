@@ -21,7 +21,7 @@ export async function getServerSideProps(context: any) {
     const { page, size } = context.query;
     const result = await axios.get(
       CONFIG.base_url_api +
-        `/categories?page=${page || 0}&size=${size || 99999}`,
+      `/categories?page=${page || 0}&size=${size || 99999}`,
       {
         headers: {
           "bearer-token": "tokotitohapi",
@@ -61,7 +61,7 @@ export default function Category({ categories }: any) {
     try {
       const result = await axios.get(
         CONFIG.base_url_api +
-          `/subcategories?category_id=${cat_id}&page=0&size=99999`,
+        `/subcategories?category_id=${cat_id}&page=0&size=99999`,
         {
           headers: {
             "bearer-token": "tokotitohapi",
@@ -98,13 +98,14 @@ export default function Category({ categories }: any) {
               key={i}
               className="flex flex-col items-center justify-center text-xs pt-2 font-bold flex-wrap lg:w-[100px] md:w-[170px] sm:w-[170px] w-[100px]"
             >
-              <img
-                src={v?.icon}
-                width={100}
-                height={80}
-                alt="icon"
-                className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[170px] sm:h-[100px] w-[100px] h-[60px]"
-              />
+              <div className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[170px] sm:h-[100px] w-[100px] h-[60px] relative">
+                <Image
+                  src={v?.icon}
+                  fill
+                  alt="icon"
+                  className="object-contain"
+                />
+              </div>
               {v?.name}
             </button>
           ))}

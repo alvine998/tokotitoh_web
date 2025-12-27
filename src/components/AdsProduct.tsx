@@ -153,23 +153,14 @@ export default function AdsProduct(props: Props) {
         className="p-2 relative z-10 rounded h-auto md:mt-10 sm:mt-10 lg:mt-2 mt-2 w-full lg:w-full flex flex-col justify-start"
         onClick={onClick}
       >
-        <div className="bg-white w-full sm:h-[300px] md:h-[400px] lg:h-[200px] h-[200px] overflow-hidden flex justify-center">
-          <img
+        <div className="bg-white w-full sm:h-[300px] md:h-[400px] lg:h-[200px] h-[200px] relative overflow-hidden flex justify-center">
+          <Image
             src={thumbnail}
             alt="thumbnail"
-            className="lg:w-[200px] lg:h-[170px] md:w-[400px] md:h-[400px] sm:w-[300px] sm:h-[300px]  w-[200px] h-[170px] rounded object-cover"
+            fill
+            className="rounded object-cover"
           />
         </div>
-        {/* <Image
-          alt="thumbnail"
-          src={thumbnail}
-          layout="responsive"
-          width={300}
-          height={300}
-          objectPosition="center"
-          objectFit="cover"
-          className="h-[250px] lg:h-auto w-full rounded"
-        /> */}
         {router.pathname == "/myads" ? (
           <div className="flex justify-between items-end mt-2">
             <div>

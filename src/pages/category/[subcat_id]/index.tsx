@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRouter as router2 } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { createQueryString } from "@/utils";
 import { getCookie } from "cookies-next";
@@ -136,9 +135,8 @@ export async function getServerSideProps(context: any) {
     if (q) {
       searchAds = await axios.get(
         CONFIG.base_url_api +
-          `/ads?pagination=true&page=${+page || 0}&size=${10}&status=1&search=${
-            q || ""
-          }`,
+        `/ads?pagination=true&page=${+page || 0}&size=${10}&status=1&search=${q || ""
+        }`,
         {
           headers: {
             "bearer-token": "tokotitohapi",
@@ -187,7 +185,6 @@ export default function Ads({
   categories,
 }: any) {
   const router = useRouter();
-  const routers = router2();
   const [spinning, setSpinning] = useState<boolean>(false);
   const [filter, setFilter] = useState<any>({
     ...router?.query,
@@ -236,9 +233,8 @@ export default function Ads({
     try {
       const result = await axios.get(
         CONFIG.base_url_api +
-          `/ads?status=1&pagination=true&page=${0}&size=${10}&search=${
-            q || ""
-          }`,
+        `/ads?status=1&pagination=true&page=${0}&size=${10}&search=${q || ""
+        }`,
         {
           headers: {
             "bearer-token": "tokotitohapi",
@@ -254,10 +250,13 @@ export default function Ads({
   const queryFilter = new URLSearchParams(filter).toString();
 
   useEffect(() => {
-    setLoading(true);
-    routers.push(`${subcat_id}?${queryFilter}`, { scroll: false });
-    setLoading(false);
-  }, [filter]);
+    const currentQuery = new URLSearchParams(router.query as any).toString();
+    if (queryFilter !== currentQuery) {
+      setLoading(true);
+      router.push(`${subcat_id}?${queryFilter}`, undefined, { scroll: false });
+      setLoading(false);
+    }
+  }, [filter, subcat_id, router]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -363,12 +362,11 @@ export default function Ads({
                 </div>
               ) : (
                 <>
-                  <img
+                  <Image
                     alt="eror404"
                     src={"/images/error404.webp"}
-                    // layout="relative"
-                    width={300}
-                    height={300}
+                    width={250}
+                    height={250}
                     className="w-[250px] h-[250px]"
                   />
                   <p className="text-center font-semibold text-lg">

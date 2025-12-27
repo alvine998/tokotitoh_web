@@ -53,9 +53,8 @@ export async function getServerSideProps(context: any) {
     }
     const result = await axios.get(
       CONFIG.base_url_api +
-        `/ads?id=${ads_id}&pagination=true&page=${+page || 0}&size=${
-          +size || 10
-        }`,
+      `/ads?id=${ads_id}&pagination=true&page=${+page || 0}&size=${+size || 10
+      }`,
       {
         headers: {
           "bearer-token": "tokotitohapi",
@@ -65,7 +64,7 @@ export async function getServerSideProps(context: any) {
     );
     const user = await axios.get(
       CONFIG.base_url_api +
-        `/users?id=${result?.data?.items?.rows[0]?.user_id}`,
+      `/users?id=${result?.data?.items?.rows[0]?.user_id}`,
       {
         headers: {
           "bearer-token": "tokotitohapi",
@@ -319,11 +318,12 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                     height={1920}
                     className="h-[250px] sm:h-auto lg:h-[300px] w-[200px] lg:w-[200px] rounded mt-5"
                   /> */}
-                  <div className="bg-gray-300 w-full lg:h-[250px] md:h-[250px] sm:h-[500px] h-[250px] overflow-hidden">
-                    <img
+                  <div className="bg-gray-300 w-full lg:h-[250px] md:h-[250px] sm:h-[500px] h-[250px] relative overflow-hidden">
+                    <Image
                       src={v}
                       alt="thumbnail"
-                      className="absolute top-1/2 left-1/2 h-auto w-auto transform -translate-x-1/2 -translate-y-1/2 rounded"
+                      fill
+                      className="object-contain rounded"
                     />
                   </div>
                 </button>
@@ -357,11 +357,10 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 Laporkan
               </button>
               <button
-                className={`bg-gray-700 p-2 w-full rounded text-white text-md text-center ${
-                  account?.save_ads?.includes(ads?.id)
+                className={`bg-gray-700 p-2 w-full rounded text-white text-md text-center ${account?.save_ads?.includes(ads?.id)
                     ? "opacity-80"
                     : "opacity-100"
-                }`}
+                  }`}
                 type="button"
                 onClick={saveAds}
                 disabled={account?.save_ads?.includes(ads?.id)}
@@ -378,9 +377,9 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               </h2>
               {ads?.subcategory_name?.toLowerCase() ==
                 "alat berat di sewakan" ||
-              ads?.subcategory_name?.toLowerCase() == "alat berat di jual" ||
-              ads?.subcategory_name?.toLowerCase() == "bus dan truk dijual" ||
-              ads?.subcategory_name?.toLowerCase() ==
+                ads?.subcategory_name?.toLowerCase() == "alat berat di jual" ||
+                ads?.subcategory_name?.toLowerCase() == "bus dan truk dijual" ||
+                ads?.subcategory_name?.toLowerCase() ==
                 "bus dan truk di sewakan" ? (
                 <p className="mt-3 text-lg">
                   Tahun: {ads?.year}
@@ -392,8 +391,8 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               )}
               {(ads?.category_name?.toLowerCase().includes("mobil") &&
                 ads?.subcategory_name?.toLowerCase().includes("dijual")) ||
-              (ads?.category_name?.toLowerCase().includes("motor") &&
-                ads?.subcategory_name?.toLowerCase().includes("dijual")) ? (
+                (ads?.category_name?.toLowerCase().includes("motor") &&
+                  ads?.subcategory_name?.toLowerCase().includes("dijual")) ? (
                 <p className="mt-3 text-2xl">
                   <strong className="text-2xl">Detail</strong> <br />
                   <hr />
@@ -479,15 +478,14 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 className="owl-theme"
               >
                 {JSON.parse(ads?.images)?.map((v: any, i: number) => (
-                  <img
-                    alt="image"
-                    key={i}
-                    src={v}
-                    // layout="relative"
-                    width={800}
-                    height={500}
-                    className="h-auto w-full rounded mt-5"
-                  />
+                  <div key={i} className="relative h-[300px] sm:h-[500px] w-full mt-5">
+                    <Image
+                      alt="image"
+                      src={v}
+                      fill
+                      className="object-contain rounded"
+                    />
+                  </div>
                 ))}
               </OwlCarousel>
             </Modal>
@@ -572,14 +570,14 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                       }}
                       className="relative group w-1/3"
                     >
-                      <img
-                        alt="images"
-                        src={v}
-                        // layout="relative"
-                        width={300}
-                        height={300}
-                        className="w-full h-[100px]"
-                      />
+                      <div className="w-full h-[100px] relative">
+                        <Image
+                          alt="images"
+                          src={v}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
                       <div className="absolute inset-0 bg-red-700 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-50 transition-opacity duration-300">
                         <TrashIcon className="text-white" />{" "}
                         <p className="text-white">Hapus</p>
@@ -613,14 +611,14 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               }}
             >
               {user?.image ? (
-                <img
-                  alt="image"
-                  src={user?.image}
-                  // layout="relative"
-                  width={800}
-                  height={500}
-                  className="h-20 w-20 rounded-full mt-5"
-                />
+                <div className="h-20 w-20 relative mt-5">
+                  <Image
+                    alt="image"
+                    src={user?.image}
+                    fill
+                    className="rounded-full object-cover"
+                  />
+                </div>
               ) : (
                 <UserCircleIcon className="w-20 h-20" />
               )}

@@ -43,7 +43,7 @@ export default function Account() {
       user = JSON?.parse(user);
       setDetail(user);
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (time <= 0) return; // Stop when it reaches 0

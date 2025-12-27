@@ -47,9 +47,8 @@ export async function getServerSideProps(context: any) {
     if (detailBuyer) {
       result = await axios.get(
         CONFIG.base_url_api +
-          `/ads?user_id=${detailBuyer?.id || 0}&pagination=true&page=${
-            +page || 0
-          }&size=${+size || 999}&search=${search || ""}`,
+        `/ads?user_id=${detailBuyer?.id || 0}&pagination=true&page=${+page || 0
+        }&size=${+size || 999}&search=${search || ""}`,
         {
           headers: {
             "bearer-token": "tokotitohapi",
@@ -81,8 +80,11 @@ export default function MyAds({ ads, detailBuyer }: any) {
 
   useEffect(() => {
     const queryFilter = new URLSearchParams(filter).toString();
-    router.push(`?${queryFilter}`);
-  }, [filter]);
+    const currentQuery = new URLSearchParams(router.query as any).toString();
+    if (queryFilter !== currentQuery) {
+      router.push(`?${queryFilter}`, undefined, { shallow: true });
+    }
+  }, [filter, router]);
 
   const onRoute = async (v: any) => {
     await localStorage.setItem("from", "myads");
@@ -93,14 +95,14 @@ export default function MyAds({ ads, detailBuyer }: any) {
       <div className="">
         <div className="p-2 flex gap-10">
           {detailBuyer?.image ? (
-            <img
-              alt="image"
-              src={detailBuyer?.image}
-              // layout="relative"
-              width={800}
-              height={500}
-              className="h-24 w-24 rounded-full mt-5"
-            />
+            <div className="h-24 w-24 relative mt-5">
+              <Image
+                alt="image"
+                src={detailBuyer?.image}
+                fill
+                className="rounded-full object-cover"
+              />
+            </div>
           ) : (
             <UserCircleIcon className="w-20 h-20" />
           )}
