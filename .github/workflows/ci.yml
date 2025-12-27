@@ -28,7 +28,6 @@ jobs:
     needs: build
 
     steps:
-    - uses: actions/checkout@v4
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -38,6 +37,7 @@ jobs:
         port: 22
         script: |
           cd /var/www/tokotitoh_web
+          git config --global --add safe.directory /var/www/tokotitoh_web
           git pull
           docker compose down
           docker compose up -d --build
