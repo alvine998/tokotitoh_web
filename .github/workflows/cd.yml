@@ -24,7 +24,5 @@ jobs:
         script: |
           cd /var/www/tokotitoh_web
           git pull
-          npm install
-          npm run build
           docker compose down
           docker compose up -d --build
