@@ -74,6 +74,7 @@ const HomeModals: React.FC<HomeModalsProps> = ({
                 <Modal
                     open={modal.open}
                     setOpen={() => setModal({ ...modal, open: false, key: "" })}
+                    fullHeight={true}
                 >
                     <div className="flex gap-3 items-center">
                         <button onClick={() => setModal({ ...modal, open: false })}>

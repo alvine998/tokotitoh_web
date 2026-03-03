@@ -50,9 +50,9 @@ export async function getServerSideProps(context: any) {
         "x-partner-code": user?.partner_code,
       },
     });
-    let [subcategories, brands, provinces]: any = [];
+    let [subcategories, brands, provinces]: any = [[], [], []];
     if (category_id) {
-      [subcategories, brands, provinces] = await Promise.all([
+      const [_sub, _brand] = await Promise.all([
         axios.get(
           CONFIG.base_url_api + `/subcategories?category_id=${category_id}`,
           {
@@ -68,14 +68,16 @@ export async function getServerSideProps(context: any) {
             "x-partner-code": user?.partner_code,
           },
         }),
-        axios.get(CONFIG.base_url_api + `/provinces`, {
-          headers: {
-            "bearer-token": "tokotitohapi",
-            "x-partner-code": user?.partner_code,
-          },
-        }),
       ]);
+      subcategories = _sub;
+      brands = _brand;
     }
+    provinces = await axios.get(CONFIG.base_url_api + `/provinces`, {
+      headers: {
+        "bearer-token": "tokotitohapi",
+        "x-partner-code": user?.partner_code,
+      },
+    });
     let types: any = [];
     if (brand_id) {
       types = await axios.get(
@@ -137,7 +139,12 @@ export default function Sell({
 }: any) {
   const router = useRouter();
   const [modal, setModal] = useState<useModal>();
-  const [subcat, setSubcat] = useState<any>([]);
+  const [dataSubcategories, setDataSubcategories] = useState<any>(
+    subcategories || []
+  );
+  const [dataBrands, setDataBrands] = useState<any>(brands || []);
+  const [dataTypes, setDataTypes] = useState<any>(types || []);
+  const [loadingData, setLoadingData] = useState<boolean>(false);
   const [filter, setFilter] = useState<any>(router.query);
   const fileInputRef: any = useRef(null);
   const handleButtonClick = () => {
@@ -242,7 +249,7 @@ export default function Sell({
         {
           headers: {
             "bearer-token": "tokotitohapi",
-            "x-partner-code": "id.marketplace.tokotitoh",
+            "x-partner-code": user?.partner_code,
           },
         }
       );
@@ -272,7 +279,7 @@ export default function Sell({
         {
           headers: {
             "bearer-token": "tokotitohapi",
-            "x-partner-code": "id.marketplace.tokotitoh",
+            "x-partner-code": user?.partner_code,
           },
         }
       );
@@ -302,7 +309,7 @@ export default function Sell({
         {
           headers: {
             "bearer-token": "tokotitohapi",
-            "x-partner-code": "id.marketplace.tokotitoh",
+            "x-partner-code": user?.partner_code,
           },
         }
       );
@@ -328,7 +335,7 @@ export default function Sell({
           {
             headers: {
               "bearer-token": "tokotitohapi",
-              "x-partner-code": "id.marketplace.tokotitoh",
+              "x-partner-code": user?.partner_code,
             },
           }
         );
@@ -337,7 +344,7 @@ export default function Sell({
           {
             headers: {
               "bearer-token": "tokotitohapi",
-              "x-partner-code": "id.marketplace.tokotitoh",
+              "x-partner-code": user?.partner_code,
             },
           }
         );
@@ -366,6 +373,69 @@ export default function Sell({
       router.push(`?${queryFilter}`, undefined, { shallow: true });
     }
   }, [filter, router.query, router]);
+
+  useEffect(() => {
+    if (filter?.category_id) {
+      const fetchData = async () => {
+        setLoadingData(true);
+        try {
+          const [subRes, brandRes] = await Promise.all([
+            axios.get(
+              CONFIG.base_url_api +
+              `/subcategories?category_id=${filter.category_id}`,
+              {
+                headers: {
+                  "bearer-token": "tokotitohapi",
+                  "x-partner-code": user?.partner_code,
+                },
+              }
+            ),
+            axios.get(
+              CONFIG.base_url_api + `/brands?category_id=${filter.category_id}`,
+              {
+                headers: {
+                  "bearer-token": "tokotitohapi",
+                  "x-partner-code": user?.partner_code,
+                },
+              }
+            ),
+          ]);
+          setDataSubcategories(subRes?.data?.items?.rows || []);
+          setDataBrands(brandRes?.data?.items?.rows || []);
+        } catch (error) {
+          console.error("Error fetching subcategories/brands:", error);
+        } finally {
+          setLoadingData(false);
+        }
+      };
+      fetchData();
+    }
+  }, [filter?.category_id, user?.partner_code]);
+
+  useEffect(() => {
+    if (filter?.brand_id) {
+      const fetchTypes = async () => {
+        setLoadingData(true);
+        try {
+          const res = await axios.get(
+            CONFIG.base_url_api + `/types?brand_id=${filter.brand_id}`,
+            {
+              headers: {
+                "bearer-token": "tokotitohapi",
+                "x-partner-code": user?.partner_code,
+              },
+            }
+          );
+          setDataTypes(res?.data?.items?.rows || []);
+        } catch (error) {
+          console.error("Error fetching types:", error);
+        } finally {
+          setLoadingData(false);
+        }
+      };
+      fetchTypes();
+    }
+  }, [filter?.brand_id, user?.partner_code]);
 
   const handleCategory = (data: any) => {
     setFilled([...filled, 2]);
@@ -538,12 +608,12 @@ export default function Sell({
       });
     }
   };
-  let BRANDS = brands?.map((v: any) => ({
+  let BRANDS = dataBrands?.map((v: any) => ({
     ...v,
     value: v?.id,
     label: v?.name,
   }));
-  let TYPES = types?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }));
+  let TYPES = dataTypes?.map((v: any) => ({ ...v, value: v?.id, label: v?.name }));
   let FUELTYPES = [
     { value: "bensin", label: "Bensin" },
     { value: "diesel", label: "Diesel" },
@@ -638,18 +708,22 @@ export default function Sell({
               Pilih Sub Kategori {selected?.category_name}:
             </p>
             <div className="mt-4">
-              {subcategories?.map((v: any) => (
-                <button
-                  onClick={() => {
-                    handleSubCategory(v);
-                  }}
-                  type="button"
-                  key={v?.id}
-                  className="p-2 border w-full text-left hover:bg-gray-300 text-xl"
-                >
-                  {v?.name}
-                </button>
-              ))}
+              {loadingData ? (
+                <p className="p-2 text-xl italic text-gray-500">Memuat sub kategori...</p>
+              ) : (
+                dataSubcategories?.map((v: any) => (
+                  <button
+                    onClick={() => {
+                      handleSubCategory(v);
+                    }}
+                    type="button"
+                    key={v?.id}
+                    className="p-2 border w-full text-left hover:bg-gray-300 text-xl"
+                  >
+                    {v?.name}
+                  </button>
+                ))
+              )}
             </div>
           </div>
         ) : (
@@ -816,7 +890,7 @@ export default function Sell({
                   </div>
                   <div className="mt-2">
                     <Select
-                      disabled={types?.length < 1}
+                      disabled={dataTypes?.length < 1}
                       options={TYPES}
                       defaultValue={selected?.type_id}
                       label="Tipe"
@@ -837,7 +911,7 @@ export default function Sell({
                       Tipe
                     </label>
                     <ReactSelect
-                      isDisabled={types?.length < 1}
+                      isDisabled={dataTypes?.length < 1}
                       options={TYPES}
                       placeholder="Pilih Tipe"
                       onChange={(e: any) => {

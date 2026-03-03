@@ -117,6 +117,7 @@ export default function Category({ categories }: any) {
         <Modal
           open={modal.open}
           setOpen={() => setModal({ ...modal, open: false, key: "" })}
+          fullHeight={true}
         >
           <div className="flex gap-3 items-center">
             <button
