@@ -9,6 +9,8 @@ interface LocationModalContentProps {
     setList: (list: any) => void;
     filter: any;
     setFilter: (filter: any) => void;
+    localFilter: any;
+    setLocalFilter: (filter: any) => void;
     provinces: any[];
     getCity: (data: any) => void;
     getDistrict: (data: any) => void;
@@ -22,6 +24,8 @@ const LocationModalContent: React.FC<LocationModalContentProps> = ({
     setList,
     filter,
     setFilter,
+    localFilter,
+    setLocalFilter,
     provinces,
     getCity,
     getDistrict,
@@ -42,7 +46,7 @@ const LocationModalContent: React.FC<LocationModalContentProps> = ({
                         <button
                             type="button"
                             onClick={() => {
-                                setFilter({ ...filter, district_id: "", city_id: "" });
+                                setLocalFilter({ ...localFilter, district_id: "", city_id: "" });
                                 setList({ ...list, districts: [] });
                             }}
                             className="py-1 px-2 border-b-2 w-full flex gap-2 items-center"
@@ -52,8 +56,8 @@ const LocationModalContent: React.FC<LocationModalContentProps> = ({
                         </button>
                         <button
                             type="button"
-                            onClick={() => setFilter({ ...filter, district_id: "" })}
-                            className={`py-1 px-2 w-full flex justify-between items-center ${filter?.district_id === "" ? "border-2 border-blue-400 rounded" : "border-b-2"
+                            onClick={() => setLocalFilter({ ...localFilter, district_id: "" })}
+                            className={`py-1 px-2 w-full flex justify-between items-center ${localFilter?.district_id === "" ? "border-2 border-blue-400 rounded" : "border-b-2"
                                 }`}
                         >
                             <p>Semua Kecamatan</p>
@@ -62,8 +66,8 @@ const LocationModalContent: React.FC<LocationModalContentProps> = ({
                         {list.districts.map((v: any, i: number) => (
                             <button
                                 type="button"
-                                onClick={() => setFilter({ ...filter, district_id: v.id })}
-                                className={`py-1 px-2 w-full flex justify-between items-center ${filter?.district_id === v.id ? "border-2 border-blue-400 rounded" : "border-b-2"
+                                onClick={() => setLocalFilter({ ...localFilter, district_id: v.id })}
+                                className={`py-1 px-2 w-full flex justify-between items-center ${localFilter?.district_id === v.id ? "border-2 border-blue-400 rounded" : "border-b-2"
                                     }`}
                                 key={i}
                             >
@@ -78,7 +82,7 @@ const LocationModalContent: React.FC<LocationModalContentProps> = ({
                             type="button"
                             onClick={() => {
                                 getDistrict({ id: "" });
-                                setFilter({ ...filter, province_id: "" });
+                                setLocalFilter({ ...localFilter, province_id: "" });
                                 setList({ ...list, cities: [] });
                             }}
                             className="py-1 px-2 border-b-2 w-full flex gap-2 items-center"
@@ -89,7 +93,7 @@ const LocationModalContent: React.FC<LocationModalContentProps> = ({
                         <button
                             type="button"
                             onClick={() => getDistrict({ id: "" })}
-                            className={`py-1 px-2 w-full flex justify-between items-center ${filter?.city_id === "" ? "border-2 border-blue-400 rounded" : "border-b-2"
+                            className={`py-1 px-2 w-full flex justify-between items-center ${localFilter?.city_id === "" ? "border-2 border-blue-400 rounded" : "border-b-2"
                                 }`}
                         >
                             <p>Semua Kota/Kab</p>
@@ -112,7 +116,7 @@ const LocationModalContent: React.FC<LocationModalContentProps> = ({
                         <button
                             type="button"
                             onClick={() => getCity({ id: "" })}
-                            className={`py-1 px-2 w-full flex justify-between items-center ${filter?.province_id === "" ? "border-2 border-blue-400 rounded" : "border-b-2"
+                            className={`py-1 px-2 w-full flex justify-between items-center ${localFilter?.province_id === "" ? "border-2 border-blue-400 rounded" : "border-b-2"
                                 }`}
                         >
                             <p>Semua Provinsi</p>
@@ -138,6 +142,7 @@ const LocationModalContent: React.FC<LocationModalContentProps> = ({
                         onClick={() => {
                             setModal({ ...modal, open: false });
                             setLoading(true);
+                            setFilter(localFilter);
                         }}
                     >
                         Terapkan

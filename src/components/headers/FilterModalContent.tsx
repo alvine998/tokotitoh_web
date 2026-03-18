@@ -3,6 +3,7 @@ import { XCircleIcon, XIcon, SquareCheck, Square, CheckIcon } from "lucide-react
 import Input from "../Input";
 import Button from "../Button";
 import Image from "next/image";
+import { getImageUrl } from "@/utils";
 
 interface FilterModalContentProps {
     ads: any;
@@ -12,6 +13,8 @@ interface FilterModalContentProps {
     setSelected: (selected: any) => void;
     filter: any;
     setFilter: (filter: any) => void;
+    localFilter: any;
+    setLocalFilter: (filter: any) => void;
     filterName: string;
     setFilterName: (name: string) => void;
     list: any;
@@ -42,6 +45,8 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
     setSelected,
     filter,
     setFilter,
+    localFilter,
+    setLocalFilter,
     filterName,
     setFilterName,
     list,
@@ -99,7 +104,7 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                             <p className="text-white text-lg">{value}</p>
                             <button
                                 className="ml-2"
-                                onClick={() => setSelected({ ...selected, [key]: "" })}
+                                onClick={() => setLocalFilter({ ...localFilter, [key]: "" })}
                             >
                                 <XIcon className="text-white w-4" />
                             </button>
@@ -231,17 +236,17 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                                         <button
                                             key={val.id}
                                             onClick={() => {
-                                                let brand_ids = filter?.brand_id || [];
+                                                let brand_ids = localFilter?.brand_id || [];
                                                 if (!brand_ids.includes(val.id)) {
                                                     brand_ids.push(val.id);
                                                     getType(val.id);
-                                                    setFilter({ ...filter, brand_id: brand_ids });
+                                                    setLocalFilter({ ...localFilter, brand_id: brand_ids });
                                                 } else {
                                                     brand_ids = brand_ids.filter((v: any) => v !== val.id);
-                                                    setFilter({
-                                                        ...filter,
+                                                    setLocalFilter({
+                                                        ...localFilter,
                                                         brand_id: brand_ids,
-                                                        type_id: filter?.type_id?.filter(
+                                                        type_id: localFilter?.type_id?.filter(
                                                             (tid: any) =>
                                                                 !list?.types?.some(
                                                                     (lt: any) => lt.id === tid && lt.brand_id === val.id
@@ -254,14 +259,14 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                                                     });
                                                 }
                                             }}
-                                            className={`border rounded flex justify-center items-center p-2 ${filter?.brand_id?.includes(val.id)
+                                            className={`border rounded flex justify-center items-center p-2 ${localFilter?.brand_id?.includes(val.id)
                                                 ? "border-blue-500"
                                                 : "border-gray-200"
                                                 }`}
                                         >
                                             <div className="lg:h-[40px] md:h-[100px] w-[140px] h-[40px] relative">
                                                 <Image
-                                                    src={val.image}
+                                                    src={getImageUrl(val.image)}
                                                     alt="logo-brand"
                                                     fill
                                                     className="object-contain"
@@ -270,23 +275,23 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                                         </button>
                                     ))}
                             </div>
-                            <div className="lg:h-[40vh] h-[40vh] overflow-auto mt-4">
+                            <div className="lg:h-[40vh] h-[50vh] overflow-auto mt-4 mb-10">
                                 <div className="flex flex-col gap-2 pl-2 mt-2">
                                     {brands?.map((v: any, i: number) => (
                                         <button
                                             key={i}
                                             onClick={() => {
-                                                let brand_ids = filter?.brand_id || [];
+                                                let brand_ids = localFilter?.brand_id || [];
                                                 if (!brand_ids.includes(v.id)) {
                                                     brand_ids.push(v.id);
                                                     getType(v.id);
-                                                    setFilter({ ...filter, brand_id: brand_ids });
+                                                    setLocalFilter({ ...localFilter, brand_id: brand_ids });
                                                 } else {
                                                     brand_ids = brand_ids.filter((val: any) => val !== v.id);
-                                                    setFilter({
-                                                        ...filter,
+                                                    setLocalFilter({
+                                                        ...localFilter,
                                                         brand_id: brand_ids,
-                                                        type_id: filter?.type_id?.filter(
+                                                        type_id: localFilter?.type_id?.filter(
                                                             (tid: any) =>
                                                                 !list?.types?.some(
                                                                     (lt: any) => lt.id === tid && lt.brand_id === v.id
@@ -302,7 +307,7 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                                             type="button"
                                             className="flex items-center justify-start"
                                         >
-                                            {filter?.brand_id?.includes(v.id) ? (
+                                            {localFilter?.brand_id?.includes(v.id) ? (
                                                 <SquareCheck className="text-green-600" />
                                             ) : (
                                                 <Square />
@@ -324,19 +329,19 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                                             <button
                                                 key={i}
                                                 onClick={() => {
-                                                    let type_ids = filter?.type_id || [];
+                                                    let type_ids = localFilter?.type_id || [];
                                                     if (!type_ids.includes(v.id)) {
                                                         type_ids.push(v.id);
-                                                        setFilter({ ...filter, type_id: type_ids });
+                                                        setLocalFilter({ ...localFilter, type_id: type_ids });
                                                     } else {
                                                         type_ids = type_ids.filter((val: any) => val !== v.id);
-                                                        setFilter({ ...filter, type_id: type_ids });
+                                                        setLocalFilter({ ...localFilter, type_id: type_ids });
                                                     }
                                                 }}
                                                 type="button"
                                                 className="flex items-center justify-start"
                                             >
-                                                {filter?.type_id?.includes(v.id) ? (
+                                                {localFilter?.type_id?.includes(v.id) ? (
                                                     <SquareCheck className="text-green-600" />
                                                 ) : (
                                                     <Square />
@@ -353,14 +358,14 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                     )}
 
                     {filterName === "HARGA" && (
-                        <div className="flex flex-col items-center justify-center pl-2 mt-4">
+                        <div className="flex flex-col items-center justify-center pl-2">
                             <Input
                                 numericformat
                                 label=""
                                 placeholder="Dari Harga"
-                                defaultValue={filter?.min || 1}
+                                defaultValue={localFilter?.min || 1}
                                 onChange={(e: any) =>
-                                    setFilter({ ...filter, min: e.target.value.replaceAll(",", "") })
+                                    setLocalFilter({ ...localFilter, min: e.target.value.replaceAll(",", "") })
                                 }
                                 className="text-2xl"
                             />
@@ -368,9 +373,9 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                                 numericformat
                                 label=""
                                 placeholder="Sampai Harga"
-                                defaultValue={filter?.max || 10000000000}
+                                defaultValue={localFilter?.max || 10000000000}
                                 onChange={(e: any) =>
-                                    setFilter({ ...filter, max: e.target.value.replaceAll(",", "") })
+                                    setLocalFilter({ ...localFilter, max: e.target.value.replaceAll(",", "") })
                                 }
                                 className="text-2xl"
                             />
@@ -378,14 +383,14 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                     )}
 
                     {filterName === "LUAS TANAH" && (
-                        <div className="flex flex-col items-center justify-center pl-2 mt-4">
+                        <div className="flex flex-col items-center justify-center pl-2">
                             <Input
                                 numericformat
                                 label=""
                                 placeholder="Mulai Dari"
-                                defaultValue={filter?.minArea}
+                                defaultValue={localFilter?.minArea}
                                 onChange={(e: any) =>
-                                    setFilter({ ...filter, minArea: e.target.value.replaceAll(",", "") })
+                                    setLocalFilter({ ...localFilter, minArea: e.target.value.replaceAll(",", "") })
                                 }
                                 className="text-2xl"
                             />
@@ -393,9 +398,9 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                                 numericformat
                                 label=""
                                 placeholder="Sampai"
-                                defaultValue={filter?.maxArea}
+                                defaultValue={localFilter?.maxArea}
                                 onChange={(e: any) =>
-                                    setFilter({ ...filter, maxArea: e.target.value.replaceAll(",", "") })
+                                    setLocalFilter({ ...localFilter, maxArea: e.target.value.replaceAll(",", "") })
                                 }
                                 className="text-2xl"
                             />
@@ -403,14 +408,14 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                     )}
 
                     {filterName === "LUAS BANGUNAN" && (
-                        <div className="flex flex-col items-center justify-center pl-2 mt-4">
+                        <div className="flex flex-col items-center justify-center pl-2">
                             <Input
                                 numericformat
                                 label=""
                                 placeholder="Mulai Dari"
-                                defaultValue={filter?.minBuilding}
+                                defaultValue={localFilter?.minBuilding}
                                 onChange={(e: any) =>
-                                    setFilter({ ...filter, minBuilding: e.target.value.replaceAll(",", "") })
+                                    setLocalFilter({ ...localFilter, minBuilding: e.target.value.replaceAll(",", "") })
                                 }
                                 className="text-2xl"
                             />
@@ -418,9 +423,9 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                                 numericformat
                                 label=""
                                 placeholder="Sampai"
-                                defaultValue={filter?.maxBuilding}
+                                defaultValue={localFilter?.maxBuilding}
                                 onChange={(e: any) =>
-                                    setFilter({ ...filter, maxBuilding: e.target.value.replaceAll(",", "") })
+                                    setLocalFilter({ ...localFilter, maxBuilding: e.target.value.replaceAll(",", "") })
                                 }
                                 className="text-2xl"
                             />
@@ -428,13 +433,13 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                     )}
 
                     {filterName === "TAHUN" && (
-                        <div className="flex flex-col items-center justify-center pl-2 mt-2">
+                        <div className="flex flex-col items-center justify-center pl-2">
                             <Input
                                 label=""
                                 placeholder={"1945"}
                                 maxLength={4}
                                 type="tel"
-                                onChange={(e: any) => setFilter({ ...filter, year_start: e.target.value })}
+                                onChange={(e: any) => setLocalFilter({ ...localFilter, year_start: e.target.value })}
                                 className="text-2xl"
                             />
                             <Input
@@ -442,14 +447,14 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                                 placeholder={`${new Date().getFullYear()}`}
                                 maxLength={4}
                                 type="tel"
-                                onChange={(e: any) => setFilter({ ...filter, year_end: e.target.value })}
+                                onChange={(e: any) => setLocalFilter({ ...localFilter, year_end: e.target.value })}
                                 className="text-2xl"
                             />
                         </div>
                     )}
 
                     {filterName === "TRANSMISI" && (
-                        <div className="flex flex-col gap-2 items-start pl-2 mt-4">
+                        <div className="flex flex-col gap-2 items-start pl-2">
                             {[
                                 { value: "", label: "Semua Transmisi" },
                                 { value: "MT", label: "Manual" },
@@ -461,8 +466,8 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                                         type="radio"
                                         name="transmission"
                                         value={opt.value}
-                                        defaultChecked={filter?.transmission === opt.value || (!filter?.transmission && opt.value === "")}
-                                        onChange={(e) => setFilter({ ...filter, transmission: e.target.value })}
+                                        defaultChecked={localFilter?.transmission === opt.value || (!localFilter?.transmission && opt.value === "")}
+                                        onChange={(e) => setLocalFilter({ ...localFilter, transmission: e.target.value })}
                                     />
                                     <span className="ml-2 text-2xl">{opt.label}</span>
                                 </div>
@@ -471,7 +476,7 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                     )}
 
                     {filterName === "KONDISI" && (
-                        <div className="flex flex-col gap-2 items-start pl-2 mt-4">
+                        <div className="flex flex-col gap-2 items-start pl-2">
                             {[
                                 { value: "", label: "Semua Kondisi" },
                                 { value: "new", label: "Baru" },
@@ -482,8 +487,8 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                                         type="radio"
                                         name="condition"
                                         value={opt.value}
-                                        defaultChecked={filter?.condition === opt.value || (!filter?.condition && opt.value === "")}
-                                        onChange={(e) => setFilter({ ...filter, condition: e.target.value })}
+                                        defaultChecked={localFilter?.condition === opt.value || (!localFilter?.condition && opt.value === "")}
+                                        onChange={(e) => setLocalFilter({ ...localFilter, condition: e.target.value })}
                                     />
                                     <span className="ml-2 text-2xl">{opt.label}</span>
                                 </div>
@@ -492,7 +497,7 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                     )}
 
                     {filterName === "BAHAN BAKAR" && (
-                        <div className="flex flex-col gap-2 items-start pl-2 mt-4">
+                        <div className="flex flex-col gap-2 items-start pl-2">
                             {[
                                 { value: "", label: "Semua Bahan Bakar" },
                                 { value: "bensin", label: "Bensin" },
@@ -505,8 +510,8 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                                         type="radio"
                                         name="fuel_type"
                                         value={opt.value}
-                                        defaultChecked={filter?.fuel_type === opt.value || (!filter?.fuel_type && opt.value === "")}
-                                        onChange={(e) => setFilter({ ...filter, fuel_type: e.target.value })}
+                                        defaultChecked={localFilter?.fuel_type === opt.value || (!localFilter?.fuel_type && opt.value === "")}
+                                        onChange={(e) => setLocalFilter({ ...localFilter, fuel_type: e.target.value })}
                                     />
                                     <span className="ml-2 text-2xl">{opt.label}</span>
                                 </div>
@@ -523,11 +528,11 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                             ].map((opt) => (
                                 <button
                                     key={opt.value}
-                                    onClick={() => setFilter({ ...filter, sort: opt.value })}
-                                    className={`border-2 w-full p-2 rounded text-lg ${filter?.sort === opt.value || (!filter?.sort && opt.value === "newest") ? "bg-gray-300" : ""
+                                    onClick={() => setLocalFilter({ ...localFilter, sort: opt.value })}
+                                    className={`border-2 w-full p-2 rounded text-lg ${localFilter?.sort === opt.value || (!localFilter?.sort && opt.value === "newest") ? "bg-gray-300" : ""
                                         } hover:bg-gray-300 duration-200 transition-all items-center flex gap-2`}
                                 >
-                                    {(filter?.sort === opt.value || (!filter?.sort && opt.value === "newest")) && (
+                                    {(localFilter?.sort === opt.value || (!localFilter?.sort && opt.value === "newest")) && (
                                         <CheckIcon className="w-4 text-green-700" />
                                     )}
                                     {opt.label}
@@ -544,6 +549,7 @@ const FilterModalContent: React.FC<FilterModalContentProps> = ({
                         onClick={() => {
                             setModal({ ...modal, open: false });
                             setLoading(true);
+                            setFilter(localFilter);
                         }}
                     >
                         Terapkan

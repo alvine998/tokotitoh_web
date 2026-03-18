@@ -50,6 +50,14 @@ export default function HeaderAds(props: Props) {
   const router = useRouter();
   const params = useParams();
 
+  const [localFilter, setLocalFilter] = useState<any>(filter);
+
+  useEffect(() => {
+    if (modal?.open) {
+      setLocalFilter(filter);
+    }
+  }, [modal?.open, filter]);
+
   const {
     adress,
     list,
@@ -63,8 +71,8 @@ export default function HeaderAds(props: Props) {
     handleKeyPress,
     resetFilters,
   } = useHeaderAdsLogic({
-    filter,
-    setFilter,
+    filter: modal?.open ? localFilter : filter,
+    setFilter: modal?.open ? setLocalFilter : setFilter,
     ads,
     subcat_id,
     setLoading,
@@ -155,7 +163,11 @@ export default function HeaderAds(props: Props) {
 
       {modal?.key === "filter" && (
         <div className="relative z-[100]">
-          <ModalFilter open={modal.open} setOpen={() => { }} type="filters">
+          <ModalFilter
+            open={modal.open}
+            setOpen={() => setModal({ ...modal, open: false })}
+            type="filters"
+          >
             <FilterModalContent
               ads={ads}
               modal={modal}
@@ -164,6 +176,8 @@ export default function HeaderAds(props: Props) {
               setSelected={setSelected}
               filter={filter}
               setFilter={setFilter}
+              localFilter={localFilter}
+              setLocalFilter={setLocalFilter}
               filterName={filterName}
               setFilterName={setFilterName}
               list={list}
@@ -191,7 +205,11 @@ export default function HeaderAds(props: Props) {
 
       {modal?.key === "location" && (
         <div>
-          <ModalFilter open={modal.open} setOpen={() => { }} type="location">
+          <ModalFilter
+            open={modal.open}
+            setOpen={() => setModal({ ...modal, open: false })}
+            type="location"
+          >
             <LocationModalContent
               modal={modal}
               setModal={setModal}
@@ -199,6 +217,8 @@ export default function HeaderAds(props: Props) {
               setList={setList}
               filter={filter}
               setFilter={setFilter}
+              localFilter={localFilter}
+              setLocalFilter={setLocalFilter}
               provinces={provinces}
               getCity={getCity}
               getDistrict={getDistrict}

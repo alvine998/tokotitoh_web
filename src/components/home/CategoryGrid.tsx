@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { getImageUrl } from "@/utils";
 
 interface CategoryGridProps {
     filteredItems: any[];
@@ -33,7 +34,7 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({
                     >
                         <div className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[170px] sm:h-[100px] w-[100px] h-[60px] relative">
                             <Image
-                                src={v?.icon}
+                                src={getImageUrl(v?.icon)}
                                 fill
                                 alt="icon"
                                 className="object-contain"
@@ -63,7 +64,7 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({
                     >
                         <div className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[170px] sm:h-[100px] w-[100px] h-[60px] relative">
                             <Image
-                                src={v?.icon}
+                                src={getImageUrl(v?.icon)}
                                 fill
                                 alt="icon"
                                 className="object-contain"

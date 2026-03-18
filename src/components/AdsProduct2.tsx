@@ -1,5 +1,4 @@
-import { CONFIG } from "@/config";
-import { toMoney } from "@/utils";
+import { getImageUrl, toMoney } from "@/utils";
 import axios from "axios";
 import { setCookie } from "cookies-next";
 import { PencilIcon, Trash2Icon } from "lucide-react";
@@ -54,7 +53,7 @@ export default function AdsProduct2(props: Props) {
       >
         <div className="bg-white w-[140px] sm:w-[170px] md:w-[170px] lg:w-[140px] h-[120px] sm:h-[150px] md:h-[150px] lg:h-[120px] relative overflow-hidden flex justify-start">
           <Image
-            src={thumbnail}
+            src={getImageUrl(thumbnail)}
             alt="thumbnail"
             fill
             className="rounded object-cover"

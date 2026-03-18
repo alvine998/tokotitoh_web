@@ -159,17 +159,15 @@ export const useLoginFormLogic = () => {
                 }
                 Swal.fire({
                     icon: "success",
-                    text: "Selamat Datang " + result?.data?.user?.name,
+                    text: "Silahkan masukkan kode OTP yang telah dikirim ke email anda",
                 });
                 setPayload({});
+                const loginTemp = result?.data?.user || { email: payload?.identity };
                 localStorage.setItem(
-                    "usertokotitoh",
-                    JSON.stringify(result?.data?.user)
+                    "userLoginOtp",
+                    JSON.stringify(loginTemp)
                 );
-                setCookie("account", JSON.stringify(result?.data?.user), {
-                    secure: true,
-                });
-                router.push("/account");
+                router.push("/account/login-otp");
             }
             if (type === "register") {
                 if (payload?.password !== payload?.password_confirm) {

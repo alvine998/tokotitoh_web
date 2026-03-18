@@ -25,6 +25,7 @@ import {
   UserIcon,
   XCircleIcon,
 } from "lucide-react";
+import { getImageUrl } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -290,7 +291,7 @@ export default function AccountSettingsPage() {
               <div className="w-full h-auto relative min-h-[300px]">
                 <Image
                   alt="userimage"
-                  src={modal?.data?.image}
+                  src={getImageUrl(modal?.data?.image)}
                   fill
                   className="object-contain"
                 />

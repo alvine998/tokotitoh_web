@@ -36,3 +36,15 @@ export function normalizePhoneNumber(phoneNumber: any) {
         return phoneNumber;
     }
 }
+
+export const getImageUrl = (url: string | null | undefined) => {
+    if (!url || url === "undefined" || url === "null") return "/images/tokotitoh.png";
+    if (url.startsWith("http://")) {
+        return url.replace("http://", "https://");
+    }
+    if (url.startsWith("https://") || url.startsWith("/")) {
+        return url;
+    }
+    // If it's a raw filename, prefix with the API base URL
+    return `https://api.tokonyang.com/${url}`;
+};

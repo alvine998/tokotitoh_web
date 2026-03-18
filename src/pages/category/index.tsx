@@ -12,6 +12,7 @@ import {
   LucideHome,
   PlusCircleIcon,
 } from "lucide-react";
+import { getImageUrl } from "@/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -100,7 +101,7 @@ export default function Category({ categories }: any) {
             >
               <div className="lg:w-[100px] lg:h-[60px] md:w-[230px] md:h-[150px] sm:w-[170px] sm:h-[100px] w-[100px] h-[60px] relative">
                 <Image
-                  src={v?.icon}
+                  src={getImageUrl(v?.icon)}
                   fill
                   alt="icon"
                   className="object-contain"

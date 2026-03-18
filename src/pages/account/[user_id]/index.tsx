@@ -21,6 +21,7 @@ import {
   XCircleIcon,
 } from "lucide-react";
 import moment from "moment";
+import { getImageUrl } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -98,7 +99,7 @@ export default function MyAds({ ads, detailBuyer }: any) {
             <div className="h-24 w-24 relative mt-5">
               <Image
                 alt="image"
-                src={detailBuyer?.image}
+                src={getImageUrl(detailBuyer?.image)}
                 fill
                 className="rounded-full object-cover"
               />

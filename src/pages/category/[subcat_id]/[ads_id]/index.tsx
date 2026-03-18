@@ -5,7 +5,7 @@ import HeaderAds from "@/components/headers/HeaderAds";
 import HeaderHome from "@/components/headers/HeaderHome";
 import Modal, { useModal } from "@/components/Modal";
 import { CONFIG } from "@/config";
-import { normalizePhoneNumber, toMoney } from "@/utils";
+import { getImageUrl, normalizePhoneNumber, toMoney } from "@/utils";
 import axios from "axios";
 import {
   ArrowLeft,
@@ -223,6 +223,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
         images: images,
         title: `${formData?.type} - ${formData?.title}`,
       };
+      console.log(payload, "ppp")
       await axios.post(CONFIG.base_url_api + "/report", payload, {
         headers: {
           "bearer-token": "tokotitohapi",
@@ -320,7 +321,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                   /> */}
                   <div className="bg-gray-300 w-full lg:h-[250px] md:h-[250px] sm:h-[500px] h-[250px] relative overflow-hidden">
                     <Image
-                      src={v}
+                      src={getImageUrl(v)}
                       alt="thumbnail"
                       fill
                       className="object-contain rounded"
@@ -358,8 +359,8 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
               </button>
               <button
                 className={`bg-gray-700 p-2 w-full rounded text-white text-md text-center ${account?.save_ads?.includes(ads?.id)
-                    ? "opacity-80"
-                    : "opacity-100"
+                  ? "opacity-80"
+                  : "opacity-100"
                   }`}
                 type="button"
                 onClick={saveAds}
@@ -481,7 +482,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                   <div key={i} className="relative h-[300px] sm:h-[500px] w-full mt-5">
                     <Image
                       alt="image"
-                      src={v}
+                      src={getImageUrl(v)}
                       fill
                       className="object-contain rounded"
                     />
@@ -573,7 +574,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                       <div className="w-full h-[100px] relative">
                         <Image
                           alt="images"
-                          src={v}
+                          src={getImageUrl(v)}
                           fill
                           className="object-cover"
                         />
@@ -614,7 +615,7 @@ export default function Ads({ ads, user, subcat_id, account }: any) {
                 <div className="h-20 w-20 relative mt-5">
                   <Image
                     alt="image"
-                    src={user?.image}
+                    src={getImageUrl(user?.image)}
                     fill
                     className="rounded-full object-cover"
                   />

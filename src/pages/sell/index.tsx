@@ -23,6 +23,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from "lucide-react";
+import { getImageUrl } from "@/utils";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
@@ -781,7 +782,7 @@ export default function Sell({
                     <div className="w-full h-[100px] relative">
                       <Image
                         alt="images"
-                        src={v}
+                        src={getImageUrl(v)}
                         fill
                         className="object-cover rounded"
                       />

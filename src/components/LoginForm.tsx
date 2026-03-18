@@ -50,7 +50,7 @@ const LoginView = ({
         </button>
       </div>
       <Button onClick={onSubmit} disabled={loading} className={'text-lg'}>
-        {loading ? "Memproses..." : "Masuk"}
+        {loading ? "Memproses..." : "Login dengan email"}
       </Button>
       <p className="text-center text-lg">Atau</p>
       <Button
@@ -59,7 +59,7 @@ const LoginView = ({
         onClick={() => setType("register")}
         className={'text-lg'}
       >
-        Daftar
+        Daftar dengan email
       </Button>
       <Button
         onClick={loginByGoogle}

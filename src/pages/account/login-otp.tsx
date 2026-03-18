@@ -2,31 +2,32 @@ import BottomTabs from "@/components/BottomTabs";
 import Button from "@/components/Button";
 import { CONFIG } from "@/config";
 import axios from "axios";
+import { setCookie } from "cookies-next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
 import Swal from "sweetalert2";
 
-export default function Account() {
+export default function LoginOtp() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const [detail, setDetail] = useState<any>();
-  const [time, setTime] = useState<number>(0);
+  const [time, setTime] = useState<number>(60);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
-    let user: any = localStorage.getItem("userReset");
+    let user: any = localStorage.getItem("userLoginOtp");
     if (!user || user === "undefined") {
-      router.push("/account");
+      router.push("/account/login");
     } else {
       try {
         user = JSON?.parse(user);
         setDetail(user);
       } catch (e) {
-        console.error("Failed to parse userReset", e);
-        localStorage.removeItem("userReset");
-        router.push("/account");
+        console.error("Failed to parse userLoginOtp", e);
+        localStorage.removeItem("userLoginOtp");
+        router.push("/account/login");
       }
     }
   }, [router]);
@@ -46,6 +47,7 @@ export default function Account() {
 
     setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
 
+    // Focus next input
     if (element.value !== "" && index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
@@ -72,27 +74,40 @@ export default function Account() {
     });
     setOtp(newOtp);
 
+    // Focus last character or the next empty one
     const nextIndex = Math.min(pasteData.length, 5);
     inputRefs.current[nextIndex]?.focus();
   };
 
   const onResendOTP = async () => {
+    if (!detail?.email && !detail?.phone) return;
     setLoading(true);
     try {
-      // Re-using the same submission logic for resend if specific resend endpoint is not available
-      // or if user wants to just resend the code via the same initiation.
-      // Based on original code, line 69 called onSubmit for resend which might be wrong.
-      // I'll keep the logic consistent with what was there or what's expected.
-      // Original line 69: <button ... onClick={() => { onSubmit() }}>Kirim Ulang Kode OTP</button>
-      // This is strange but I'll implement a proper resend if I can find it, otherwise I'll stick to the UI.
-      Swal.fire({
-        icon: "info",
-        text: "Fitur Kirim Ulang Kode OTP sedang diproses",
-      });
+      await axios.post(
+        CONFIG.base_url_api + `/otp/resend`,
+        {
+          email: detail?.email || detail?.phone,
+        },
+        {
+          headers: {
+            "bearer-token": "tokotitohapi",
+            "x-partner-code": "id.marketplace.tokotitoh",
+          },
+        }
+      );
       setLoading(false);
-    } catch (error) {
+      setTime(60);
+      Swal.fire({
+        icon: "success",
+        text: "Kode OTP Berhasil Dikirim, Silahkan Periksa Email Atau Pesan Anda!",
+      });
+    } catch (error: any) {
       setLoading(false);
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        text: error?.response?.data?.message || "Gagal mengirim ulang OTP",
+      });
     }
   };
 
@@ -102,8 +117,8 @@ export default function Account() {
     setLoading(true);
     try {
       const result = await axios.post(
-        CONFIG.base_url_api + `/user/verification`,
-        { otp: combinedOtp, id: detail?.id, email: detail?.email },
+        CONFIG.base_url_api + `/otp/verify`,
+        { otp: combinedOtp, email: detail?.email || detail?.phone },
         {
           headers: {
             "bearer-token": "tokotitohapi",
@@ -112,11 +127,20 @@ export default function Account() {
         }
       );
       setLoading(false);
+      
+      const userData = result?.data?.user || detail;
+      localStorage.setItem("usertokotitoh", JSON.stringify(userData));
+      setCookie("account", JSON.stringify(userData), {
+        secure: true,
+      });
+      localStorage.removeItem("userLoginOtp");
+      
       Swal.fire({
         icon: "success",
-        text: "Verifikasi Berhasil",
+        text: `Verifikasi Berhasil, Selamat Datang ${userData?.name}`,
       });
-      router.push("/account/reset-password");
+      
+      router.push("/account");
     } catch (error: any) {
       setLoading(false);
       console.log(error);
@@ -139,12 +163,12 @@ export default function Account() {
         />
         <div className="w-full">
           <h2 className="text-center text-2xl lg:text-3xl font-bold text-gray-800 mb-2">
-            Verifikasi Kode OTP
+            Verifikasi OTP
           </h2>
           <p className="text-center text-sm lg:text-base text-gray-500 mb-8 px-4">
             Masukkan 6 digit kode OTP yang telah dikirim ke{" "}
             <span className="font-semibold text-gray-700 block">
-              {detail?.email}
+              {detail?.email || detail?.phone}
             </span>
           </p>
           
@@ -196,6 +220,13 @@ export default function Account() {
                 "Verifikasi"
               )}
             </Button>
+            
+            <button
+              onClick={() => router.push("/account/login")}
+              className="w-full text-center text-sm text-gray-500 hover:text-gray-700 transition-colors py-4"
+            >
+              Kembali ke Login
+            </button>
           </div>
         </div>
       </div>

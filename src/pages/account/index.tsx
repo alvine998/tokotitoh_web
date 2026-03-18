@@ -6,6 +6,7 @@ import LoginForm from "@/components/LoginForm";
 import Modal, { useModal } from "@/components/Modal";
 import { CONFIG } from "@/config";
 import { storage } from "@/config/firebase";
+import { getImageUrl, normalizePhoneNumber, toMoney } from "@/utils";
 import axios from "axios";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -213,7 +214,7 @@ export default function Account() {
               <div className="h-20 w-20 relative mt-5">
                 <Image
                   alt="image"
-                  src={user?.image}
+                  src={getImageUrl(user?.image)}
                   fill
                   className="rounded-full object-cover"
                 />
@@ -245,7 +246,7 @@ export default function Account() {
           >
             Pengaturan Akun
           </button>
-          <Link href={"https://play.google.com/"}>
+          <Link href={"https://play.google.com/store/apps/details?id=com.tokonyang_app&hl=id"}>
             <button type="button" className="border-b p-2 w-full text-lg">
               Download Aplikasi
             </button>
@@ -300,7 +301,7 @@ export default function Account() {
             onClick={() => { }}
             className="border-b p-2 w-full text-lg"
           >
-            Versi 1.1.6
+            Versi 1.1.7
           </button>
         </div>
         {/* <button
@@ -460,7 +461,7 @@ export default function Account() {
               <div className="w-full h-auto relative min-h-[300px]">
                 <Image
                   alt="userimage"
-                  src={modal?.data?.image}
+                  src={getImageUrl(modal?.data?.image)}
                   fill
                   className="object-contain"
                 />
