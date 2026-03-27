@@ -1,0 +1,11 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.tokonyang_app",
+    "sha256_cert_fingerprints": [
+      "0B:BE:D0:B4:0A:29:09:67:3F:92:D3:43:A0:E5:6E:71:59:3E:72:F3:C3:E5:14:28:9F:59:A4:27:40:1E:FB:08",
+      "FE:B8:9A:15:93:6F:ED:6A:E4:BB:80:5F:7C:7C:BF:B5:35:1A:0A:F9:9C:96:85:C7:32:26:62:BC:36:01:CF:DA"
+    ]
+  }
+}]
